@@ -81,18 +81,13 @@
   @keyframes pols{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(1.6)}}
 
   /* COM HO FAREM */
-  .fases{margin-top:70px;display:flex;flex-direction:column;gap:30px}
-  .fase{display:grid;grid-template-columns:60px 440px 1fr 110px;align-items:center;gap:26px;font-size:34px}
-  .fase .n{font-weight:800;color:var(--vermell);font-size:36px}
-  .fase .nf{font-weight:650}
-  .barra{height:42px;background:var(--gris);position:relative}
-  .barra i{position:absolute;inset:0 auto 0 0;background:var(--negre)}
-  .fase.clau .barra i{background:var(--vermell)}
-  .fase .h{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
-  .fase.coixi{color:var(--gris-text)}
-  .fase.coixi .barra i{background:repeating-linear-gradient(135deg,var(--gris-text) 0 6px,transparent 6px 12px)}
-  .total{margin-top:22px;padding-top:18px;border-top:3px solid var(--negre);display:flex;justify-content:space-between;font-size:30px;font-weight:800}
-  .total span:last-child{color:var(--vermell)}
+  .fases{margin-top:56px;display:flex;flex-direction:column}
+  .fase{display:grid;grid-template-columns:70px 470px 1fr;align-items:baseline;gap:26px;font-size:34px;padding:20px 0;border-top:2px solid var(--gris-linia)}
+  .fase:first-child{border-top:0}
+  .fase .n{font-weight:800;color:var(--vermell);font-size:40px}
+  .fase .nf{font-weight:750}
+  .fase .ds{font-size:27px;color:var(--gris-text)}
+  .fase.clau .nf{color:var(--vermell)}
 
   /* XERRADA */
   .xerrada{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;height:100%}
@@ -130,6 +125,9 @@
   .fletxa.ant{left:12px}.fletxa.seg{right:12px}
   .ajuda{position:fixed;bottom:12px;left:14px;transition:opacity .4s;font:13px var(--font);color:#8C8586;z-index:10}
 
+  .index-link{position:fixed;right:14px;bottom:10px;z-index:11;font:600 14px var(--font);color:#fff;background:rgba(37,33,34,.75);padding:7px 12px;border-radius:8px;text-decoration:none}
+  .index-link:hover{background:var(--vermell)}
+  .index-link:focus-visible{outline:3px solid #fff;outline-offset:2px}
   @media (prefers-reduced-motion: reduce){
     .ona,.pols{animation:none}
     .o1{opacity:1}.o2{opacity:.75}.o3{opacity:.5}.o4{opacity:.3}
@@ -235,12 +233,12 @@
     <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
     <h2>Com ho farem?</h2>
     <div class="fases">
-      <div class="fase"><span class="n">1</span><span class="nf">Presentació</span><span class="barra"><i style="width:31.6%"></i></span><span class="h">6 h</span></div>
-      <div class="fase"><span class="n">2</span><span class="nf">Proposta de solució</span><span class="barra"><i style="width:47.4%"></i></span><span class="h">9 h</span></div>
-      <div class="fase"><span class="n">3</span><span class="nf">Planificació</span><span class="barra"><i style="width:10.5%"></i></span><span class="h">2 h</span></div>
-      <div class="fase clau"><span class="n">4</span><span class="nf">Implementació</span><span class="barra"><i style="width:100%"></i></span><span class="h">19 h</span></div>
-      <div class="fase"><span class="n">5</span><span class="nf">Presentació de resultats</span><span class="barra"><i style="width:21%"></i></span><span class="h">4 h</span></div>
-      <div class="fase"><span class="n">6</span><span class="nf">Reflexió i avaluació</span><span class="barra"><i style="width:10.5%"></i></span><span class="h">2 h</span></div>
+      <div class="fase"><span class="n">1</span><span class="nf">Presentació</span><span class="ds">Coneixem el repte i la nostra zona.</span></div>
+      <div class="fase"><span class="n">2</span><span class="nf">Proposta de solució</span><span class="ds">Investiguem i decidim què mesurarem i com.</span></div>
+      <div class="fase"><span class="n">3</span><span class="nf">Planificació</span><span class="ds">Organitzem qui farà què i quan.</span></div>
+      <div class="fase clau"><span class="n">4</span><span class="nf">Implementació</span><span class="ds">Construïm, connectem i provem el sistema.</span></div>
+      <div class="fase"><span class="n">5</span><span class="nf">Presentació de resultats</span><span class="ds">Demostrem que la zona parla.</span></div>
+      <div class="fase"><span class="n">6</span><span class="nf">Reflexió i avaluació</span><span class="ds">Mirem enrere i valorem què hem après.</span></div>
     </div>
     <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
   </section>
@@ -316,6 +314,7 @@
 <button class="fletxa ant" id="ant" aria-label="Diapositiva anterior">‹</button>
 <button class="fletxa seg" id="seg" aria-label="Diapositiva següent">›</button>
 <nav class="nav" id="nav" aria-label="Diapositives"></nav>
+<a class="index-link" href="index.html">← Tornar a l'índex</a>
 <div class="ajuda">← → per navegar · F pantalla completa</div>
 
 <script>
