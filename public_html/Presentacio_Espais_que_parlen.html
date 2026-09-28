@@ -21,8 +21,8 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;background:var(--negre);overflow:hidden;font-family:var(--font);color:var(--negre)}
 
-  .viewport{position:fixed;inset:0;display:grid;place-items:center}
-  .stage{width:1600px;height:900px;position:relative;transform-origin:center center;flex:none}
+  .viewport{position:fixed;inset:0;overflow:hidden}
+  .stage{width:1600px;height:900px;position:absolute;left:50%;top:50%;transform-origin:center center}
 
   .slide{position:absolute;inset:0;background:var(--blanc);padding:96px 120px 110px;
     opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s;overflow:hidden}
@@ -327,7 +327,7 @@
 
   function escala(){
     const s=Math.min(window.innerWidth/1600,window.innerHeight/900);
-    stage.style.transform='scale('+s+')';
+    stage.style.transform='translate(-50%,-50%) scale('+s+')';
   }
   window.addEventListener('resize',escala); escala();
 
