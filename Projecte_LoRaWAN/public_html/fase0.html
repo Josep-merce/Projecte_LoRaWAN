@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fase 0 · Com funciona el projecte · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <a class="tornar" href="index.html">← Tornar a l'índex</a>
+    <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhEAAADcCAYAAADOd/NRAAANtklEQVR42u3dW27cSBIFUEmojdiAv7qX4WXPMuwvAdJSNB8DdtdYKqlI5isizgGEftiSSOYjbmaRVY8PpPPj2/e3qMf+/PryqAVrtr32h3gMWEVEMdH22h445MklQEF0vZwLIEQoJCZfAIQIoG54FIhBiACFBECIAEGCcdxcCUIEJl6ELECIABCGASHCBGy1jf4LNGDAJucNiLSt9gSECMoXH4UndhtqPxAiUIgUIe2m3YCHhwf3RJQWbXJ3b4Q+BggRmOQpEKT0LRAiAAQIQIgg/oTvJQ0AIQJBQpBw3oAQAQgQMQMpIEQAAEIE5FuZAwgRgMAEIESguAIgRICgBCBEgCILIEQAAhIgRIBiC4AQAQAIEfCvbLsRdlcAIQIQIAAhAgBAiMAKHgAhAjIFCUEIECIAACECrOYdN8BHLi4BZzy/vjwqgHMCxHbtBRFgFjsRnA4QtwoaAEIElFjZRw1wAEIECpvAAyBEUDcwrBQkshZnYQ0QIkCQsAsBCBEozoxhFwIQIlDoABAiZq2Cty9NKCjc018cF4AQ8W7iNRELGVUKth0eQIgAdocaAQIQIihF4WsTIACECFC8AYSIlVa3Vrtkp48DQkTjSXX70oQK4B6zdyPshgBCBFhJDwkQrh0gREDwYi58AQgRAIAQQSTVV9XeFwIQIqBoUQfgvYtLcLvIWA229fz68rhS8R7VxgKLuWTkXLKnv5njKBki/hwk9wyEWwPr+ns/+1yOI4PtTPEwuPMUEG2v3bf/7tG2Z+aZs3McXCIOyJbfd+/P3jMJHAksdiMgf0hsvSvRcixl2n39z99/3XVdfv76LTj1CBH3NsBZKzVg7wL/1TttKqzzisBKE6fVYL7FTKRj6bljslqAuP67wsSJEDEqMNxqwHsab/TqdRtAH/3Or4rOR99zz4CstEKvcq6CobZrHVxH9alouxJn65gwcdzUpzP2NNiRDn3v96wyWCK9nXemArnKudiFmNsHrr/0UyGYO3citkI+c0ci+6o3wxah3QgTsDZx3Bl3IexINNiJiBIgjhbhz77vyJ+dudFz9dWOAmMXIusuQ8T+5gPjxgUIDu5E3EpdPRqnQrrbs8Ku/nhV1t0IAVFbEDtA3Hu/Hp/cE9H6Arb4eZk/OMnuRF12IQSIleeDqvOSXY6TIcIOhAFbrYAKccaRY49xTKMKvCBxMkQo/ueK49EnLRSzuJOltoNcBIkTIYK2gUIxun19qgYQL2UghK5f1AUJIWKJone9O6F4mMj1AQQI4SW6UB/Ale1u/s/eGRMFAH0GVveUYdCt9k5unrSwKkd/Ih+7EYFDxD2Fe4U/u/7/Pgo87jn3DoGKHAgSQkSACf3ox4G3+hhxOxJxRXlXQQS1SlZ4alCQCBYiek8GLd9O+6P/t2dHw02XOYOG4jZv7nBDM4JEP5eIk8KeyfurmzFvTSrb9/3552c+N+OrYzLB1fpIdGLMISsvpKqOlZ+/fj+uUMS9PXagEPHnINpTcHvvNOwZ8NufXRdL4WHtnYaW7aOtBdaW/UXoZjbvEzE5CCkqcQutyVtfW+HYRswjK16nVXYAqr+sIURgch8UFgRGevaVXv1r5X4rSAgREJJdCIF1xeOpGFQFicVDhA/hwuTe7v0/INK4iRJKfv76/ejRz0VDBPBveDgaILyUwch+UrW/CRLjXQzbMR3Hjg4wOpBUDL2rPP4pRNA0VX70cwSLvhNhttUl+fv6CuMnQ3+dHSQqvX+EENE5POhoggSsEk4qvcndNrfOChNV5nchYkJ4+Oj3CRNWl6A/9gkTgkQ/bqycGCAAGBMk1JU+7EQcbORbnfJoh7Ej8fUKKtpLGnYh0FfWCxIzinrmHYnyOxF7O9RXzyMLAQBrhwnztBAxNcm2+nstQo3VmmMF+s3nsxasQoQOqogAAufi8/TIuTpjkCgdIvY0qI5mwlUUwKLP/C5E2C0A4F09GFUTMgWJp0onSw5W+kD0xWWW2uqeiIU6FQIOYM4XIhJ1lqOdyQ6OYg3Erg29w0SGOuHNpv4ICj7PAsEGuK4PPYt99JojRHwSKKomSwQI4H1dML+/556IRkly+3I1FG7AIrPK4lOIaBAeXAlBAu2BIFExSAgRwgMKJ7AzSPQIExHrSrp7Ij5qhBaNLTSsXcSjfcInkCNMtK4N0W60dGNlw/DQ+y5e1gwwrgIc81X4jzC+qgcJIaJBeNg60vU/j/wMyFAUBCuhYPTPm93nejy9ESVIpLonolUDHg0Q1NoRUCzhf4V++5p9DCvsSlRr/8s9F6XKilp4iB8kKt8b4b4Qqve16+OaFfJb7kpE2I1IsxNxtsEECOxCwNo7DkeOd9bvb1UjVl/E+xTPBc9RQCHyytCOiP7l2OsEiRQ7EaMvsCJfe4fALoQgYech5rnMChKZ32ag/JtNeYICBRtq9KnouxIr1qvwIUIIoPJOwcqTvXBjxa5fvg8S2XayQ4eI0TdTwioBJcpkn2lLXHgQJFqGiSx1K2yIWD0AnDm+COFm9dV+j+Nb4ZwjT/aChHa5Hku3vgSJWDViyDtWtnzWdYWL99X52OFAsT12bm5azdvX7m3b7e+NOLbZ77B65j0lVnkPiadRBfvsJ1+u9smZt46l17tm+uTQmDsHVXYZXAMBovVYrBQoj4aBFWrCZfTB7UlPmV+y2HOtrn/P9u8eMxVIIGN4qOrorsTsHYnLjKJtRX3uWgkQ+yaxKDcgaq3/vx4KkAAxYvyu1teifdTE01aoKhZ2xVjRs5pCG699PSu2zd7aNLN+P1Uvpj3OfXsWuMczwYIPcCT0jwr+EYv+iouivfVjVpB4Upz6h5JW11YbjZ/UrFCBKAvdGUHiMjvFrNAAZz+6tffvEB7aBAn3HVB1FyJCYOfzGrBqjdbgO5Nd64K+0o2TeyebiI9QrjwpCjlz+9as69/zXEefU+RziTKf3RMmRtaQywNTG8Mug0KG6y5A0HJXYuRjn0IEpYrTvRPrjAnRJAyC657F52dhYlSQeNJ9AKv2XC8lZXxpTMi+HSY+CxJCBDSeiL6ajExWUGtOyBwkhAgYOHEIEEQ361M5Ffy5QeJWmOi9G+GeCAQJgCRhYvSjoEIEAKHCf6vdlowLiesdiRE3V3o5AyCJKu810urDvbJfJ09nAJC+oI/+vV7KbMfLGQAJVHzH0y0MrPz+L0IEAAQOE8KDEAHADT53RViYxT0RAIAQAQAIEQAleCkCIQIAECLgHm5gAsDTGVBIy61zQRKMayGCw51WEak3wXz0c/UDqDuuhQgwsTT9nUIF1BnXQgSYZIQKMLbvPo7rMS1EgAmm+zEKEpBnXF+/5CFEgElm2ioGiD2uPeIJJhrHD8bFIXYiwCQz7VzsSmBcxx7XdiLAROO8QP8/xE4EmGSmn6MdCYxrIQIIPNF8VMhHHYOXNzCuY45rL2eAieZm8X5+fXlU2Kmyqjau97MTAYUnmnsnku3v9T42L21gXI8Z063GtZ0IECC6fo+VLcb1egGi1bgWIkCAECTQXsWvzdFxLUSAAGHyBeP6ECECTDRpgwgY131/jhABVtvLBgm7EUKdcb02IQIwIQOHAqkQAYojBSd/jOsWhAhA4SJ18fzx7fvb9ZcxKESACbdQwbdrQ8u+0ytMZOmne+YKIQIURCjZt43F84QIwISfhJeX9veZVrsSVfunEAEgSAh7CBEAMDrMzApOK+w8CRFQYJWWZZvbKjdGe89sp4xPYKxMiADhBVL0uaO/070kQgSYVGGxwhjhJQWPPgsRABQOErNfPqncx4QIKCLLm+vY0REkrn/umZ+d4WWMHveA7Pl5F0MMBAnyB4nZbX/9+88W7xbnku0+iFntK0QAFAkSqwTJ7Rj2FnIheD1CBAClVs+tdiGEGvdEQOrJEnoVUOePEAGgkDpvhAigDjs7bQpqlaJa6VyFCAArStfS+YXgxkpAUXBNl3lyQz+JxU4EAGkKr5cuxrITAQoFfNg/Iu1MeOpkzvnbiQATDYRe1QsQ887fTgSH/fj2/U1RMtFQq++ssjuhP69xHYQIAA4XrVGhQmhY85oIEWCygSZ9q3Wg0G/XJ0RAAV56Qlg1rntwYyUAIESAFRqAEAEACBEAkI8dRiECABAiAPbzseIgRACKJSBEAABCBPAPN2GBcd3a7B1GIQIAECLAqgUwroUIoAM3V4JxLUQAANMJEVihDlb9RiwwrvOMayECCk44giwgRGDyJnyb//j2/W07nu3f9UksDmKMayECAaTohLN6/9G3MK7XJ0SYxN9W+BkIgPoWxBszQgQm+8Krllnttucliwp9y/gxrqP2JyGicNFv3dFMhCYc/QRqjWshwq6BAmHCGdJubpjEuM43roUIAUKQMOGUDZf6Kub8cz/bs+o6UurCqK3mtlmLc+nVh1YNEMaMcb1637o+F51VhzVBar+mbdby2Hv0lyi7D8aKMR1hXOukOqsJUjueardex7najojxQqVxfe+x6pg6qIlRe6bsF5mvnbFjXK/CjZU6puNVLJyvsY5+LkSACcd5KrIY1+NcNCXEmXAyFke7DxjXcce1nQhQcJ0PGAeH2IkAqxeTJhjXQgSYdIQHMK7HMaCTUVC0vXaONxaMHSL24+fXl0cdUaczCeoDadvYjagY1337n86ow5kA9YP0bZshTBg7zOjPX/U7nRJMQooaGNeHxvV/AZGqO7LCyA3wAAAAAElFTkSuQmCC" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <span class="codi">FASE 0</span>
+    <h1>Com funciona el projecte</h1>
+    <p>Abans de començar, llegiu aquesta pàgina amb el vostre equip. Hi trobareu el repte, com treballarem, el dossier que anireu completant i com lliurareu el projecte.</p>
+    <nav class="salts" aria-label="Continguts d'aquesta pàgina">
+      <a href="#repte">El repte</a>
+      <a href="#projecte">El projecte</a>
+      <a href="#fases">Les fases</a>
+      <a href="#pindoles">Píndoles formatives</a>
+      <a href="#treball">Com treballarem</a>
+      <a href="#dossier">El dossier</a>
+      <a href="#lliurament">Lliurament</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="repte">
+      <h2>El repte</h2>
+      <div class="cos">
+        <p class="destacat">Com podem utilitzar la tecnologia per conèixer en temps real l'estat dels espais de l'institut i ajudar a prendre millors decisions?</p>
+        <p>L'institut vol saber què passa als seus espais: si cal ventilar una aula, si la sala de servidors s'escalfa, si hi ha activitat fora d'horari o si el bar està ple. Vosaltres sereu l'equip tècnic encarregat de fer-ho possible.</p>
+        <p>No cal que sapigueu des del principi com fer-ho. Durant el projecte haureu d'<strong>investigar, prendre decisions, provar, equivocar-vos i millorar</strong>.</p>
+        <div class="botons">
+          <a class="boto" href="Presentacio_Espais_que_parlen.html">Veure la presentació del projecte</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="projecte">
+      <h2>El projecte</h2>
+      <div class="cos">
+        <p>Cada equip crearà un sistema de monitoratge per a una zona de l'institut. Tots els sistemes funcionen de la mateixa manera:</p>
+        <ol class="flux">
+          <li><strong>Mesurar</strong><span>Sensors que recullen dades de la zona.</span></li>
+          <li><strong>Enviar</strong><span>Una xarxa sense fils LoRaWAN que les transmet.</span></li>
+          <li><strong>Rebre</strong><span>Un servidor que les recull i les guarda.</span></li>
+          <li><strong>Mostrar i avisar</strong><span>Un panell per consultar-les i alertes quan cal actuar.</span></li>
+        </ol>
+        <h3>Les zones</h3>
+        <p>Hi ha set zones i cada equip se n'encarrega d'una. Què cal mesurar a cada zona, amb quins sensors i com fer-ho, ho decidirà cada equip.</p>
+        <ul class="zones">
+          <li>Aules</li><li>Sala de servidors</li><li>Biblioteca</li><li>Passadissos i entrades</li><li>Tallers i laboratoris</li><li>Pati o teulada</li><li>Bar</li>
+        </ul>
+        <h3>L'entorn de treball</h3>
+        <p>Tots els equips treballaran amb el mateix entorn: la mateixa placa per construir el node, una xarxa LoRaWAN comuna i un servidor on arribaran les dades de totes les zones. Al final, totes les zones s'uniran en un únic panell de l'institut.</p>
+      </div>
+    </section>
+
+    <section id="fases">
+      <h2>Les fases</h2>
+      <div class="cos">
+        <ol class="fases">
+          <li><div><b>Presentació</b><span>Coneixem el repte, descobrim LoRaWAN amb la xerrada d'una empresa i observem la nostra zona.</span></div><i></i></li>
+          <li><div><b>Proposta de solució</b><span>Investiguem, comparem alternatives i decidim què mesurarem i com.</span></div><span class="pc">PC1</span></li>
+          <li><div><b>Planificació</b><span>Organitzem les tasques, els responsables i el calendari de treball.</span></div><span class="pc">PC2</span></li>
+          <li><div><b>Implementació</b><span>Construïm el node, el connectem, visualitzem les dades, creem alertes i ho provem a la zona.</span></div><span class="pc">PC3</span></li>
+          <li><div><b>Presentació de resultats</b><span>Presentem i demostrem el que hem creat.</span></div><i></i></li>
+          <li><div><b>Reflexió i avaluació</b><span>Reflexionem sobre el procés i sobre el que hem après.</span></div><i></i></li>
+        </ol>
+        <p class="nota">PC vol dir punt de control. Al final de les fases 2, 3 i 4, el professorat revisarà el vostre treball abans que pugueu passar a la fase següent. No és una nota: si cal, fareu els ajustos necessaris i continuareu.</p>
+      </div>
+    </section>
+
+    <section id="pindoles">
+      <h2>Píndoles formatives</h2>
+      <div class="cos">
+        <p>Al llarg del projecte hi haurà píndoles formatives: sessions curtes on aprendreu a fer servir una eina o una tecnologia concreta, com la placa, els sensors, la xarxa LoRaWAN, el servidor o el panell de dades.</p>
+        <p>Les píndoles arribaran <strong>just quan les necessiteu</strong>, no totes al principi. Us expliquen com funcionen les eines, però no us diuen què heu de fer a la vostra zona: aquesta decisió és de l'equip.</p>
+        <p>Algunes zones tenen necessitats tècniques pròpies. En aquests casos hi haurà píndoles específiques per als equips que les necessitin.</p>
+      </div>
+    </section>
+
+    <section id="treball">
+      <h2>Com treballarem</h2>
+      <div class="cos">
+        <p>Durant el projecte no només compta el resultat final. Haureu de:</p>
+        <ul class="punts">
+          <li>treballar en equip;</li>
+          <li>prendre decisions;</li>
+          <li>investigar quan no sapigueu fer alguna cosa;</li>
+          <li>justificar les vostres decisions;</li>
+          <li>provar i corregir errors;</li>
+          <li>documentar el procés;</li>
+          <li>demanar ajuda quan la necessiteu;</li>
+          <li>ser capaços d'explicar què heu fet i com.</li>
+        </ul>
+        <p class="destacat">No cal saber-ho tot abans de començar. Cal saber investigar, provar i aprendre.</p>
+      </div>
+    </section>
+
+    <section id="dossier">
+      <h2>El dossier</h2>
+      <div class="cos">
+        <p>El dossier és el document de treball de l'equip. L'anireu completant durant tot el projecte i és l'evidència principal del que heu fet. Cada apartat es completa en una fase concreta:</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Apartat</th><th>Contingut</th><th>Fase</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Acord de treball de l'equip</td><td class="fase">Fase 1</td></tr>
+              <tr><td class="num">2</td><td>Context i repte: la zona i qui farà servir les dades</td><td class="fase">Fase 1</td></tr>
+              <tr><td class="num">3</td><td>Necessitat detectada a la zona</td><td class="fase">Fase 1</td></tr>
+              <tr><td class="num">4</td><td>Investigació i fonts d'informació</td><td class="fase">Fase 2</td></tr>
+              <tr><td class="num">5</td><td>Proposta de solució</td><td class="fase">Fase 2</td></tr>
+              <tr><td class="num">6</td><td>Justificació i viabilitat</td><td class="fase">Fase 2</td></tr>
+              <tr><td class="num">7</td><td>Recursos necessaris i pressupost</td><td class="fase">Fase 2</td></tr>
+              <tr><td class="num">8</td><td>Planificació</td><td class="fase">Fase 3</td></tr>
+              <tr><td class="num">9</td><td>Implementació</td><td class="fase">Fase 4</td></tr>
+              <tr><td class="num">10</td><td>Decisions tècniques</td><td class="fase">Fase 4</td></tr>
+              <tr><td class="num">11</td><td>Proves i incidències</td><td class="fase">Fase 4</td></tr>
+              <tr><td class="num">12</td><td>Solucions aplicades</td><td class="fase">Fase 4</td></tr>
+              <tr><td class="num">13</td><td>Resultats obtinguts</td><td class="fase">Fase 4</td></tr>
+              <tr><td class="num">14</td><td>Presentació i feedback</td><td class="fase">Fase 5</td></tr>
+              <tr><td class="num">15</td><td>Valoració final</td><td class="fase">Fase 6</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>El dossier ha de ser breu i útil. No es tracta d'escriure molt, sinó d'explicar amb claredat què heu fet i per què.</p>
+        <div class="botons"><a class="boto sec" href="dossier.html">Obrir el dossier del projecte</a></div>
+      </div>
+    </section>
+
+    <section id="lliurament">
+      <h2>Lliurament del projecte</h2>
+      <div class="cos">
+        <p>El lliurament del projecte es fa en dos passos, i tots dos comencen a la Fase 1:</p>
+        <div class="dues">
+          <div class="caixa">
+            <h3>1. Ompliu el dossier</h3>
+            <p>El dossier és un únic document compartit per tot l'equip. L'anireu completant durant el projecte, a mesura que avanceu per les fases.</p>
+            <p>El vídeo demostratiu no es lliura a part: n'heu de posar l'enllaç a l'apartat 13 del dossier.</p>
+          </div>
+          <div class="caixa">
+            <h3>2. Incrusteu-lo al portafoli</h3>
+            <p>Cada alumne crea una pàgina per a aquest projecte al seu portafoli de Google Sites i hi incrusta el dossier des de <strong>Inserir → Documents</strong>.</p>
+            <p>Com que el dossier està incrustat, el portafoli sempre mostra la versió actualitzada i el professorat pot seguir l'evolució del projecte en qualsevol moment.</p>
+          </div>
+        </div>
+        <p class="nota">Encara que el dossier sigui de l'equip, cada alumne l'ha de tenir incrustat al seu propi portafoli. Heu de fer-ho a la Fase 1, no espereu al final.</p>
+      </div>
+    </section>
+
+
+  </main>
+
+  <div class="final">
+    <p>No esperem que el projecte surti perfecte a la primera.</p>
+    <p>Esperem que sapigueu fer-lo evolucionar.</p>
+  </div>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+</body>
+</html>

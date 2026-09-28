@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espais que parlen · 1713 Projecte intermodular</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.55;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4.5rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+
+  header{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start}
+  .logo{height:52px;width:auto}
+  .modul{font-size:.95rem;font-weight:600;color:var(--vermell);display:inline-flex;align-items:center;gap:.6rem}
+  .modul::before{content:"";width:1.8rem;height:3px;background:var(--vermell);display:inline-block}
+  h1{font-weight:900;font-stretch:80%;font-size:clamp(2.6rem,7vw,4.6rem);letter-spacing:-.02em;line-height:.95;margin:1rem 0 0}
+  .lede{color:var(--gris-text);font-size:clamp(1rem,1.6vw,1.18rem);max-width:62ch;margin-top:1.2rem}
+  .rule{height:1px;background:var(--linia);margin:clamp(2rem,5vw,3rem) 0}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.9rem,2vw,1.4rem)}
+  .card{position:relative;display:flex;flex-direction:column;background:var(--blanc);border:1px solid var(--linia);border-radius:14px;
+    padding:1.6rem 1.6rem 1.4rem;text-decoration:none;color:inherit;overflow:hidden;
+    transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--vermell);transform:scaleY(0);transform-origin:top;transition:transform .26s ease}
+  .card:hover,.card:focus-visible{transform:translateY(-4px);border-color:#D3CECB;box-shadow:0 14px 34px -18px rgba(37,33,34,.4);outline:none}
+  .card:hover::before,.card:focus-visible::before{transform:scaleY(1)}
+  .card:focus-visible{box-shadow:0 0 0 3px var(--vermell-suau),0 14px 34px -18px rgba(37,33,34,.4)}
+
+  .card-top{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:1.1rem}
+  .codi{font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--negre);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .tags{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end}
+  .tag{font-size:.76rem;font-weight:600;padding:.28rem .55rem;border-radius:6px;white-space:nowrap;background:var(--fons);color:var(--gris-text)}
+  .tag.hores{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .tag.pc{background:var(--negre);color:var(--blanc)}
+  .card h2{font-weight:750;font-stretch:92%;font-size:1.3rem;letter-spacing:-.01em;line-height:1.2}
+  .card p{color:var(--gris-text);font-size:.95rem;margin-top:.6rem;flex:1}
+  .obrir{margin-top:1.3rem;font-size:.9rem;font-weight:700;color:var(--vermell);display:inline-flex;align-items:center;gap:.4rem}
+  .obrir .fletxa{transition:transform .22s ease}
+  .card:hover .obrir .fletxa,.card:focus-visible .obrir .fletxa{transform:translateX(4px)}
+
+  /* Fase 0: targeta destacada a tota l'amplada */
+  .card.fase0{grid-column:1/-1;background:var(--negre);color:var(--blanc);border-color:var(--negre);
+    display:grid;grid-template-columns:1fr auto;align-items:end;gap:1rem 2.5rem;padding:2rem 2.2rem}
+  .card.fase0 .codi{background:var(--vermell)}
+  .card.fase0 h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:850;font-stretch:84%}
+  .card.fase0 p{color:#CFC9C9;max-width:60ch;font-size:1.02rem}
+  .card.fase0 .obrir{color:var(--blanc);margin-top:0;white-space:nowrap}
+  .card.fase0 .card-top{justify-content:flex-start;align-items:flex-start}
+  .card.fase0 .tag{background:#3A3435;color:#E6E2E2}
+  .card.fase0:hover,.card.fase0:focus-visible{border-color:var(--negre)}
+
+  .card.disabled{cursor:not-allowed;background:#FAFAF9;opacity:.6;filter:grayscale(.5)}
+  .card.disabled:hover,.card.disabled:focus-visible{transform:none;box-shadow:none;border-color:var(--linia)}
+  .card.disabled:hover::before,.card.disabled:focus-visible::before{transform:scaleY(0)}
+  .card.disabled .codi{background:#A39C9D}
+  .card.disabled .obrir{color:#A39C9D}
+  .card.disabled:hover .obrir .fletxa{transform:none}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+  @media (max-width:880px){
+    .grid{grid-template-columns:1fr}
+    .card.fase0{grid-template-columns:1fr}
+    header{grid-template-columns:1fr}
+    .logo{order:-1}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <span class="modul">1713 · Projecte intermodular · SMX</span>
+      <h1>Espais que parlen</h1>
+      <p class="lede">Cada equip s'encarrega d'una zona de l'institut i crea un sistema de monitoratge amb sensors connectats a una xarxa LoRaWAN. El projecte segueix sis fases: comenceu per la Fase 0 per saber com funciona tot.</p>
+    </div>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </header>
+
+  <div class="rule"></div>
+
+  <!--
+  ============================================================
+   COM DESACTIVAR UNA FASE QUE ENCARA NO TOCA
+   Totes les targetes comencen actives amb  class="card".
+   Per desactivar-la temporalment, afegeix-hi  disabled :
+        class="card"   ->   class="card disabled"
+   Recorda treure també l'enllaç (href) si no vols que s'obri.
+  ============================================================
+  -->
+
+  <main class="grid">
+
+    <a class="card fase0" href="fase0.html">
+      <div>
+        <div class="card-top">
+          <span class="codi">FASE 0</span>
+          <span class="tags"><span class="tag">Presentació</span><span class="tag">Dossier</span><span class="tag">Lliurament</span></span>
+        </div>
+        <h2>Com funciona el projecte</h2>
+        <p>El repte, les zones, les fases, el dossier que anireu completant i com el lliurareu al vostre portafoli.</p>
+      </div>
+      <span class="obrir">Obrir <span class="fletxa">→</span></span>
+    </a>
+
+    <a class="card" href="fase1.html">
+      <div class="card-top">
+        <span class="codi">FASE 1</span>
+        
+      </div>
+      <h2>Presentació del projecte</h2>
+      <p>Formem els equips, coneixem LoRaWAN amb la xerrada d'una empresa del sector i observem la zona que ens toca.</p>
+      <span class="obrir">Obrir <span class="fletxa">→</span></span>
+    </a>
+
+    <a class="card" href="fase2.html">
+      <div class="card-top">
+        <span class="codi">FASE 2</span>
+        <span class="tags"><span class="tag pc">PC1</span></span>
+      </div>
+      <h2>Proposta de solució</h2>
+      <p>Coneixem l'entorn de treball, investiguem, comparem alternatives i decidim què mesurarem i com.</p>
+      <span class="obrir">Obrir <span class="fletxa">→</span></span>
+    </a>
+
+    <a class="card" href="fase3.html">
+      <div class="card-top">
+        <span class="codi">FASE 3</span>
+        <span class="tags"><span class="tag pc">PC2</span></span>
+      </div>
+      <h2>Planificació</h2>
+      <p>Convertim la proposta en un pla de treball: què hem de fer, qui ho farà i quan ho farem.</p>
+      <span class="obrir">Obrir <span class="fletxa">→</span></span>
+    </a>
+
+    <a class="card" href="fase4.html">
+      <div class="card-top">
+        <span class="codi">FASE 4</span>
+        <span class="tags"><span class="tag pc">PC3</span></span>
+      </div>
+      <h2>Implementació</h2>
+      <p>Construïm el node, el connectem a la xarxa, visualitzem les dades, creem alertes i ho provem a la zona.</p>
+      <span class="obrir">Obrir <span class="fletxa">→</span></span>
+    </a>
+
+    <a class="card" href="fase5.html">
+      <div class="card-top">
+        <span class="codi">FASE 5</span>
+        
+      </div>
+      <h2>Presentació de resultats</h2>
+      <p>Presentem el projecte en 8 minuts i demostrem que la nostra zona parla: dades en directe i alertes funcionant.</p>
+      <span class="obrir">Obrir <span class="fletxa">→</span></span>
+    </a>
+
+    <a class="card" href="fase6.html">
+      <div class="card-top">
+        <span class="codi">FASE 6</span>
+        
+      </div>
+      <h2>Reflexió i avaluació</h2>
+      <p>Mirem enrere, reflexionem sobre què hem après i tanquem el projecte amb l'autoavaluació i la coavaluació.</p>
+      <span class="obrir">Obrir <span class="fletxa">→</span></span>
+    </a>
+
+  </main>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dossier del projecte · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{--vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;--negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre)}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.12rem);max-width:56ch;margin-top:1rem}
+  .descarrega{display:flex;flex-direction:column;gap:.5rem;align-items:flex-start}
+  .boto{display:inline-flex;align-items:center;gap:.6rem;background:var(--vermell);color:var(--blanc);font-weight:750;text-decoration:none;padding:.9rem 1.3rem;border-radius:10px;font-size:1.02rem;white-space:nowrap}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto svg{width:20px;height:20px}
+  .descarrega small{color:#A9A2A2;font-size:.82rem}
+
+  .passos{margin-top:1.4rem;background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.4rem 1.6rem;display:grid;grid-template-columns:auto 1fr;gap:.4rem 2rem}
+  .passos h2{font-size:1.1rem;font-weight:800;grid-column:1/-1;margin-bottom:.4rem}
+  .passos ol{grid-column:1/-1;list-style:none;counter-reset:p;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+  .passos li{counter-increment:p;font-size:.93rem;color:var(--gris-text)}
+  .passos li::before{content:counter(p);display:block;font-weight:900;font-stretch:80%;font-size:1.6rem;color:var(--vermell);line-height:1.1}
+  .passos b{color:var(--negre)}
+
+  .filtre{display:flex;flex-wrap:wrap;gap:.45rem;margin:2.4rem 0 1.4rem;align-items:center}
+  .filtre span{font-weight:700;font-size:.92rem;margin-right:.4rem}
+  .filtre button{font:inherit;font-size:.86rem;font-weight:650;border:1px solid var(--linia);background:var(--blanc);color:var(--negre);padding:.42rem .8rem;border-radius:8px;cursor:pointer}
+  .filtre button[aria-pressed="true"]{background:var(--negre);color:var(--blanc);border-color:var(--negre)}
+
+  .cos{display:grid;grid-template-columns:240px 1fr;gap:2rem;align-items:start}
+  .index{position:sticky;top:1rem;list-style:none;font-size:.88rem;max-height:calc(100vh - 2rem);overflow:auto}
+  .index a{display:grid;grid-template-columns:1.8rem 1fr;padding:.32rem .5rem;border-radius:6px;text-decoration:none;color:var(--negre)}
+  .index a:hover{background:var(--blanc)}
+  .index a span{font-weight:800;color:var(--vermell)}
+  .index li.amagat{display:none}
+  .index li.grup{font-size:.76rem;font-weight:800;color:var(--vermell);padding:.9rem .5rem .2rem;letter-spacing:.01em}
+  .index li.grup:first-child{padding-top:0}
+  .divisor{display:flex;align-items:center;gap:.8rem;background:var(--vermell);color:var(--blanc);border-radius:12px;padding:.9rem 1.3rem;margin:1.6rem 0 1rem;font-weight:850;font-stretch:86%;font-size:1.35rem}
+  .divisor:first-child{margin-top:0}
+  .divisor span{font-size:.8rem;font-weight:800;background:rgba(255,255,255,.18);padding:.25rem .55rem;border-radius:6px;font-stretch:100%}
+  .divisor.amagat{display:none}
+
+  .apartat{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.8rem 2rem 2rem;margin-bottom:1rem;scroll-margin-top:1rem}
+  .apartat.amagat{display:none}
+  .apartat header{display:flex;align-items:baseline;gap:.8rem;margin-bottom:1.1rem;flex-wrap:wrap}
+  .apartat .num{font-weight:900;font-stretch:80%;font-size:2rem;color:var(--vermell);line-height:1}
+  .apartat h3{font-weight:850;font-stretch:86%;font-size:1.55rem;line-height:1.1;flex:1}
+  .fase-tag{font-size:.78rem;font-weight:700;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.25rem .55rem;border-radius:6px}
+  .apartat h4{font-size:1.05rem;font-weight:750;color:var(--vermell);margin:1.5rem 0 .5rem}
+  .apartat p{max-width:68ch;margin:.5rem 0}
+  .apartat p.q{font-weight:650;margin-top:1rem}
+  .resp{height:1.5rem;border-bottom:1px dashed #CFCAC7;margin-bottom:.3rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-left:4px solid var(--vermell);border-radius:0 8px 8px 0;padding:.75rem 1rem;font-weight:600}
+  .taula{overflow-x:auto;margin:.6rem 0 .4rem}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:420px}
+  th,td{border:1px solid var(--linia);padding:.55rem .75rem;text-align:left}
+  thead th{background:var(--fons);font-weight:700}
+  td{height:2.3rem}
+  table.camps th{background:var(--fons);width:38%;font-weight:650}
+  .checks{display:flex;gap:1.5rem}
+  ul.check{list-style:none}
+  ul.check li{padding:.25rem 0 .25rem 1.8rem;position:relative}
+  ul.check li::before{content:"";position:absolute;left:0;top:.55rem;width:1rem;height:1rem;border:2px solid var(--negre);border-radius:3px}
+  .exemples{list-style:none;display:flex;flex-direction:column;gap:.6rem;margin-top:.4rem}
+  .exemples li{display:grid;grid-template-columns:1fr 1.6fr;gap:1rem;font-size:.93rem}
+  .mal{color:var(--gris-text);text-decoration:line-through;text-decoration-color:var(--vermell)}
+  .be{font-weight:600}
+  .caixa-img{border:2px dashed #CFCAC7;border-radius:10px;height:160px;display:grid;place-items:center;color:var(--gris-text);font-style:italic;margin:.6rem 0}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+  @media (max-width:880px){
+    .hero{grid-template-columns:1fr}
+    .cos{grid-template-columns:1fr}
+    .index{display:none}
+    .passos ol{grid-template-columns:1fr 1fr}
+    .exemples li{grid-template-columns:1fr;gap:.1rem}
+    .apartat{padding:1.4rem 1.2rem}
+  }
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="barra-sup">
+    <a class="tornar" href="index.html">← Tornar a l'índex</a>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <div>
+      <span class="codi">DOSSIER</span>
+      <h1>Dossier del projecte</h1>
+      <p>El document de treball de l'equip. L'anireu completant durant totes les fases i és l'evidència principal del vostre projecte. Aquí en podeu veure el contingut i descarregar-lo.</p>
+    </div>
+    <div class="descarrega">
+      <a class="boto" href="Dossier_Espais_que_parlen.docx" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+        Descarregar el dossier
+      </a>
+      <small>Document de Word (.docx)</small>
+    </div>
+  </header>
+
+  <section class="passos" aria-labelledby="com">
+    <h2 id="com">Com el preparem?</h2>
+    <ol>
+      <li><b>Descarregueu el dossier.</b> Només cal que ho faci una persona de l'equip.</li>
+      <li><b>Pugeu-lo a Google Drive</b> i obriu-lo amb Documents de Google.</li>
+      <li><b>Compartiu-lo</b> amb tots els membres de l'equip i amb el professorat.</li>
+      <li><b>Incrusteu-lo al portafoli</b> de cada alumne, des de Inserir → Documents.</li>
+    </ol>
+  </section>
+
+  <div class="filtre" role="group" aria-label="Filtrar apartats per fase">
+    <span>Mostra:</span>
+    <button type="button" data-f="tot" aria-pressed="true">Tot el dossier</button>
+    <button type="button" data-f="f1" aria-pressed="false">Fase 1</button>
+    <button type="button" data-f="f2" aria-pressed="false">Fase 2</button>
+    <button type="button" data-f="f3" aria-pressed="false">Fase 3</button>
+    <button type="button" data-f="f4" aria-pressed="false">Fase 4</button>
+    <button type="button" data-f="f5" aria-pressed="false">Fase 5</button>
+    <button type="button" data-f="f6" aria-pressed="false">Fase 6</button>
+  </div>
+
+  <div class="cos">
+    <nav aria-label="Apartats del dossier"><ol class="index"><li data-fase="f0"><a href="#ap0"><span>0</span>Dades del projecte</a></li><li class="grup" data-fase="f1">Fase 1 · Presentació del projecte</li><li data-fase="f1"><a href="#ap1"><span>1</span>Acord de treball de l&#x27;equip</a></li><li data-fase="f1"><a href="#ap2"><span>2</span>Context i repte</a></li><li data-fase="f1"><a href="#ap3"><span>3</span>Necessitat detectada</a></li><li class="grup" data-fase="f2">Fase 2 · Proposta de solució</li><li data-fase="f2"><a href="#ap4"><span>4</span>Investigació i fonts d&#x27;informació</a></li><li data-fase="f2"><a href="#ap5"><span>5</span>Proposta de solució</a></li><li data-fase="f2"><a href="#ap6"><span>6</span>Justificació i viabilitat</a></li><li data-fase="f2"><a href="#ap7"><span>7</span>Recursos necessaris</a></li><li class="grup" data-fase="f3">Fase 3 · Planificació</li><li data-fase="f3"><a href="#ap8"><span>8</span>Planificació</a></li><li class="grup" data-fase="f4">Fase 4 · Implementació</li><li data-fase="f4"><a href="#ap9"><span>9</span>Implementació</a></li><li data-fase="f4"><a href="#ap10"><span>10</span>Decisions tècniques</a></li><li data-fase="f4"><a href="#ap11"><span>11</span>Proves i incidències</a></li><li data-fase="f4"><a href="#ap12"><span>12</span>Solucions aplicades</a></li><li data-fase="f4"><a href="#ap13"><span>13</span>Resultats obtinguts</a></li><li class="grup" data-fase="f5">Fase 5 · Presentació de resultats</li><li data-fase="f5"><a href="#ap14"><span>14</span>Presentació i feedback</a></li><li class="grup" data-fase="f6">Fase 6 · Reflexió i avaluació</li><li data-fase="f6"><a href="#ap15"><span>15</span>Valoració final</a></li><li class="grup" data-fase="f0">Tancament</li><li data-fase="f0"><a href="#ap16"><span>16</span>Recordatori final</a></li><li data-fase="f0"><a href="#ap17"><span>17</span>Lliurament del projecte</a></li></ol></nav>
+    <main><article class="apartat" id="ap0" data-fase="f0"><header><span class="num">0</span><h3>Dades del projecte</h3></header><div class="taula"><table class="camps"><tbody><tr><th>Nom de l&#x27;equip</th><td></td></tr><tr><th>Membres de l&#x27;equip</th><td></td></tr><tr><th>Zona assignada</th><td></td></tr><tr><th>Curs</th><td></td></tr><tr><th>Data d&#x27;inici</th><td></td></tr><tr><th>Data de finalització</th><td></td></tr></tbody></table></div></article>
+<div class="divisor" data-fase="f1"><span>Fase 1</span>Presentació del projecte</div><article class="apartat" id="ap1" data-fase="f1"><header><span class="num">1</span><h3>Acord de treball de l&#x27;equip</h3></header><p class="q">Qui som?</p><div class="resp" style="--l:2"></div><p class="q">Què aporta cadascú?</p><div class="resp" style="--l:2"></div><p class="q">Quina és la nostra fortalesa com a equip?</p><div class="resp" style="--l:2"></div><p class="q">Què ens pot costar?</p><div class="resp" style="--l:2"></div><p class="q">Els nostres 3 compromisos de treball</p><div class="resp" style="--l:3"></div><p>Els compromisos han de ser observables i concrets. Per exemple:</p><ul class="exemples"><li><span class="mal">«Treballarem bé.»</span><span class="be">«Respectarem les tasques que ens assignem i avisarem si no podem complir el termini.»</span></li><li><span class="mal">«Participarem.»</span><span class="be">«A les reunions de l&#x27;equip, cadascú explicarà què ha fet i què farà a continuació.»</span></li><li><span class="mal">«Serem responsables.»</span><span class="be">«Si no sabem fer una tasca, ho comunicarem abans de deixar-la aturada.»</span></li></ul><p class="nota">Abans de començar el projecte, tots els membres de l&#x27;equip acceptem aquests compromisos i ens comprometem a respectar-los.</p></article>
+<article class="apartat" id="ap2" data-fase="f1"><header><span class="num">2</span><h3>Context i repte</h3></header><h4>2.1 La zona</h4><p class="q">Quina zona ens ha tocat?</p><div class="resp" style="--l:1"></div><p class="q">On es troba dins de l&#x27;institut?</p><div class="resp" style="--l:1"></div><p class="q">Quines són les seves característiques més rellevants? (mida, ús, horaris, finestres, endolls disponibles...)</p><div class="resp" style="--l:2"></div><h4>2.2 Qui farà servir les dades?</h4><p class="q">Qui utilitza aquesta zona i què hi fa?</p><div class="resp" style="--l:2"></div><p class="q">Qui es beneficiaria de saber què hi passa? (direcció, manteniment, professorat, alumnat...)</p><div class="resp" style="--l:2"></div><h4>2.3 El repte</h4><p class="nota">Com podem utilitzar la tecnologia per conèixer en temps real l&#x27;estat dels espais de l&#x27;institut i ajudar a prendre millors decisions?</p><p class="q">Com interpretem aquest repte a la nostra zona?</p><div class="resp" style="--l:3"></div></article>
+<article class="apartat" id="ap3" data-fase="f1"><header><span class="num">3</span><h3>Necessitat detectada</h3></header><h4>3.1 Què hem observat?</h4><p class="q">Què passa actualment en aquesta zona?</p><div class="resp" style="--l:2"></div><p class="q">Quines situacions o problemes es podrien detectar si tinguéssim dades?</p><div class="resp" style="--l:2"></div><h4>3.2 La nostra necessitat</h4><p class="q">Quina necessitat hem detectat?</p><div class="resp" style="--l:3"></div><h4>3.3 A qui volem ajudar?</h4><p class="q">Qui és el destinatari principal de la informació?</p><div class="resp" style="--l:1"></div><h4>3.4 Què volem aconseguir?</h4><p class="q">Què podrà saber o fer aquesta persona gràcies a les dades?</p><div class="resp" style="--l:2"></div></article>
+<div class="divisor" data-fase="f2"><span>Fase 2</span>Proposta de solució</div><article class="apartat" id="ap4" data-fase="f2"><header><span class="num">4</span><h3>Investigació i fonts d&#x27;informació</h3></header><h4>4.1 Què necessitem saber?</h4><p class="q">Abans de decidir la solució, què necessitem investigar? (3-5 preguntes)</p><div class="resp" style="--l:4"></div><h4>4.2 Què hem investigat?</h4><div class="taula"><table><thead><tr><th>Què hem investigat?</th><th>Què hem descobert?</th><th>Com ens ha ajudat?</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div><h4>4.3 Fonts consultades</h4><div class="taula"><table><thead><tr><th>Font</th><th>Quina informació n&#x27;hem obtingut?</th></tr></thead><tbody><tr><td></td><td></td></tr><tr><td></td><td></td></tr><tr><td></td><td></td></tr></tbody></table></div><p class="nota">No es tracta només d&#x27;indicar enllaços. Cal explicar breument per a què us ha servit la informació.</p></article>
+<article class="apartat" id="ap5" data-fase="f2"><header><span class="num">5</span><h3>Proposta de solució</h3></header><h4>5.1 La nostra idea</h4><p class="q">Expliqueu la solució de monitoratge que proposeu per a la vostra zona.</p><div class="resp" style="--l:3"></div><h4>5.2 Què mesurarem?</h4><div class="taula"><table><thead><tr><th>Què mesurarem?</th><th>Amb quin sensor?</th><th>Per què ho necessitem?</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div><h4>5.3 Com funcionarà?</h4><p class="q">1. Què mesurarà el node i cada quant enviarà les dades?</p><div class="resp" style="--l:2"></div><p class="q">2. On l&#x27;instal·larem i com s&#x27;alimentarà (endoll o bateria)?</p><div class="resp" style="--l:2"></div><p class="q">3. Què es veurà al panell?</p><div class="resp" style="--l:2"></div><p class="q">4. Quan saltarà una alerta i a qui avisarà?</p><div class="resp" style="--l:2"></div><h4>5.4 Què aporta el monitoratge a aquesta zona?</h4><p class="q">Què podrem saber o fer que ara no podem?</p><div class="resp" style="--l:2"></div><h4>5.5 Alternatives</h4><p class="q">Quines altres solucions hem considerat abans de decidir-nos?</p><div class="resp" style="--l:1"></div><div class="taula"><table><thead><tr><th>Alternativa</th><th>Avantatges</th><th>Inconvenients</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div><h4>5.6 Privacitat</h4><p class="q">La nostra solució recull alguna dada de les persones? Com ho evitem?</p><div class="resp" style="--l:2"></div></article>
+<article class="apartat" id="ap6" data-fase="f2"><header><span class="num">6</span><h3>Justificació i viabilitat</h3></header><h4>6.1 Per què aquesta solució?</h4><p class="q">Per què pensem que la proposta respon a la necessitat detectada?</p><div class="resp" style="--l:2"></div><h4>6.2 És viable?</h4><p class="q">Podem desenvolupar-la amb el temps i el material disponibles? Per què?</p><div class="resp" style="--l:2"></div><p class="q">Quines limitacions hem detectat?</p><div class="resp" style="--l:2"></div><h4>6.3 Què volem aconseguir?</h4><p class="q">Indiqueu 3-5 aspectes que ha de complir la solució perquè considerem que funciona bé. Per exemple: «les dades arriben al panell cada 10 minuts» o «l&#x27;alerta salta quan el CO₂ supera el llindar».</p><div class="resp" style="--l:4"></div></article>
+<article class="apartat" id="ap7" data-fase="f2"><header><span class="num">7</span><h3>Recursos necessaris</h3></header><p class="q">Recursos humans: quines persones necessitem?</p><div class="resp" style="--l:2"></div><p class="q">Recursos tècnics: quin maquinari i programari necessitem? Què tenim al kit base i què caldria comprar?</p><div class="resp" style="--l:3"></div><p class="q">Altres recursos (permisos, ubicació, endolls, caixa per al node...)</p><div class="resp" style="--l:2"></div><h4>Disponibilitat</h4><p>Tenim accés als recursos que necessitem?</p><p class="checks"><span>☐ Sí</span><span>☐ Parcialment</span><span>☐ No</span></p><p class="q">Què hem de solucionar?</p><div class="resp" style="--l:2"></div><h4>Pressupost aproximat</h4><div class="taula"><table><thead><tr><th>Recurs</th><th>Quantitat</th><th>Cost unitari</th><th>Cost total</th></tr></thead><tbody><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table></div><p class="q">Cost total estimat: ________ €</p></article>
+<div class="divisor" data-fase="f3"><span>Fase 3</span>Planificació</div><article class="apartat" id="ap8" data-fase="f3"><header><span class="num">8</span><h3>Planificació</h3></header><p>La nostra planificació respon a tres preguntes: QUÈ hem de fer? · QUI ho farà? · QUAN ho farem?</p><div class="taula"><table><thead><tr><th>Tasca</th><th>Responsable</th><th>Quan?</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div><h4>La nostra seqüència de treball</h4><p class="q">Primer...</p><div class="resp" style="--l:1"></div><p class="q">Després...</p><div class="resp" style="--l:1"></div><p class="q">Finalment...</p><div class="resp" style="--l:1"></div><p class="nota">La planificació es podrà modificar durant el projecte si apareixen canvis o problemes.</p></article>
+<div class="divisor" data-fase="f4"><span>Fase 4</span>Implementació</div><article class="apartat" id="ap9" data-fase="f4"><header><span class="num">9</span><h3>Implementació</h3></header><h4>9.1 Què hem construït?</h4><p class="q">Descriviu les parts principals de la solució que heu desenvolupat.</p><div class="resp" style="--l:3"></div><h4>9.2 Fitxa tècnica del node</h4><div class="taula"><table class="camps"><tbody><tr><th>Placa</th><td></td></tr><tr><th>Sensors</th><td></td></tr><tr><th>Connexió dels sensors (pins, I2C...)</th><td></td></tr><tr><th>Alimentació</th><td></td></tr><tr><th>Cada quant envia dades</th><td></td></tr><tr><th>Ubicació a la zona</th><td></td></tr></tbody></table></div><h4>9.3 Esquema de connexions</h4><p>Inseriu un esquema o una fotografia de com heu connectat els sensors a la placa.</p><div class="caixa-img">Esquema o fotografia</div><h4>9.4 Com ho hem fet?</h4><p class="q">Expliqueu breument el procés d&#x27;implementació.</p><div class="resp" style="--l:3"></div><h4>9.5 Evidències</h4><p>Incorporeu només les evidències que ajudin a entendre el procés: fotografies del node, captures del panell, fragments de codi o de configuració...</p><p class="q">Evidència 1</p><div class="resp" style="--l:1"></div><p class="q">Evidència 2</p><div class="resp" style="--l:1"></div></article>
+<article class="apartat" id="ap10" data-fase="f4"><header><span class="num">10</span><h3>Decisions tècniques</h3></header><h4>Decisió 1</h4><p class="q">Què vam decidir?</p><div class="resp" style="--l:1"></div><p class="q">Per què?</p><div class="resp" style="--l:1"></div><h4>Decisió 2</h4><p class="q">Què vam decidir?</p><div class="resp" style="--l:1"></div><p class="q">Per què?</p><div class="resp" style="--l:1"></div><h4>Decisió 3</h4><p class="q">Què vam decidir?</p><div class="resp" style="--l:1"></div><p class="q">Per què?</p><div class="resp" style="--l:1"></div><p class="nota">No cal explicar totes les decisions. Recolliu les que siguin rellevants per al funcionament del projecte.</p></article>
+<article class="apartat" id="ap11" data-fase="f4"><header><span class="num">11</span><h3>Proves i incidències</h3></header><h4>11.1 Què hem provat?</h4><p>Per exemple: el sensor dona lectures correctes, el node s&#x27;uneix a la xarxa, les dades arriben al servidor, el panell les mostra, l&#x27;alerta salta quan toca, hi ha cobertura a la ubicació definitiva...</p><div class="taula"><table><thead><tr><th>Què hem provat?</th><th>Resultat</th><th>Cal fer canvis?</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div><h4>11.2 Quins problemes han aparegut?</h4><div class="taula"><table><thead><tr><th>Problema</th><th>Quan ha aparegut?</th><th>Com ens ha afectat?</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div></article>
+<article class="apartat" id="ap12" data-fase="f4"><header><span class="num">12</span><h3>Solucions aplicades</h3></header><p>Per cada problema important, expliqueu què heu fet.</p><div class="taula"><table><thead><tr><th>Problema</th><th>Solució aplicada</th><th>Resultat</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div><p class="q">Què hem après dels problemes?</p><div class="resp" style="--l:2"></div></article>
+<article class="apartat" id="ap13" data-fase="f4"><header><span class="num">13</span><h3>Resultats obtinguts</h3></header><h4>13.1 Què hem aconseguit?</h4><div class="resp" style="--l:2"></div><h4>13.2 Què funciona?</h4><div class="resp" style="--l:2"></div><h4>13.3 Què no hem pogut aconseguir?</h4><div class="resp" style="--l:2"></div><h4>13.4 Producte final</h4><div class="taula"><table class="camps"><tbody><tr><th>Enllaç al panell de la zona</th><td></td></tr><tr><th>Enllaç al vídeo demostratiu</th><td></td></tr><tr><th>Què es mostra al vídeo?</th><td></td></tr><tr><th>Altres evidències</th><td></td></tr></tbody></table></div></article>
+<div class="divisor" data-fase="f5"><span>Fase 5</span>Presentació de resultats</div><article class="apartat" id="ap14" data-fase="f5"><header><span class="num">14</span><h3>Presentació i feedback</h3></header><h4>14.1 La nostra presentació</h4><div class="taula"><table class="camps"><tbody><tr><th>Enllaç a la presentació</th><td></td></tr><tr><th>Data de la presentació</th><td></td></tr><tr><th>Qui presenta cada part?</th><td></td></tr></tbody></table></div><h4>14.2 Què ens han dit?</h4><p>Recolliu les preguntes, els comentaris i les propostes de millora que heu rebut del professorat, dels companys i dels convidats.</p><div class="taula"><table><thead><tr><th>Comentari o pregunta</th><th>Qui l&#x27;ha fet?</th><th>Què en farem?</th></tr></thead><tbody><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div><h4>14.3 Què millorarem?</h4><p class="q">De tot el feedback rebut, quines millores aplicarem abans de tancar el projecte?</p><div class="resp" style="--l:3"></div><p class="nota">Aquest feedback serà el punt de partida de la reflexió de la Fase 6.</p></article>
+<div class="divisor" data-fase="f6"><span>Fase 6</span>Reflexió i avaluació</div><article class="apartat" id="ap15" data-fase="f6"><header><span class="num">15</span><h3>Valoració final</h3></header><h4>Reflexió individual</h4><p>Cada membre de l&#x27;equip respon individualment.</p><p class="q">Què he après durant el projecte?</p><div class="resp" style="--l:2"></div><p class="q">Què m&#x27;ha costat més?</p><div class="resp" style="--l:2"></div><p class="q">Quina ha estat la meva principal aportació?</p><div class="resp" style="--l:2"></div><p class="q">Què faria diferent si tornéssim a començar?</p><div class="resp" style="--l:2"></div><h4>Reflexió de l&#x27;equip</h4><p class="q">Què ha funcionat bé?</p><div class="resp" style="--l:2"></div><p class="q">Què hauríem de millorar com a equip?</p><div class="resp" style="--l:2"></div><p class="q">Si tinguéssim més temps, què milloraríem del projecte?</p><div class="resp" style="--l:2"></div><p class="nota">Aquesta reflexió no forma part de la qualificació.</p></article>
+<div class="divisor" data-fase="f0"><span>Tancament</span>Abans d'acabar</div><article class="apartat" id="ap16" data-fase="f0"><header><span class="num">16</span><h3>Recordatori final</h3></header><p>Abans de donar el dossier per acabat, comproveu:</p><ul class="check"><li>Hem completat tots els apartats.</li><li>La informació és clara i concreta.</li><li>Les decisions estan justificades.</li><li>La planificació explica què, qui i quan.</li><li>Hem documentat les proves i els problemes.</li><li>Hem explicat les solucions aplicades.</li><li>Les evidències incorporades són útils i rellevants.</li><li>Els enllaços al panell i al vídeo funcionen.</li><li>Tots els membres han completat la seva reflexió individual.</li><li>Cada membre té el dossier incrustat al seu portafoli.</li></ul></article>
+<article class="apartat" id="ap17" data-fase="f0"><header><span class="num">17</span><h3>Lliurament del projecte</h3></header><p>El dossier és un únic document de l&#x27;equip. Cada alumne l&#x27;ha d&#x27;incrustar a la pàgina d&#x27;aquest projecte del seu portafoli de Google Sites, des de Inserir → Documents.</p><p class="nota">Incrusteu el dossier a la Fase 1 i manteniu-lo actualitzat durant tot el projecte.</p></article>
+</main>
+  </div>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+<script>
+  const botons=[...document.querySelectorAll('.filtre button')];
+  botons.forEach(b=>b.addEventListener('click',()=>{
+    const f=b.dataset.f;
+    botons.forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));
+    document.querySelectorAll('[data-fase]').forEach(el=>{
+      el.classList.toggle('amagat', f!=='tot' && el.dataset.fase!==f);
+    });
+  }));
+</script>
+</body>
+</html>

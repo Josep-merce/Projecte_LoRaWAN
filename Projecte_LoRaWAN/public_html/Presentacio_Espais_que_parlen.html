@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espais que parlen · Presentació del projecte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;
+    --vermell-fosc:#8A1F1E;
+    --negre:#252122;
+    --blanc:#FFFFFF;
+    --gris:#EEEDEC;
+    --gris-linia:#D9D6D4;
+    --gris-text:#6B6566;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--negre);overflow:hidden;font-family:var(--font);color:var(--negre)}
+
+  .viewport{position:fixed;inset:0;display:grid;place-items:center}
+  .stage{width:1600px;height:900px;position:relative;transform-origin:center center;flex:none}
+
+  .slide{position:absolute;inset:0;background:var(--blanc);padding:96px 120px 110px;
+    opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s;overflow:hidden}
+  .slide.active{opacity:1;visibility:visible}
+  .slide.fosc{background:var(--negre);color:var(--blanc)}
+
+  /* capçalera i peu comuns */
+  .cicle{position:absolute;top:44px;right:120px;font-size:17px;font-weight:500;letter-spacing:.02em;color:var(--gris-text);text-align:right;line-height:1.3}
+  .fosc .cicle{color:#B9B3B3}
+  .peu{position:absolute;left:120px;right:120px;bottom:44px;display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid var(--gris-linia);padding-top:16px;font-size:16px;color:var(--gris-text)}
+  .peu strong{color:var(--vermell);font-weight:700}
+  .fosc .peu{border-color:#4A4344;color:#B9B3B3}
+
+  h2{font-size:30px;font-weight:700;color:var(--vermell);margin-bottom:28px;letter-spacing:.005em}
+  .gran{font-size:84px;line-height:1.02;font-weight:850;font-stretch:88%;letter-spacing:-.015em}
+  .text{font-size:30px;line-height:1.45;max-width:30ch;color:var(--negre)}
+  .fosc .text{color:#E6E2E2}
+
+  /* PORTADA */
+  .portada{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;padding-top:80px}
+  .portada h1{font-size:176px;line-height:.88;font-weight:900;font-stretch:78%;letter-spacing:-.02em}
+  .portada h1 span{display:block}
+  .portada .sub{margin-top:40px;font-size:30px;font-weight:500;color:#D4CFCF}
+  .portada .sub b{color:var(--blanc);font-weight:700}
+  .logo{position:absolute;left:120px;top:40px;height:56px}
+  .ones{width:100%;height:auto}
+  .ona{fill:none;stroke:var(--vermell);stroke-width:7;stroke-linecap:round;opacity:.15;animation:emet 2.4s ease-in-out infinite}
+  .o2{animation-delay:.3s}.o3{animation-delay:.6s}.o4{animation-delay:.9s}
+  @keyframes emet{0%,100%{opacity:.15}30%{opacity:1}60%{opacity:.15}}
+
+  /* REPTE */
+  .repte{display:flex;flex-direction:column;justify-content:center}
+  .repte .pregunta{font-size:66px;line-height:1.12;font-weight:750;font-stretch:92%;max-width:24ch;letter-spacing:-.01em}
+  .repte .marca{width:120px;height:10px;background:var(--vermell);margin-bottom:48px}
+
+  /* QUÈ FAREM */
+  .flux{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:64px;position:relative}
+  .pas{padding:34px 34px 0 0;border-top:6px solid var(--negre);position:relative}
+  .pas:nth-child(4){border-color:var(--vermell)}
+  .pas .num{font-size:22px;font-weight:700;color:var(--vermell);margin-bottom:14px}
+  .pas h3{font-size:40px;font-weight:800;font-stretch:90%;margin-bottom:12px}
+  .pas p{font-size:23px;line-height:1.4;color:var(--gris-text);max-width:17ch}
+  .pas::after{content:"";position:absolute;top:-15px;right:-2px;width:24px;height:24px;border-top:6px solid var(--negre);border-right:6px solid var(--negre);transform:rotate(45deg);background:transparent}
+  .pas:nth-child(4)::after{display:none}
+
+  /* ZONES */
+  .zones{display:grid;grid-template-columns:.8fr 1.2fr;gap:70px;align-items:center;height:100%}
+  .plano{width:100%;height:auto}
+  .sala{fill:var(--gris);stroke:var(--negre);stroke-width:3}
+  .exterior{fill:none;stroke:var(--negre);stroke-width:3;stroke-dasharray:10 8}
+  .passadis{fill:var(--blanc);stroke:var(--negre);stroke-width:3}
+  .nom{font-family:var(--font);font-size:22px;font-weight:700;fill:var(--negre)}
+  .node{fill:var(--vermell)}
+  .pols{fill:none;stroke:var(--vermell);stroke-width:2.5;animation:pols 2.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+  @keyframes pols{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(1.6)}}
+
+  /* COM HO FAREM */
+  .fases{margin-top:70px;display:flex;flex-direction:column;gap:30px}
+  .fase{display:grid;grid-template-columns:60px 440px 1fr 110px;align-items:center;gap:26px;font-size:34px}
+  .fase .n{font-weight:800;color:var(--vermell);font-size:36px}
+  .fase .nf{font-weight:650}
+  .barra{height:42px;background:var(--gris);position:relative}
+  .barra i{position:absolute;inset:0 auto 0 0;background:var(--negre)}
+  .fase.clau .barra i{background:var(--vermell)}
+  .fase .h{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+  .fase.coixi{color:var(--gris-text)}
+  .fase.coixi .barra i{background:repeating-linear-gradient(135deg,var(--gris-text) 0 6px,transparent 6px 12px)}
+  .total{margin-top:22px;padding-top:18px;border-top:3px solid var(--negre);display:flex;justify-content:space-between;font-size:30px;font-weight:800}
+  .total span:last-child{color:var(--vermell)}
+
+  /* XERRADA */
+  .xerrada{display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;height:100%}
+  .xerrada .mot{font-size:150px;font-weight:900;font-stretch:80%;line-height:.9;color:var(--vermell);letter-spacing:-.02em}
+  .xerrada .def{margin-top:28px;font-size:26px;line-height:1.45;color:#D4CFCF;max-width:28ch}
+  .temes{list-style:none;display:flex;flex-direction:column;gap:26px}
+  .temes li{font-size:32px;line-height:1.3;padding-left:34px;position:relative;color:var(--blanc)}
+  .temes li::before{content:"";position:absolute;left:0;top:.45em;width:14px;height:14px;background:var(--vermell)}
+
+  /* NO CAL SABER-HO TOT */
+  .verbs{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;height:100%}
+  .llista-verbs{list-style:none}
+  .llista-verbs li{font-size:58px;font-weight:800;font-stretch:88%;line-height:1.22;letter-spacing:-.01em}
+  .llista-verbs li:nth-child(3){color:var(--vermell)}
+  .verbs .text{font-size:28px}
+
+  /* EQUIP */
+  .equip{display:flex;flex-direction:column;justify-content:center;height:100%}
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:60px}
+  .dues p{font-size:40px;line-height:1.28;font-weight:650;padding:40px 60px 40px 0}
+  .dues p + p{border-left:6px solid var(--vermell);padding-left:60px}
+
+  /* FINAL */
+  .final{display:flex;flex-direction:column;justify-content:center;height:100%}
+  .final h2{color:#E06A69}
+  .final .gran{font-size:120px;font-stretch:82%;max-width:14ch}
+
+  /* navegació */
+  .nav{position:fixed;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:10px;z-index:10;pointer-events:none}
+  .nav button{pointer-events:auto;width:12px;height:12px;border-radius:50%;border:0;background:#6B6566;cursor:pointer;padding:0}
+  .nav button[aria-current="true"]{background:var(--vermell)}
+  .nav button:focus-visible,.fletxa:focus-visible{outline:3px solid #fff;outline-offset:3px}
+  .fletxa{position:fixed;top:50%;transform:translateY(-50%);z-index:10;width:48px;height:48px;border:0;background:rgba(37,33,34,.55);color:#fff;font-size:26px;cursor:pointer;opacity:0;transition:opacity .2s}
+  .viewport:hover ~ .fletxa,.fletxa:hover,.fletxa:focus-visible{opacity:1}
+  .fletxa.ant{left:12px}.fletxa.seg{right:12px}
+  .ajuda{position:fixed;bottom:12px;left:14px;transition:opacity .4s;font:13px var(--font);color:#8C8586;z-index:10}
+
+  @media (prefers-reduced-motion: reduce){
+    .ona,.pols{animation:none}
+    .o1{opacity:1}.o2{opacity:.75}.o3{opacity:.5}.o4{opacity:.3}
+    .pols{opacity:.5}
+    .slide{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="viewport" id="viewport">
+<div class="stage" id="stage">
+
+  <!-- 1 · PORTADA -->
+  <section class="slide fosc active" aria-label="Portada">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <div class="portada">
+      <div>
+        <h1><span>Espais</span><span>que</span><span>parlen</span></h1>
+        <p class="sub"><b>1713</b> · Projecte intermodular</p>
+      </div>
+      <svg class="ones" viewBox="0 0 400 560" aria-hidden="true">
+        <circle cx="120" cy="280" r="34" fill="#BC2C2B"/>
+        <circle cx="120" cy="280" r="12" fill="#252122"/>
+        <path class="ona o1" d="M177.9 211.1 A90 90 0 0 1 177.9 348.9"/>
+        <path class="ona o2" d="M216.4 165.1 A150 150 0 0 1 216.4 394.9"/>
+        <path class="ona o3" d="M255 119.1 A210 210 0 0 1 255 440.9"/>
+        <path class="ona o4" d="M293.6 73.2 A270 270 0 0 1 293.6 486.8"/>
+      </svg>
+    </div>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </section>
+
+  <!-- 2 · EL REPTE -->
+  <section class="slide" aria-label="El repte">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <div class="repte" style="height:100%">
+      <div class="marca"></div>
+      <h2>El repte</h2>
+      <p class="pregunta">Com podem utilitzar la tecnologia per conèixer en temps real l'estat dels espais de l'institut i ajudar a prendre millors decisions?</p>
+    </div>
+    <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
+  </section>
+
+  <!-- 3 · QUÈ FAREM -->
+  <section class="slide" aria-label="Què farem">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <h2>Què farem?</h2>
+    <p class="gran" style="max-width:21ch">Un sistema que permeti saber què passa en una zona de l'institut.</p>
+    <div class="flux">
+      <div class="pas"><div class="num">1</div><h3>Mesurar</h3><p>Sensors que recullen dades de la zona.</p></div>
+      <div class="pas"><div class="num">2</div><h3>Enviar</h3><p>Una xarxa sense fils LoRaWAN que les transmet.</p></div>
+      <div class="pas"><div class="num">3</div><h3>Rebre</h3><p>Un servidor que les recull i les guarda.</p></div>
+      <div class="pas"><div class="num">4</div><h3>Mostrar i avisar</h3><p>Un panell per consultar-les i alertes quan cal actuar.</p></div>
+    </div>
+    <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
+  </section>
+
+  <!-- 4 · ZONES -->
+  <section class="slide" aria-label="Les zones">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <div class="zones">
+      <div>
+        <h2>Set zones, set equips</h2>
+        <p class="gran" style="font-size:72px">Cada equip s'encarrega d'una zona.</p>
+        <p class="text" style="margin-top:34px;font-size:27px;color:var(--gris-text)">Què cal mesurar i com fer-ho ho decidireu vosaltres.</p>
+      </div>
+      <svg class="plano" viewBox="0 0 900 600" role="img" aria-label="Plànol esquemàtic de l'institut amb set zones">
+        <rect class="exterior" x="10" y="10" width="880" height="110"/>
+        <text class="nom" x="36" y="74">Pati o teulada</text>
+        <circle class="node" cx="840" cy="65" r="9"/><circle class="pols" cx="840" cy="65" r="22"/>
+
+        <rect class="sala" x="10" y="150" width="400" height="190"/>
+        <text class="nom" x="36" y="200">Aules</text>
+        <circle class="node" cx="370" cy="300" r="9"/><circle class="pols" cx="370" cy="300" r="22" style="animation-delay:.4s"/>
+
+        <rect class="sala" x="430" y="150" width="260" height="190"/>
+        <text class="nom" x="456" y="200">Biblioteca</text>
+        <circle class="node" cx="650" cy="300" r="9"/><circle class="pols" cx="650" cy="300" r="22" style="animation-delay:.8s"/>
+
+        <rect class="sala" x="710" y="150" width="180" height="190"/>
+        <text class="nom" x="732" y="200">Sala de</text>
+        <text class="nom" x="732" y="228">servidors</text>
+        <circle class="node" cx="850" cy="300" r="9"/><circle class="pols" cx="850" cy="300" r="22" style="animation-delay:1.2s"/>
+
+        <rect class="passadis" x="10" y="340" width="880" height="70"/>
+        <text class="nom" x="36" y="384">Passadissos i entrades</text>
+        <circle class="node" cx="850" cy="375" r="9"/><circle class="pols" cx="850" cy="375" r="22" style="animation-delay:1.6s"/>
+
+        <rect class="sala" x="10" y="410" width="500" height="180"/>
+        <text class="nom" x="36" y="460">Tallers i laboratoris</text>
+        <circle class="node" cx="470" cy="550" r="9"/><circle class="pols" cx="470" cy="550" r="22" style="animation-delay:2s"/>
+
+        <rect class="sala" x="530" y="410" width="360" height="180"/>
+        <text class="nom" x="556" y="460">Bar</text>
+        <circle class="node" cx="850" cy="550" r="9"/><circle class="pols" cx="850" cy="550" r="22" style="animation-delay:2.4s"/>
+      </svg>
+    </div>
+    <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
+  </section>
+
+  <!-- 5 · COM HO FAREM -->
+  <section class="slide" aria-label="Com ho farem">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <h2>Com ho farem?</h2>
+    <div class="fases">
+      <div class="fase"><span class="n">1</span><span class="nf">Presentació</span><span class="barra"><i style="width:31.6%"></i></span><span class="h">6 h</span></div>
+      <div class="fase"><span class="n">2</span><span class="nf">Proposta de solució</span><span class="barra"><i style="width:47.4%"></i></span><span class="h">9 h</span></div>
+      <div class="fase"><span class="n">3</span><span class="nf">Planificació</span><span class="barra"><i style="width:10.5%"></i></span><span class="h">2 h</span></div>
+      <div class="fase clau"><span class="n">4</span><span class="nf">Implementació</span><span class="barra"><i style="width:100%"></i></span><span class="h">19 h</span></div>
+      <div class="fase"><span class="n">5</span><span class="nf">Presentació de resultats</span><span class="barra"><i style="width:21%"></i></span><span class="h">4 h</span></div>
+      <div class="fase"><span class="n">6</span><span class="nf">Reflexió i avaluació</span><span class="barra"><i style="width:10.5%"></i></span><span class="h">2 h</span></div>
+    </div>
+    <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
+  </section>
+
+  <!-- 6 · XERRADA -->
+  <section class="slide fosc" aria-label="Xerrada d'empresa">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <div class="xerrada">
+      <div>
+        <h2 style="color:#E06A69">Coneixerem la tecnologia de primera mà</h2>
+        <p class="mot">LoRaWAN</p>
+        <p class="def">Una xarxa sense fils de llarg abast i molt baix consum, pensada perquè petits sensors enviïn dades durant anys.</p>
+      </div>
+      <div>
+        <p class="text" style="font-size:30px;margin-bottom:40px;color:#fff;font-weight:650">Una empresa del sector vindrà a explicar-nos:</p>
+        <ul class="temes">
+          <li>Què és i com funciona</li>
+          <li>On s'utilitza avui dia</li>
+          <li>Exemples reals de monitoratge</li>
+          <li>Com és treballar en projectes d'IoT</li>
+        </ul>
+      </div>
+    </div>
+    <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
+  </section>
+
+  <!-- 7 · NO CAL SABER-HO TOT -->
+  <section class="slide" aria-label="No cal saber-ho tot">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <div class="verbs">
+      <div>
+        <h2>No cal saber-ho tot</h2>
+        <p class="gran" style="font-size:76px">Ningú no espera que ho sapigueu fer des del primer dia.</p>
+      </div>
+      <ul class="llista-verbs">
+        <li>Investigareu.</li>
+        <li>Provareu.</li>
+        <li>Us equivocareu.</li>
+        <li>Buscareu solucions.</li>
+        <li>Millorareu.</li>
+      </ul>
+    </div>
+    <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
+  </section>
+
+  <!-- 8 · TREBALLAREM EN EQUIP -->
+  <section class="slide" aria-label="Treballarem en equip">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <div class="equip">
+      <h2>Treballarem en equip</h2>
+      <p class="gran">Una bona idea no és suficient.</p>
+      <div class="dues">
+        <p>Haureu de decidir, organitzar-vos, construir i demostrar que funciona.</p>
+        <p>Cada zona és una peça. Entre tots, l'institut sencer parlarà.</p>
+      </div>
+    </div>
+    <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
+  </section>
+
+  <!-- 9 · LA PREGUNTA FINAL -->
+  <section class="slide fosc" aria-label="La pregunta final">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <div class="final">
+      <h2>La pregunta final</h2>
+      <p class="gran">Què ens explicaran els nostres espais?</p>
+    </div>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </section>
+
+</div>
+</div>
+
+<button class="fletxa ant" id="ant" aria-label="Diapositiva anterior">‹</button>
+<button class="fletxa seg" id="seg" aria-label="Diapositiva següent">›</button>
+<nav class="nav" id="nav" aria-label="Diapositives"></nav>
+<div class="ajuda">← → per navegar · F pantalla completa</div>
+
+<script>
+(function(){
+  const stage=document.getElementById('stage');
+  const slides=[...stage.querySelectorAll('.slide')];
+  const nav=document.getElementById('nav');
+  let actual=0;
+
+  function escala(){
+    const s=Math.min(window.innerWidth/1600,window.innerHeight/900);
+    stage.style.transform='scale('+s+')';
+  }
+  window.addEventListener('resize',escala); escala();
+
+  slides.forEach((sl,i)=>{
+    const b=document.createElement('button');
+    b.setAttribute('aria-label','Diapositiva '+(i+1)+': '+sl.getAttribute('aria-label'));
+    b.addEventListener('click',()=>mostra(i));
+    nav.appendChild(b);
+  });
+
+  function mostra(i){
+    actual=Math.max(0,Math.min(slides.length-1,i));
+    slides.forEach((sl,j)=>sl.classList.toggle('active',j===actual));
+    [...nav.children].forEach((b,j)=>b.setAttribute('aria-current',j===actual?'true':'false'));
+    if(i!==0)document.querySelector('.ajuda').style.opacity=0;
+    try{history.replaceState(null,'','#'+(actual+1));}catch(e){}
+  }
+
+  document.getElementById('ant').addEventListener('click',()=>mostra(actual-1));
+  document.getElementById('seg').addEventListener('click',()=>mostra(actual+1));
+
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();mostra(actual+1);}
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();mostra(actual-1);}
+    else if(e.key==='Home'){mostra(0);}
+    else if(e.key==='End'){mostra(slides.length-1);}
+    else if(e.key==='f'||e.key==='F'){
+      if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+      else{document.exitFullscreen&&document.exitFullscreen();}
+    }
+  });
+
+  let x0=null;
+  document.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(x0===null)return; const dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>50) mostra(actual+(dx<0?1:-1)); x0=null;
+  });
+
+  const inici=parseInt(location.hash.slice(1),10);
+  mostra(isNaN(inici)?0:inici-1);
+})();
+</script>
+</body>
+</html>
