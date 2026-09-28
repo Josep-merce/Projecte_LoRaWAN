@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Píndola formativa · Com funciona un sistema IoT · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+
+  /* activitats */
+  .temps{display:grid;grid-template-columns:1fr auto;max-width:640px;border:1px solid var(--linia);border-radius:12px;background:var(--blanc);overflow:hidden}
+  .temps div{padding:.65rem 1rem;border-bottom:1px solid var(--linia)}
+  .temps div:nth-child(even){text-align:right;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .temps .tot{background:var(--negre);color:var(--blanc);font-weight:800;border-bottom:0}
+  .temps .pind{color:var(--vermell-fosc);background:var(--vermell-suau)}
+  .activitat{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:clamp(1.3rem,3vw,2rem);scroll-margin-top:1rem}
+  .activitat + .activitat{margin-top:1rem}
+  .act-cap{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
+  .act-num{font-weight:800;font-size:.8rem;background:var(--negre);color:var(--blanc);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dur{font-weight:700;font-size:.8rem;background:var(--fons);color:var(--gris-text);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dos{font-weight:700;font-size:.8rem;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.3rem .6rem;border-radius:6px;text-decoration:none;white-space:nowrap}
+  .act-dos:hover{background:var(--vermell);color:var(--blanc)}
+  .activitat h3{font-weight:850;font-stretch:86%;font-size:clamp(1.35rem,2.4vw,1.7rem);line-height:1.1;margin:0 0 .6rem}
+  .activitat h4{font-size:1rem;font-weight:750;margin:1.3rem 0 .45rem;color:var(--vermell)}
+  .activitat p{max-width:68ch;margin-top:.5rem}
+  .activitat.pindola{border:2px solid var(--vermell);background:linear-gradient(var(--blanc),var(--blanc))}
+  .activitat.pindola .act-num{background:var(--vermell)}
+  .passos-l{list-style:none;counter-reset:ps;margin-top:.4rem;max-width:70ch}
+  .passos-l li{counter-increment:ps;position:relative;padding:.5rem 0 .5rem 2.6rem;border-top:1px solid var(--linia)}
+  .passos-l li:first-child{border-top:0}
+  .passos-l li::before{content:counter(ps);position:absolute;left:0;top:.45rem;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--negre);color:var(--blanc);font-weight:800;font-size:.85rem;display:grid;place-items:center}
+  .pistes{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.45rem 2rem;max-width:70ch;margin-top:.3rem}
+  .pistes li{padding-left:1.3rem;position:relative}
+  .pistes li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+  .clau{margin-top:1.1rem;background:var(--negre);color:var(--blanc);border-radius:10px;padding:1rem 1.2rem;font-weight:750;font-size:1.1rem;max-width:62ch}
+  .clau small{display:block;font-weight:600;color:#E06A69;font-size:.78rem;letter-spacing:.02em;margin-bottom:.2rem}
+  .evid{margin-top:1rem;border-left:4px solid var(--vermell);padding:.2rem 0 .2rem 1rem;max-width:66ch}
+  .evid b{display:block;font-size:.85rem;color:var(--vermell)}
+  .exemple{color:var(--gris-text);font-style:italic}
+  .check-l{list-style:none;max-width:60ch}
+  .check-l label{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-top:1px solid var(--linia);cursor:pointer}
+  .check-l li:first-child label{border-top:0}
+  .check-l input{width:1.15rem;height:1.15rem;margin-top:.2rem;accent-color:var(--vermell);flex:none}
+  .no-l{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem}
+  .no-l li{background:var(--blanc);border:1px dashed #BDB6B4;border-radius:8px;padding:.4rem .8rem;color:var(--gris-text);text-decoration:line-through;text-decoration-color:var(--vermell)}
+  .seguent{display:flex;justify-content:space-between;gap:1rem;margin-top:clamp(2rem,5vw,3rem);flex-wrap:wrap}
+  .seguent a{flex:1;min-width:220px;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.2rem;text-decoration:none;color:var(--negre)}
+  .seguent a:hover{border-color:var(--vermell)}
+  .seguent small{display:block;color:var(--gris-text);font-weight:600;font-size:.8rem}
+  .seguent b{font-size:1.05rem}
+  .seguent a.nx{text-align:right}
+  @media (max-width:880px){.pistes{grid-template-columns:1fr}}
+
+  .video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* índex de píndoles */
+  .pind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
+  .pind-card{display:flex;flex-direction:column;gap:.35rem;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;color:var(--negre);transition:border-color .2s,transform .2s}
+  .pind-card:hover{border-color:var(--vermell);transform:translateY(-2px)}
+  .pind-card .meta{display:flex;gap:.4rem;flex-wrap:wrap}
+  .pind-card .f{font-size:.72rem;font-weight:800;background:var(--negre);color:var(--blanc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card .est{font-size:.72rem;font-weight:700;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card b{font-size:1.02rem;line-height:1.25}
+  .pind-card span.d{font-size:.88rem;color:var(--gris-text)}
+  .pind-card.disabled{opacity:.55;pointer-events:none;background:#FAFAF9}
+  .pind-card.disabled .f{background:#A39C9D}
+  .pind-card.disabled .est{background:var(--fons);color:var(--gris-text)}
+
+  /* capçalera de píndola */
+  .pind-hero{background:var(--vermell);color:var(--blanc);border-radius:14px;padding:clamp(1.4rem,3vw,2.2rem);margin-top:clamp(2.5rem,6vw,4rem);scroll-margin-top:1rem}
+  .pind-hero small{font-weight:800;font-size:.8rem;background:rgba(0,0,0,.18);padding:.28rem .6rem;border-radius:6px}
+  .pind-hero h2{font-weight:900;font-stretch:82%;font-size:clamp(2rem,5vw,3.2rem);line-height:1;margin-top:.8rem;letter-spacing:-.015em}
+  .pind-hero p{margin-top:.8rem;max-width:60ch;color:#FBE9E9}
+
+  /* recorregut de la dada */
+  .viatge{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .etapes{list-style:none;display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;position:relative}
+  .etapes li{text-align:center;padding:.8rem .3rem;border-radius:10px;border:2px solid var(--linia);background:var(--fons);font-weight:700;font-size:.85rem;line-height:1.2;transition:all .25s;cursor:pointer}
+  .etapes li svg{display:block;width:34px;height:34px;margin:0 auto .45rem;stroke:var(--gris-text);transition:stroke .25s}
+  .etapes li.feta{border-color:var(--negre);background:var(--blanc)}
+  .etapes li.feta svg{stroke:var(--negre)}
+  .etapes li.actual{border-color:var(--vermell);background:var(--vermell);color:var(--blanc)}
+  .etapes li.actual svg{stroke:var(--blanc)}
+  .explica{margin-top:1rem;min-height:7.5rem;background:var(--fons);border-radius:10px;padding:1rem 1.2rem}
+  .explica b{display:block;color:var(--vermell);font-size:.8rem;letter-spacing:.02em}
+  .explica h4{margin:.15rem 0 .35rem;font-size:1.15rem}
+  .explica .dada{display:inline-block;margin-top:.5rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;background:var(--negre);color:#fff;padding:.3rem .6rem;border-radius:6px}
+  .ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:.9rem;gap:.6rem}
+  .ctrl button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .ctrl button.pri{background:var(--vermell)}
+  .ctrl button:disabled{opacity:.35;cursor:default}
+  .ctrl span{font-size:.85rem;color:var(--gris-text);font-weight:600}
+
+  /* peces */
+  .peces{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .peca{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem;border-top:4px solid var(--negre)}
+  .peca:last-child{border-top-color:var(--vermell)}
+  .peca h3{margin:0 0 .4rem !important;font-size:1.2rem}
+  .peca p{color:var(--gris-text);margin-top:.35rem;font-size:.95rem}
+  .peca ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text);font-size:.93rem}
+
+  /* test */
+  .test{counter-reset:t;list-style:none;display:flex;flex-direction:column;gap:1rem}
+  .test > li{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;counter-increment:t}
+  .test > li > p{font-weight:700;margin:0 0 .6rem}
+  .test > li > p::before{content:counter(t) ". ";color:var(--vermell)}
+  .opcions{display:flex;flex-direction:column;gap:.4rem}
+  .opcions button{font:inherit;text-align:left;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.55rem .8rem;cursor:pointer;color:var(--negre)}
+  .opcions button:hover{border-color:var(--linia)}
+  .opcions button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .opcions button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .resposta{margin-top:.6rem;font-size:.92rem;color:var(--gris-text);display:none}
+  .resposta.vista{display:block}
+  @media (max-width:880px){
+    .pind-grid,.peces{grid-template-columns:1fr}
+    .etapes{grid-template-columns:repeat(3,1fr)}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <a class="tornar" href="fase1.html#p1">← Tornar a la Fase 1</a>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero" id="iot">
+    <span class="codi">PÍNDOLA FORMATIVA · FASE 1</span>
+    <h1>Com funciona un sistema IoT?</h1>
+    <p>Després d'aquesta píndola sabreu quines peces formen el sistema que construireu i com viatja una dada des del sensor fins a la pantalla.</p>
+  </header>
+
+  <main>
+
+
+
+    <section id="iot-que">
+      <h2>Què és l'IoT?</h2>
+      <div class="cos">
+        <p><strong>IoT</strong> vol dir <em>Internet of Things</em>, en català <strong>Internet de les coses</strong>. Són objectes que <strong>mesuren</strong> alguna cosa del seu entorn i <strong>envien</strong> aquesta informació perquè la puguem consultar des de qualsevol lloc.</p>
+        <p>Un termòmetre normal només us diu la temperatura si el mireu. Un termòmetre IoT l'envia cada pocs minuts a un servidor, on queda guardada, es pot veure en un gràfic i, si cal, us avisa.</p>
+        <p class="destacat">Un sistema IoT converteix el que passa en un espai en dades que es poden consultar i fer servir per decidir.</p>
+      </div>
+    </section>
+
+    <section id="iot-video">
+      <h2>Mireu el vídeo</h2>
+      <div class="cos">
+        <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/y0ekdCDR_g8?start=61" title="Vídeo de la píndola formativa" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+        <p>Si el vídeo no es carrega, obriu-lo directament a <a href="https://www.youtube.com/watch?v=y0ekdCDR_g8&amp;t=61s" target="_blank" rel="noopener">YouTube</a>.</p>
+      </div>
+    </section>
+
+    <section id="iot-viatge">
+      <h2>El viatge d'una dada</h2>
+      <div class="cos">
+        <p>Seguim una dada real pas a pas. Imagineu que a una aula hi ha un sensor que mesura el CO₂, el gas que indica si l'aire està carregat.</p>
+        <div class="viatge">
+          <ol class="etapes" id="etapes">
+            <li data-i="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0z"/><path d="M12 17v-4"/></svg> Sensor</li>
+            <li data-i="1"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4"/></svg> Node</li>
+            <li data-i="2"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg> Ràdio</li>
+            <li data-i="3"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v12M8 22h8"/><circle cx="12" cy="8" r="2"/><path d="M8.5 4.5a5 5 0 0 0 0 7M15.5 4.5a5 5 0 0 1 0 7"/></svg> Gateway</li>
+            <li data-i="4"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="7" rx="1.5"/><rect x="3" y="14" width="18" height="7" rx="1.5"/><path d="M7 6.5h.01M7 17.5h.01"/></svg> Servidor</li>
+            <li data-i="5"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M6 13l3-3 3 2 5-5"/></svg> Panell</li>
+          </ol>
+          <div class="explica" id="explica" aria-live="polite"></div>
+          <div class="ctrl">
+            <button type="button" id="ant">← Anterior</button>
+            <span id="comptador"></span>
+            <button type="button" class="pri" id="seg">Següent →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="iot-peces">
+      <h2>Les quatre peces</h2>
+      <div class="cos">
+        <p>Tots els sistemes del projecte, de qualsevol zona, estan formats per aquestes quatre peces:</p>
+        <div class="peces">
+          <div class="peca"><h3>1 · El node</h3><p>És el dispositiu que col·locareu a la zona. Està format per:</p><ul><li>una <strong>placa</strong> (un petit ordinador que executa un programa);</li><li>un o diversos <strong>sensors</strong>;</li><li>una <strong>ràdio LoRa</strong> per enviar les dades;</li><li>una <strong>alimentació</strong>: endoll o bateria.</li></ul></div>
+          <div class="peca"><h3>2 · El gateway</h3><p>És una antena que escolta els missatges de tots els nodes que té a l'abast i els reenvia al servidor per Internet.</p><p>Un sol gateway pot donar servei a molts nodes. A l'institut, amb un de sol n'hi pot haver prou per a totes les zones.</p></div>
+          <div class="peca"><h3>3 · El servidor</h3><p>Rep els missatges dels gateways, comprova de quin node venen, els descodifica i guarda les dades en una base de dades.</p><p>També sap quins nodes estan registrats a la xarxa: un node que no hi estigui donat d'alta no hi pot enviar res.</p></div>
+          <div class="peca"><h3>4 · El panell</h3><p>És la part que veuen les persones: gràfics i indicadors amb les dades de cada zona.</p><p>A més, pot enviar <strong>alertes</strong> automàtiques quan una dada supera un límit, per exemple un missatge al mòbil.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="iot-lorawan">
+      <h2>Per què LoRaWAN?</h2>
+      <div class="cos">
+        <p><strong>LoRaWAN</strong> és una manera de comunicar-se per ràdio pensada per a sensors. <strong>LoRa</strong> ve de <em>Long Range</em> (llarg abast) i <strong>WAN</strong> de <em>Wide Area Network</em> (xarxa d'àrea extensa).</p>
+        <p>Els sensors no necessiten enviar gaires dades, però sí fer-ho des de llocs on potser no arriba el wifi i sense haver de canviar la bateria cada setmana. Comparem-lo amb altres tecnologies que ja coneixeu:</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Tecnologia</th><th>Abast</th><th>Consum</th><th>Quantitat de dades</th><th>Ús típic</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Wifi</strong></td><td>Desenes de metres</td><td>Alt</td><td>Moltes</td><td>Ordinadors, mòbils, vídeo</td></tr>
+              <tr><td><strong>Bluetooth</strong></td><td>Pocs metres</td><td>Baix</td><td>Poques o mitjanes</td><td>Auriculars, rellotges</td></tr>
+              <tr><td><strong>Xarxa mòbil (4G/5G)</strong></td><td>Quilòmetres</td><td>Alt</td><td>Moltes</td><td>Mòbils; necessita targeta SIM</td></tr>
+              <tr><td><strong>LoRaWAN</strong></td><td>Fins a diversos quilòmetres</td><td>Molt baix</td><td>Molt poques</td><td>Sensors que envien dades de tant en tant</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>El que heu de recordar</h3>
+        <ul class="punts">
+          <li><strong>Arriba lluny:</strong> travessa parets i pisos d'un edifici.</li>
+          <li><strong>Consumeix molt poc:</strong> un node pot funcionar mesos o anys amb piles.</li>
+          <li><strong>Missatges petits:</strong> números, no fotos ni vídeos.</li>
+          <li><strong>No és continu:</strong> el node envia cada cert temps, no a cada segon.</li>
+        </ul>
+
+      </div>
+    </section>
+
+
+
+    <section id="iot-test">
+      <h2>Comproveu-ho</h2>
+      <div class="cos">
+        <p>Responeu en equip. Si us equivoqueu, llegiu l'explicació i torneu-ho a provar.</p>
+        <ol class="test" id="test">
+          <li data-ok="1"><p>Quina peça rep els missatges per ràdio dels nodes?</p><div class="opcions"><button type="button">El sensor</button><button type="button">El gateway</button><button type="button">El panell</button></div><div class="resposta">El gateway és l'antena que escolta els nodes i reenvia els missatges al servidor.</div></li>
+          <li data-ok="2"><p>Per què fem servir LoRaWAN i no wifi per als sensors?</p><div class="opcions"><button type="button">Perquè envia més dades</button><button type="button">Perquè és més ràpid</button><button type="button">Perquè arriba més lluny i consumeix molt menys</button></div><div class="resposta">Els sensors envien poques dades, però han d'arribar lluny i gastar poca bateria. Això és el que ofereix LoRaWAN.</div></li>
+          <li data-ok="0"><p>Un node pot enviar una fotografia de l'aula pel sistema?</p><div class="opcions"><button type="button">No, els missatges són massa petits</button><button type="button">Sí, sense cap problema</button><button type="button">Només si té bateria</button></div><div class="resposta">LoRaWAN està pensat per a missatges molt petits: uns quants números, no imatges. I així, a més, no es recullen dades de les persones.</div></li>
+          <li data-ok="1"><p>On es guarden les dades que envia el node?</p><div class="opcions"><button type="button">Al gateway</button><button type="button">Al servidor</button><button type="button">Al sensor</button></div><div class="resposta">El gateway només les reenvia. És el servidor qui les descodifica i les guarda perquè el panell les pugui mostrar.</div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="iot-fi">
+      <h2>I ara què?</h2>
+      <div class="cos">
+        <p>Ja sabeu com funciona el sistema. Però aquesta píndola <strong>no us diu què heu de mesurar a la vostra zona</strong>: aquesta decisió és de l'equip.</p>
+        <p class="destacat">Quan observeu la vostra zona, penseu: quina informació seria útil que viatgés fins al panell?</p>
+        <div class="botons"><a class="boto" href="fase1.html#a3">Tornar a la Fase 1</a></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+
+<script>
+(function(){
+  const E=[
+    {t:"El sensor mesura",d:"El sensor de CO₂ de l'aula fa una mesura. En aquest moment, l'aire té una concentració elevada.",x:"CO₂ = 1.250 ppm"},
+    {t:"El node prepara el missatge",d:"La placa llegeix el valor del sensor i el converteix en un missatge molt petit, de pocs bytes, amb la seva identificació.",x:"node aula-3 · CO₂ 1250"},
+    {t:"El missatge viatja per ràdio",d:"El node envia el missatge per ràdio amb LoRaWAN. No cal wifi: el senyal travessa parets i pisos. Després, el node torna a dormir per estalviar bateria.",x:"ràdio LoRa · 868 MHz"},
+    {t:"El gateway el rep",d:"L'antena de l'institut capta el missatge i el reenvia al servidor per Internet. No sap què diu: només fa de pont.",x:"reenviant al servidor…"},
+    {t:"El servidor el descodifica i el guarda",d:"El servidor comprova que el node està registrat, descodifica el missatge i guarda la dada amb la data i l'hora.",x:"14:05 · aula 3 · 1250 ppm"},
+    {t:"El panell el mostra i avisa",d:"El gràfic de l'aula s'actualitza. Com que el valor supera el llindar que heu definit, s'envia una alerta.",x:"⚠ Aula 3: cal ventilar"}
+  ];
+  let i=0;
+  const lis=[...document.querySelectorAll('#etapes li')],ex=document.getElementById('explica'),
+        a=document.getElementById('ant'),s=document.getElementById('seg'),c=document.getElementById('comptador');
+  function pinta(){
+    lis.forEach((l,k)=>{l.classList.toggle('actual',k===i);l.classList.toggle('feta',k<i);});
+    ex.innerHTML='<b>PAS '+(i+1)+'</b><h4>'+E[i].t+'</h4><p>'+E[i].d+'</p><span class="dada">'+E[i].x+'</span>';
+    a.disabled=i===0; s.disabled=i===E.length-1; c.textContent=(i+1)+' de '+E.length;
+  }
+  a.onclick=()=>{if(i>0){i--;pinta();}}; s.onclick=()=>{if(i<E.length-1){i++;pinta();}};
+  lis.forEach((l,k)=>l.addEventListener('click',()=>{i=k;pinta();}));
+  pinta();
+
+  document.querySelectorAll('#test > li').forEach(q=>{
+    const ok=+q.dataset.ok, bs=[...q.querySelectorAll('.opcions button')], r=q.querySelector('.resposta');
+    bs.forEach((b,k)=>b.addEventListener('click',()=>{
+      bs.forEach(x=>x.classList.remove('be','mal'));
+      b.classList.add(k===ok?'be':'mal');
+      r.textContent=(k===ok?'Correcte! ':'No és aquesta. ')+r.dataset.t;
+      r.classList.add('vista');
+    }));
+    r.dataset.t=r.textContent;
+  });
+})();
+</script>
+</body>
+</html>
