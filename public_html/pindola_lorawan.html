@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Píndola formativa · LoRaWAN a la pràctica · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+
+  /* activitats */
+  .temps{display:grid;grid-template-columns:1fr auto;max-width:640px;border:1px solid var(--linia);border-radius:12px;background:var(--blanc);overflow:hidden}
+  .temps div{padding:.65rem 1rem;border-bottom:1px solid var(--linia)}
+  .temps div:nth-child(even){text-align:right;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .temps .tot{background:var(--negre);color:var(--blanc);font-weight:800;border-bottom:0}
+  .temps .pind{color:var(--vermell-fosc);background:var(--vermell-suau)}
+  .activitat{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:clamp(1.3rem,3vw,2rem);scroll-margin-top:1rem}
+  .activitat + .activitat{margin-top:1rem}
+  .act-cap{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
+  .act-num{font-weight:800;font-size:.8rem;background:var(--negre);color:var(--blanc);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dur{font-weight:700;font-size:.8rem;background:var(--fons);color:var(--gris-text);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dos{font-weight:700;font-size:.8rem;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.3rem .6rem;border-radius:6px;text-decoration:none;white-space:nowrap}
+  .act-dos:hover{background:var(--vermell);color:var(--blanc)}
+  .activitat h3{font-weight:850;font-stretch:86%;font-size:clamp(1.35rem,2.4vw,1.7rem);line-height:1.1;margin:0 0 .6rem}
+  .activitat h4{font-size:1rem;font-weight:750;margin:1.3rem 0 .45rem;color:var(--vermell)}
+  .activitat p{max-width:68ch;margin-top:.5rem}
+  .activitat.pindola{border:2px solid var(--vermell);background:linear-gradient(var(--blanc),var(--blanc))}
+  .activitat.pindola .act-num{background:var(--vermell)}
+  .passos-l{list-style:none;counter-reset:ps;margin-top:.4rem;max-width:70ch}
+  .passos-l li{counter-increment:ps;position:relative;padding:.5rem 0 .5rem 2.6rem;border-top:1px solid var(--linia)}
+  .passos-l li:first-child{border-top:0}
+  .passos-l li::before{content:counter(ps);position:absolute;left:0;top:.45rem;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--negre);color:var(--blanc);font-weight:800;font-size:.85rem;display:grid;place-items:center}
+  .pistes{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.45rem 2rem;max-width:70ch;margin-top:.3rem}
+  .pistes li{padding-left:1.3rem;position:relative}
+  .pistes li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+  .clau{margin-top:1.1rem;background:var(--negre);color:var(--blanc);border-radius:10px;padding:1rem 1.2rem;font-weight:750;font-size:1.1rem;max-width:62ch}
+  .clau small{display:block;font-weight:600;color:#E06A69;font-size:.78rem;letter-spacing:.02em;margin-bottom:.2rem}
+  .evid{margin-top:1rem;border-left:4px solid var(--vermell);padding:.2rem 0 .2rem 1rem;max-width:66ch}
+  .evid b{display:block;font-size:.85rem;color:var(--vermell)}
+  .exemple{color:var(--gris-text);font-style:italic}
+  .check-l{list-style:none;max-width:60ch}
+  .check-l label{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-top:1px solid var(--linia);cursor:pointer}
+  .check-l li:first-child label{border-top:0}
+  .check-l input{width:1.15rem;height:1.15rem;margin-top:.2rem;accent-color:var(--vermell);flex:none}
+  .no-l{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem}
+  .no-l li{background:var(--blanc);border:1px dashed #BDB6B4;border-radius:8px;padding:.4rem .8rem;color:var(--gris-text);text-decoration:line-through;text-decoration-color:var(--vermell)}
+  .seguent{display:flex;justify-content:space-between;gap:1rem;margin-top:clamp(2rem,5vw,3rem);flex-wrap:wrap}
+  .seguent a{flex:1;min-width:220px;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.2rem;text-decoration:none;color:var(--negre)}
+  .seguent a:hover{border-color:var(--vermell)}
+  .seguent small{display:block;color:var(--gris-text);font-weight:600;font-size:.8rem}
+  .seguent b{font-size:1.05rem}
+  .seguent a.nx{text-align:right}
+  @media (max-width:880px){.pistes{grid-template-columns:1fr}}
+
+  .video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* índex de píndoles */
+  .pind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
+  .pind-card{display:flex;flex-direction:column;gap:.35rem;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;color:var(--negre);transition:border-color .2s,transform .2s}
+  .pind-card:hover{border-color:var(--vermell);transform:translateY(-2px)}
+  .pind-card .meta{display:flex;gap:.4rem;flex-wrap:wrap}
+  .pind-card .f{font-size:.72rem;font-weight:800;background:var(--negre);color:var(--blanc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card .est{font-size:.72rem;font-weight:700;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card b{font-size:1.02rem;line-height:1.25}
+  .pind-card span.d{font-size:.88rem;color:var(--gris-text)}
+  .pind-card.disabled{opacity:.55;pointer-events:none;background:#FAFAF9}
+  .pind-card.disabled .f{background:#A39C9D}
+  .pind-card.disabled .est{background:var(--fons);color:var(--gris-text)}
+
+  /* capçalera de píndola */
+  .pind-hero{background:var(--vermell);color:var(--blanc);border-radius:14px;padding:clamp(1.4rem,3vw,2.2rem);margin-top:clamp(2.5rem,6vw,4rem);scroll-margin-top:1rem}
+  .pind-hero small{font-weight:800;font-size:.8rem;background:rgba(0,0,0,.18);padding:.28rem .6rem;border-radius:6px}
+  .pind-hero h2{font-weight:900;font-stretch:82%;font-size:clamp(2rem,5vw,3.2rem);line-height:1;margin-top:.8rem;letter-spacing:-.015em}
+  .pind-hero p{margin-top:.8rem;max-width:60ch;color:#FBE9E9}
+
+  /* recorregut de la dada */
+  .viatge{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .etapes{list-style:none;display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;position:relative}
+  .etapes li{text-align:center;padding:.8rem .3rem;border-radius:10px;border:2px solid var(--linia);background:var(--fons);font-weight:700;font-size:.85rem;line-height:1.2;transition:all .25s;cursor:pointer}
+  .etapes li svg{display:block;width:34px;height:34px;margin:0 auto .45rem;stroke:var(--gris-text);transition:stroke .25s}
+  .etapes li.feta{border-color:var(--negre);background:var(--blanc)}
+  .etapes li.feta svg{stroke:var(--negre)}
+  .etapes li.actual{border-color:var(--vermell);background:var(--vermell);color:var(--blanc)}
+  .etapes li.actual svg{stroke:var(--blanc)}
+  .explica{margin-top:1rem;min-height:7.5rem;background:var(--fons);border-radius:10px;padding:1rem 1.2rem}
+  .explica b{display:block;color:var(--vermell);font-size:.8rem;letter-spacing:.02em}
+  .explica h4{margin:.15rem 0 .35rem;font-size:1.15rem}
+  .explica .dada{display:inline-block;margin-top:.5rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;background:var(--negre);color:#fff;padding:.3rem .6rem;border-radius:6px}
+  .ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:.9rem;gap:.6rem}
+  .ctrl button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .ctrl button.pri{background:var(--vermell)}
+  .ctrl button:disabled{opacity:.35;cursor:default}
+  .ctrl span{font-size:.85rem;color:var(--gris-text);font-weight:600}
+
+  /* peces */
+  .peces{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .peca{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem;border-top:4px solid var(--negre)}
+  .peca:last-child{border-top-color:var(--vermell)}
+  .peca h3{margin:0 0 .4rem !important;font-size:1.2rem}
+  .peca p{color:var(--gris-text);margin-top:.35rem;font-size:.95rem}
+  .peca ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text);font-size:.93rem}
+
+  /* test */
+  .test{counter-reset:t;list-style:none;display:flex;flex-direction:column;gap:1rem}
+  .test > li{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;counter-increment:t}
+  .test > li > p{font-weight:700;margin:0 0 .6rem}
+  .test > li > p::before{content:counter(t) ". ";color:var(--vermell)}
+  .opcions{display:flex;flex-direction:column;gap:.4rem}
+  .opcions button{font:inherit;text-align:left;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.55rem .8rem;cursor:pointer;color:var(--negre)}
+  .opcions button:hover{border-color:var(--linia)}
+  .opcions button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .opcions button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .resposta{margin-top:.6rem;font-size:.92rem;color:var(--gris-text);display:none}
+  .resposta.vista{display:block}
+  @media (max-width:880px){
+    .pind-grid,.peces{grid-template-columns:1fr}
+    .etapes{grid-template-columns:repeat(3,1fr)}
+  }
+
+  /* selectors */
+  .parts{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none}
+  .parts button{font:inherit;font-size:.85rem;font-weight:700;border:2px solid var(--linia);background:var(--blanc);color:var(--negre);border-radius:8px;padding:.4rem .7rem;cursor:pointer}
+  .parts button:hover{border-color:var(--negre)}
+  .parts button.actual{background:var(--vermell);border-color:var(--vermell);color:var(--blanc)}
+  .panell-i{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .panell-i h4{font-size:.85rem;font-weight:800;color:var(--gris-text);letter-spacing:.02em;margin:1rem 0 .45rem}
+  .panell-i h4:first-child{margin-top:0}
+
+  /* constructor de missatges */
+  .msg{display:flex;flex-wrap:wrap;gap:.35rem;min-height:3rem;background:var(--fons);border-radius:10px;padding:.6rem;margin-top:.8rem;align-items:center}
+  .msg .buit{color:var(--gris-text);font-size:.9rem;padding:.2rem .4rem}
+  .msg button{font:inherit;font-size:.82rem;font-weight:700;border:0;border-radius:7px;padding:.35rem .6rem;background:var(--negre);color:#fff;cursor:pointer}
+  .msg button:hover{background:var(--vermell)}
+  .msg button small{opacity:.7;font-weight:600;margin-left:.3rem}
+  .barra-b{height:14px;background:var(--fons);border-radius:99px;overflow:hidden;margin-top:1rem;border:1px solid var(--linia)}
+  .barra-b div{height:100%;background:var(--negre);transition:width .25s,background .25s;width:0}
+  .barra-b div.ple{background:var(--vermell)}
+  .estat-b{display:flex;justify-content:space-between;gap:1rem;margin-top:.45rem;font-size:.9rem;font-weight:700;flex-wrap:wrap}
+  .avis{margin-top:.8rem;border-radius:10px;padding:.8rem 1rem;font-weight:600;font-size:.95rem}
+  .avis.ok{background:#E3F1E7;color:#1E5A31}
+  .avis.ko{background:var(--vermell-suau);color:var(--vermell-fosc)}
+
+  /* calculadora */
+  .resultats{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-top:1.1rem}
+  .resultats div{background:var(--fons);border-radius:10px;padding:.8rem .9rem}
+  .resultats small{display:block;font-size:.76rem;font-weight:700;color:var(--gris-text)}
+  .resultats b{display:block;font-size:1.35rem;font-weight:850;font-stretch:88%;line-height:1.15;margin-top:.15rem}
+  .resultats div.gran{background:var(--negre);color:var(--blanc)}
+  .resultats div.gran small{color:#CFC9C9}
+  .energia{display:flex;height:22px;border-radius:7px;overflow:hidden;margin-top:1rem;background:var(--fons)}
+  .energia span{height:100%;transition:width .25s}
+  .llegenda{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;margin-top:.5rem;font-size:.85rem;color:var(--gris-text)}
+  .llegenda i{display:inline-block;width:.8rem;height:.8rem;border-radius:3px;margin-right:.35rem;vertical-align:-.1rem}
+  .peu-esq{font-size:.85rem;color:var(--gris-text);margin-top:.8rem}
+
+  /* esquema edifici */
+  .edifici{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .edifici svg{width:100%;height:auto;display:block}
+  @media (max-width:880px){.resultats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <a class="tornar" href="fase2.html#p3">← Tornar a la Fase 2</a>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero" id="lorawan">
+    <span class="codi">PÍNDOLA FORMATIVA · FASE 2</span>
+    <h1>LoRaWAN a la pràctica</h1>
+    <p>Després d'aquesta píndola sabreu què es pot enviar i què no per LoRaWAN, fins on arriba el senyal dins de l'edifici, cada quant té sentit enviar dades i com afecta tot això a la bateria.</p>
+    <nav class="salts" aria-label="Continguts d'aquesta pàgina">
+      <a href="#lw-recordeu">Recordeu</a>
+      <a href="#lw-missatge">Què es pot enviar</a>
+      <a href="#lw-temps">El temps a l'aire</a>
+      <a href="#lw-abast">L'abast a l'edifici</a>
+      <a href="#lw-cada">Cada quant enviar</a>
+      <a href="#lw-bateria">La bateria</a>
+      <a href="#lw-proposta">Per a la proposta</a>
+      <a href="#lw-test">Comproveu-ho</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="lw-recordeu">
+      <h2>Recordeu</h2>
+      <div class="cos">
+        <p>A la Fase 1 vau veure que LoRaWAN té quatre característiques. En aquesta píndola veureu què volen dir a la pràctica, perquè són les que marquen què podeu fer i què no a la vostra proposta.</p>
+        <ul class="punts">
+          <li><strong>Arriba lluny:</strong> travessa parets i pisos.</li>
+          <li><strong>Consumeix molt poc:</strong> un node pot funcionar mesos amb bateria.</li>
+          <li><strong>Missatges petits:</strong> números, no fotos ni vídeos.</li>
+          <li><strong>No és continu:</strong> el node envia cada cert temps.</li>
+        </ul>
+        <p class="destacat">Una bona proposta no demana a LoRaWAN el que no pot fer.</p>
+      </div>
+    </section>
+
+    <section id="lw-missatge">
+      <h2>Què es pot enviar</h2>
+      <div class="cos">
+        <p>Un missatge LoRaWAN és molt petit. Segons les condicions de la ràdio, hi caben entre <strong>51 i 222 bytes</strong> de dades. Per anar sobre segur, penseu que teniu uns <strong>50 bytes</strong>: no és gaire, però n'hi ha de sobres per enviar unes quantes mesures.</p>
+        <p>Cada mesura ocupa pocs bytes. Per exemple, amb el format que farem servir, una temperatura amb un decimal n'ocupa 4. Proveu-ho: afegiu mesures al missatge i mireu quant ocupa.</p>
+        <div class="panell-i">
+          <h4>AFEGIU MESURES AL MISSATGE</h4>
+          <ul class="parts" id="afegir"></ul>
+          <div class="msg" id="msg" aria-live="polite"></div>
+          <div class="barra-b"><div id="barra"></div></div>
+          <div class="estat-b"><span id="bytes">0 bytes</span><span>límit segur: 50 bytes</span></div>
+          <div class="avis ok" id="avis-msg" aria-live="polite"></div>
+          <p class="peu-esq">Toqueu una mesura del missatge per treure-la.</p>
+        </div>
+        <h3>El que sí i el que no</h3>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Es pot enviar</th><th>No es pot enviar</th></tr></thead>
+            <tbody>
+              <tr><td>Números: temperatura, humitat, CO₂, lux…</td><td>Fotografies o vídeo</td></tr>
+              <tr><td>Estats: porta oberta o tancada, hi ha moviment o no</td><td>Àudio o converses</td></tr>
+              <tr><td>Comptadors: quantes vegades ha passat alguna cosa</td><td>Un registre de cada segon</td></tr>
+              <tr><td>Valors resumits: mitjana, màxim o mínim d'un període</td><td>Textos llargs</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="nota">Si necessiteu més informació de la que hi cap, no envieu més sovint: resumiu. Per exemple, en lloc d'enviar 10 lectures, envieu-ne la mitjana i el màxim.</p>
+      </div>
+    </section>
+
+    <section id="lw-temps">
+      <h2>El temps a l'aire</h2>
+      <div class="cos">
+        <p>Quan el node envia un missatge, la ràdio està ocupada un temps: és el <strong>temps a l'aire</strong>. Depèn de dues coses: quants bytes envieu i el <strong>factor de dispersió</strong> (SF, <em>Spreading Factor</em>).</p>
+        <div class="peces">
+          <div class="peca"><h3>SF baix (SF7)</h3><p>El missatge s'envia <strong>ràpid</strong> i gasta <strong>poca bateria</strong>, però arriba <strong>menys lluny</strong>.</p><p>És el que fa servir un node que és a prop del gateway.</p></div>
+          <div class="peca"><h3>SF alt (SF12)</h3><p>El missatge s'envia <strong>molt a poc a poc</strong> i gasta <strong>més bateria</strong>, però arriba <strong>més lluny</strong> i travessa més obstacles.</p><p>És el que fa servir un node amb poca cobertura.</p></div>
+        </div>
+        <p>La xarxa ajusta el SF automàticament segons com arriba el senyal de cada node. Això s'anomena <strong>ADR</strong> (<em>Adaptive Data Rate</em>). Vosaltres no l'heu de triar, però sí saber que un node mal situat gastarà més bateria.</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Factor de dispersió</th><th>Temps a l'aire d'un missatge d'11 bytes</th><th>Temps mínim que ha d'esperar abans del següent</th></tr></thead>
+            <tbody>
+              <tr><td><strong>SF7</strong> · bona cobertura</td><td>0,06 s</td><td>6 s</td></tr>
+              <tr><td><strong>SF9</strong> · cobertura mitjana</td><td>0,21 s</td><td>20 s</td></tr>
+              <tr><td><strong>SF12</strong> · cobertura feble</td><td>1,48 s</td><td>2 min 27 s</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>La norma de l'1 %</h3>
+        <p>LoRaWAN fa servir la banda de ràdio de <strong>868 MHz</strong>, que és d'ús lliure però compartida amb molts altres aparells. Per això la normativa europea obliga que cada dispositiu estigui transmetent, com a màxim, l'<strong>1 % del temps</strong>. Si ocupa la ràdio 1 segon, n'ha d'esperar 99 abans de tornar a emetre.</p>
+        <p class="nota">Enviar molt sovint no només gasta bateria: pot ser que la ràdio no us ho permeti. I a més ocupa una xarxa que comparteixen tots els equips de l'institut.</p>
+      </div>
+    </section>
+
+    <section id="lw-abast">
+      <h2>L'abast dins de l'edifici</h2>
+      <div class="cos">
+        <p>A camp obert, LoRaWAN pot arribar a diversos quilòmetres. Dins d'un edifici l'abast és molt menor, perquè cada obstacle es menja una part del senyal. Normalment, un sol gateway ben col·locat cobreix tot l'institut, però hi pot haver <strong>racons amb mala cobertura</strong>.</p>
+        <div class="edifici">
+          <svg viewBox="0 0 660 270" role="img" aria-label="Esquema d'un edifici amb el gateway a dalt i nodes amb diferent cobertura">
+            <rect x="60" y="40" width="540" height="200" fill="#F5F4F3" stroke="#252122" stroke-width="3"/>
+            <line x1="60" y1="107" x2="600" y2="107" stroke="#252122" stroke-width="3"/>
+            <line x1="60" y1="173" x2="600" y2="173" stroke="#252122" stroke-width="3"/>
+            <line x1="240" y1="40" x2="240" y2="240" stroke="#A39C9D" stroke-width="2"/>
+            <line x1="420" y1="40" x2="420" y2="240" stroke="#A39C9D" stroke-width="2"/>
+            <rect x="60" y="240" width="540" height="24" fill="#6B6566"/>
+            <text x="330" y="257" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Archivo,Arial">SOTERRANI</text>
+            <!-- gateway -->
+            <line x1="330" y1="40" x2="330" y2="14" stroke="#252122" stroke-width="3"/>
+            <circle cx="330" cy="12" r="6" fill="#BC2C2B"/>
+            <path d="M312 6a24 24 0 0 0 0 14M348 6a24 24 0 0 1 0 14M302 0a38 38 0 0 0 0 26M358 0a38 38 0 0 1 0 26" stroke="#BC2C2B" stroke-width="2" fill="none"/>
+            <text x="370" y="30" font-size="12" font-weight="800" fill="#252122" font-family="Archivo,Arial">GATEWAY</text>
+            <!-- nodes -->
+            <g font-family="Archivo,Arial" font-size="11" font-weight="700">
+              <circle cx="150" cy="74" r="10" fill="#1E7A3C"/><text x="168" y="78" fill="#1E5A31">bona</text>
+              <circle cx="510" cy="140" r="10" fill="#1E7A3C"/><text x="528" y="144" fill="#1E5A31">bona</text>
+              <circle cx="150" cy="206" r="10" fill="#D9A21B"/><text x="168" y="210" fill="#8A5F00">justa</text>
+              <rect x="470" y="186" width="48" height="42" fill="#A39C9D" stroke="#6B6566" stroke-width="2"/>
+              <circle cx="494" cy="207" r="9" fill="#BC2C2B"/><text x="526" y="210" fill="#8A1F1E">feble</text>
+              <text x="494" y="182" text-anchor="middle" font-size="9" fill="#6B6566">armari metàl·lic</text>
+            </g>
+          </svg>
+        </div>
+        <h3>Què empitjora la cobertura</h3>
+        <ul class="pistes">
+          <li><strong>el metall:</strong> armaris, portes metàl·liques, electrodomèstics;</li>
+          <li><strong>el formigó gruixut</strong> i els murs de càrrega;</li>
+          <li><strong>els soterranis</strong> i els espais sota terra;</li>
+          <li><strong>l'aigua:</strong> dipòsits, i fins i tot moltes persones juntes;</li>
+          <li><strong>la distància</strong> i el nombre de pisos fins al gateway;</li>
+          <li><strong>l'antena mal posada:</strong> tapada, doblegada o tocant metall.</li>
+        </ul>
+        <h3>Com se sap si hi ha cobertura</h3>
+        <p>Cada vegada que el gateway rep un missatge, el servidor en guarda dos valors que indiquen com ha arribat:</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Valor</th><th>Què indica</th><th>Bona</th><th>Justa</th><th>Feble</th></tr></thead>
+            <tbody>
+              <tr><td><strong>RSSI</strong><br><small>en dBm</small></td><td>La força del senyal. Sempre és negatiu: com més a prop de 0, més fort.</td><td>Més de −100</td><td>−100 a −115</td><td>Menys de −115</td></tr>
+              <tr><td><strong>SNR</strong><br><small>en dB</small></td><td>Quant destaca el senyal sobre el soroll de fons. Com més alt, millor.</td><td>Més de 0</td><td>0 a −10</td><td>Menys de −10</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="nota">Si no esteu segurs que el lloc on voleu posar el node tingui cobertura, demaneu al professorat de fer-hi una prova amb un node de prova abans de decidir. Així ho podreu justificar a la proposta.</p>
+      </div>
+    </section>
+
+    <section id="lw-cada">
+      <h2>Cada quant enviar</h2>
+      <div class="cos">
+        <p>No hi ha un interval correcte per a tothom. Depèn del que mesureu i de per a què voleu les dades. Per decidir-ho, pregunteu-vos:</p>
+        <ol class="passos-l">
+          <li><strong>Com de ràpid canvia el que mesuro?</strong> Si canvia a poc a poc, enviar cada minut només dona dades repetides.</li>
+          <li><strong>Com de ràpid he de saber-ho?</strong> Una alerta no pot arribar abans que el missatge següent. Si envieu cada 15 minuts, l'avís pot tardar fins a 15 minuts.</li>
+          <li><strong>Com s'alimenta el node?</strong> Amb endoll podeu enviar més sovint; amb bateria, cada missatge compta.</li>
+          <li><strong>Compleixo la norma de l'1 %?</strong> Si la cobertura és feble i el SF és alt, l'interval mínim es fa molt més llarg.</li>
+        </ol>
+        <h3>Dues maneres d'enviar</h3>
+        <div class="peces">
+          <div class="peca"><h3>Periòdica</h3><p>El node envia cada cert temps, passi el que passi: cada 5, 10 o 15 minuts.</p><p>Va bé per a magnituds que canvien de manera contínua, com la temperatura o la humitat.</p></div>
+          <div class="peca"><h3>Per esdeveniment</h3><p>El node envia quan passa alguna cosa: s'obre una porta, es detecta aigua…</p><p>Va bé per a estats de sí o no. Convé enviar també un missatge de tant en tant per saber que el node segueix viu.</p></div>
+        </div>
+        <p class="nota">LoRaWAN no garanteix que arribin tots els missatges: de tant en tant se'n perd algun. Una bona proposta no depèn d'un sol missatge.</p>
+      </div>
+    </section>
+
+    <section id="lw-bateria">
+      <h2>La bateria</h2>
+      <div class="cos">
+        <p>Un node amb bateria gasta energia en tres moments: quan <strong>dorm</strong>, quan es <strong>desperta i mesura</strong> i quan <strong>envia</strong>. Proveu com canvia la durada de la bateria segons les vostres decisions.</p>
+        <div class="panell-i" id="calc">
+          <h4>CADA QUANT ENVIA</h4>
+          <ul class="parts" data-k="int"></ul>
+          <h4>COBERTURA AL LLOC DEL NODE</h4>
+          <ul class="parts" data-k="sf"></ul>
+          <h4>LA PLACA DORM ENTRE MESURES?</h4>
+          <ul class="parts" data-k="dorm"></ul>
+          <h4>TIPUS DE SENSOR</h4>
+          <ul class="parts" data-k="sens"></ul>
+          <div class="resultats" aria-live="polite">
+            <div class="gran"><small>Durada de la bateria</small><b id="r-dur">—</b></div>
+            <div><small>Missatges al dia</small><b id="r-msg">—</b></div>
+            <div><small>Temps d'emissió</small><b id="r-dc">—</b></div>
+            <div><small>Consum diari</small><b id="r-mah">—</b></div>
+          </div>
+          <div class="energia" id="energia"></div>
+          <div class="llegenda"><span><i style="background:#6B6566"></i>Dormir o esperar</span><span><i style="background:#252122"></i>Mesurar</span><span><i style="background:#BC2C2B"></i>Enviar</span><span><i style="background:#D9A21B"></i>Escalfador del sensor</span></div>
+          <div class="avis ok" id="avis-bat" aria-live="polite"></div>
+          <p class="peu-esq">Estimació orientativa per a una bateria de 2.000 mAh i un missatge d'11 bytes. Els valors reals depenen de la placa, dels sensors i de la temperatura.</p>
+        </div>
+        <h3>El que heu de recordar</h3>
+        <ul class="punts">
+          <li><strong>El que més gasta és estar despert.</strong> Si la placa no dorm, la bateria dura pocs dies.</li>
+          <li><strong>Alguns sensors no són per a bateria:</strong> els que tenen escalfador necessiten endoll.</li>
+          <li><strong>Una mala cobertura gasta més,</strong> perquè cada missatge tarda més a enviar-se.</li>
+          <li><strong>Amb endoll</strong> no us preocupa la bateria, però sí on hi ha un endoll i com hi arriba el cable.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="lw-proposta">
+      <h2>Per a la vostra proposta</h2>
+      <div class="cos">
+        <p>Totes aquestes limitacions s'han de veure a la proposta. Quan ompliu els apartats <a href="dossier.html#ap5">5.3 · Com funcionarà?</a> i <a href="dossier.html#ap6">6.2 · És viable?</a> del dossier, comproveu que podeu respondre:</p>
+        <ul class="check-l">
+          <li><label><input type="checkbox"> Les dades que volem enviar caben en un missatge.</label></li>
+          <li><label><input type="checkbox"> Sabem cada quant enviarem i per què, i compleix la norma de l'1 %.</label></li>
+          <li><label><input type="checkbox"> Sabem quant pot tardar una alerta a arribar.</label></li>
+          <li><label><input type="checkbox"> El lloc on anirà el node té, o probablement té, cobertura.</label></li>
+          <li><label><input type="checkbox"> Sabem si el node funcionarà amb endoll o amb bateria, i quant pot durar.</label></li>
+          <li><label><input type="checkbox"> Els sensors que hem triat són compatibles amb aquesta alimentació.</label></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="lw-test">
+      <h2>Comproveu-ho</h2>
+      <div class="cos">
+        <p>Responeu en equip. Si us equivoqueu, llegiu l'explicació i torneu-ho a provar.</p>
+        <ol class="test" id="test">
+          <li data-ok="1"><p>Voleu saber quanta gent passa per un espai. Quina solució és possible amb LoRaWAN?</p><div class="opcions"><button type="button">Enviar una foto cada minut i comptar les persones</button><button type="button">Comptar els passos amb un sensor i enviar el total cada cert temps</button><button type="button">Enviar un missatge cada vegada que passa algú, sense límit</button></div><div class="resposta">Les fotos no hi caben, i enviar massa missatges pot incomplir la norma de l'1 %. El node compta i envia només el resultat.</div></li>
+          <li data-ok="2"><p>El node envia cada 15 minuts. Quant pot tardar a arribar una alerta?</p><div class="opcions"><button type="button">Arriba a l'instant</button><button type="button">Com a màxim 1 minut</button><button type="button">Fins a uns 15 minuts</button></div><div class="resposta">El panell només sap el que passa quan arriba un missatge. Si el problema comença just després d'un enviament, no se'n sabrà res fins al següent.</div></li>
+          <li data-ok="0"><p>Un node amb cobertura feble fa servir SF12. Què passa?</p><div class="opcions"><button type="button">Arriba més lluny, però cada missatge tarda més i gasta més bateria</button><button type="button">Envia més ràpid i gasta menys</button><button type="button">No pot enviar res</button></div><div class="resposta">Un SF alt fa que el missatge arribi més lluny a canvi de més temps a l'aire, més consum i més espera entre missatges.</div></li>
+          <li data-ok="1"><p>Quin d'aquests llocs té més probabilitats de tenir mala cobertura?</p><div class="opcions"><button type="button">Un passadís de la mateixa planta que el gateway</button><button type="button">L'interior d'un armari metàl·lic al soterrani</button><button type="button">Una aula amb finestres</button></div><div class="resposta">El metall i els espais sota terra són els principals enemics del senyal de ràdio.</div></li>
+          <li data-ok="2"><p>Voleu que el node funcioni amb bateria durant mesos. Què és el més important?</p><div class="opcions"><button type="button">Enviar tan sovint com es pugui</button><button type="button">Fer servir un sensor amb escalfador</button><button type="button">Que la placa dormi entre mesura i mesura</button></div><div class="resposta">La placa gasta sobretot quan està desperta. Si dorm entre mesures, el consum baixa moltíssim.</div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="lw-fi">
+      <h2>I ara què?</h2>
+      <div class="cos">
+        <p>Ja coneixeu les limitacions de LoRaWAN. Però aquesta píndola <strong>no us diu cada quant heu d'enviar ni on heu de posar el node</strong>: aquestes decisions són de l'equip.</p>
+        <p class="destacat">Quina de les vostres alternatives aprofita millor el que LoRaWAN pot fer?</p>
+        <div class="botons"><a class="boto" href="fase2.html#a3">Tornar a la Fase 2: Comparem alternatives →</a><a class="boto sec" href="pindola_sensors.html">Píndola anterior: Els sensors</a></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+
+<script>
+(function(){
+  /* ---------- Constructor de missatges ---------- */
+  const M=[
+    {n:"Temperatura",b:4},{n:"Humitat",b:3},{n:"Pressió",b:4},{n:"Lluminositat",b:4},
+    {n:"CO₂",b:4},{n:"Valor analògic",b:4},{n:"Estat sí/no",b:3},{n:"Comptador",b:4},
+    {n:"Fotografia",b:200000,foto:true}
+  ];
+  const LIM=50;
+  let m=[];
+  const af=document.getElementById('afegir'),msg=document.getElementById('msg'),bar=document.getElementById('barra'),
+        by=document.getElementById('bytes'),av=document.getElementById('avis-msg');
+  M.forEach((x,k)=>{const li=document.createElement('li'),b=document.createElement('button');b.type='button';
+    b.textContent='+ '+x.n;b.onclick=()=>{m.push(k);pintaM();};li.appendChild(b);af.appendChild(li);});
+  function fmt(n){return n.toLocaleString('ca-ES');}
+  function pintaM(){
+    msg.innerHTML='';
+    if(!m.length) msg.innerHTML='<span class="buit">El missatge és buit.</span>';
+    m.forEach((k,i)=>{const b=document.createElement('button');b.type='button';
+      b.innerHTML=M[k].n+'<small>'+fmt(M[k].b)+' B</small>';b.title='Treure';b.onclick=()=>{m.splice(i,1);pintaM();};msg.appendChild(b);});
+    const t=m.reduce((s,k)=>s+M[k].b,0), foto=m.some(k=>M[k].foto);
+    bar.style.width=Math.min(100,t/LIM*100)+'%'; bar.classList.toggle('ple',t>LIM);
+    by.textContent=fmt(t)+' bytes';
+    if(foto){av.className='avis ko';av.textContent='Una fotografia petita ocupa desenes de milers de bytes: necessitaria milers de missatges. LoRaWAN no serveix per enviar imatges, i a més recolliríeu dades de les persones.';}
+    else if(t>LIM){av.className='avis ko';av.textContent='No hi cap amb seguretat. Reduïu el nombre de mesures o envieu-les en missatges diferents.';}
+    else if(!t){av.className='avis ok';av.textContent='Afegiu mesures per veure quant ocupen.';}
+    else{av.className='avis ok';av.textContent='Hi cap. Encara us queden '+(LIM-t)+' bytes lliures.';}
+  }
+  pintaM();
+
+  /* ---------- Calculadora de bateria ----------
+     Valors orientatius: bateria 2.000 mAh, emissió 45 mA, despert 12 mA durant 2 s,
+     dormint 0,1 mA, sense dormir 15 mA, escalfador 150 mA continu. */
+  const O={
+    int:[["1 min",1],["5 min",5],["10 min",10],["15 min",15],["30 min",30],["1 hora",60]],
+    sf:[["Bona (SF7)",0.062],["Mitjana (SF9)",0.206],["Feble (SF12)",1.483]],
+    dorm:[["Sí",1],["No",0]],
+    sens:[["Consum baix",0],["Amb escalfador",1]]
+  };
+  const st={int:2,sf:0,dorm:0,sens:0};
+  document.querySelectorAll('#calc .parts').forEach(ul=>{
+    const k=ul.dataset.k;
+    O[k].forEach((o,i)=>{const li=document.createElement('li'),b=document.createElement('button');b.type='button';b.textContent=o[0];
+      b.onclick=()=>{st[k]=i;calc();};li.appendChild(b);ul.appendChild(li);});
+  });
+  const BAT=2000,TX=45,ACT=12,TACT=2,SLEEP=0.1,AWAKE=15,HEAT=150;
+  function durada(h){
+    if(h<48) return Math.round(h)+' hores';
+    const d=h/24;
+    if(d<60) return Math.round(d)+' dies';
+    if(d<365) return Math.round(d/30.4)+' mesos';
+    if(d<1095) return (d/365).toLocaleString('ca-ES',{maximumFractionDigits:1})+' anys';
+    return 'més de 3 anys';
+  }
+  function calc(){
+    document.querySelectorAll('#calc .parts').forEach(ul=>{const k=ul.dataset.k;
+      ul.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('actual',i===st[k]);b.setAttribute('aria-pressed',i===st[k]);});});
+    const iv=O.int[st.int][1], toa=O.sf[st.sf][1], dorm=O.dorm[st.dorm][1], heat=O.sens[st.sens][1];
+    const n=1440/iv;
+    const eTx=n*TX*toa/3600, eAct=n*ACT*TACT/3600;
+    const eBase=(dorm?SLEEP:AWAKE)*24, eHeat=heat?HEAT*24:0;
+    const tot=eTx+eAct+eBase+eHeat;
+    const dc=toa/(iv*60)*100;
+    document.getElementById('r-dur').textContent=durada(BAT/tot*24);
+    document.getElementById('r-msg').textContent=fmt(Math.round(n));
+    document.getElementById('r-dc').textContent=(dc<0.01?'<0,01':dc.toLocaleString('ca-ES',{maximumFractionDigits:2}))+' %';
+    document.getElementById('r-mah').textContent=tot.toLocaleString('ca-ES',{maximumFractionDigits:tot<10?1:0})+' mAh';
+    const en=document.getElementById('energia');
+    en.innerHTML=[[eBase,'#6B6566'],[eAct,'#252122'],[eTx,'#BC2C2B'],[eHeat,'#D9A21B']].map(x=>'<span style="width:'+(x[0]/tot*100)+'%;background:'+x[1]+'"></span>').join('');
+    const a=document.getElementById('avis-bat');
+    if(dc>1){a.className='avis ko';a.textContent='No compleix la norma de l\'1 %: amb aquesta cobertura, el node no pot enviar tan sovint. Allargueu l\'interval o busqueu un lloc amb més cobertura.';}
+    else if(heat){a.className='avis ko';a.textContent='L\'escalfador del sensor gasta molt més que tota la resta junta. Aquest sensor necessita endoll.';}
+    else if(!dorm){a.className='avis ko';a.textContent='Si la placa no dorm, gasta gairebé tota l\'energia esperant. Amb bateria, cal que dormi entre mesures.';}
+    else{a.className='avis ok';a.textContent='Compleix la norma de l\'1 % i és viable amb bateria. Fixeu-vos en quina part de l\'energia es gasta en cada cosa.';}
+  }
+  calc();
+
+  /* ---------- Test ---------- */
+  document.querySelectorAll('#test > li').forEach(q=>{
+    const ok=+q.dataset.ok, bs=[...q.querySelectorAll('.opcions button')], r=q.querySelector('.resposta');
+    bs.forEach((b,k)=>b.addEventListener('click',()=>{
+      bs.forEach(x=>x.classList.remove('be','mal'));
+      b.classList.add(k===ok?'be':'mal');
+      r.textContent=(k===ok?'Correcte! ':'No és aquesta. ')+r.dataset.t;
+      r.classList.add('vista');
+    }));
+    r.dataset.t=r.textContent;
+  });
+})();
+</script>
+</body>
+</html>
