@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ca">
 <head>
@@ -16,166 +15,415 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.55;-webkit-font-smoothing:antialiased;
-    padding:clamp(1.5rem,5vw,4.5rem) clamp(1.25rem,5vw,3rem) 3rem}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
   .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
 
-  header{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start}
-  .logo{height:52px;width:auto}
-  .modul{font-size:.95rem;font-weight:600;color:var(--vermell);display:inline-flex;align-items:center;gap:.6rem}
-  .modul::before{content:"";width:1.8rem;height:3px;background:var(--vermell);display:inline-block}
-  h1{font-weight:900;font-stretch:80%;font-size:clamp(2.6rem,7vw,4.6rem);letter-spacing:-.02em;line-height:.95;margin:1rem 0 0}
-  .lede{color:var(--gris-text);font-size:clamp(1rem,1.6vw,1.18rem);max-width:62ch;margin-top:1.2rem}
-  .rule{height:1px;background:var(--linia);margin:clamp(2rem,5vw,3rem) 0}
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
 
-  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.9rem,2vw,1.4rem)}
-  .card{position:relative;display:flex;flex-direction:column;background:var(--blanc);border:1px solid var(--linia);border-radius:14px;
-    padding:1.6rem 1.6rem 1.4rem;text-decoration:none;color:inherit;overflow:hidden;
-    transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
-  .card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--vermell);transform:scaleY(0);transform-origin:top;transition:transform .26s ease}
-  .card:hover,.card:focus-visible{transform:translateY(-4px);border-color:#D3CECB;box-shadow:0 14px 34px -18px rgba(37,33,34,.4);outline:none}
-  .card:hover::before,.card:focus-visible::before{transform:scaleY(1)}
-  .card:focus-visible{box-shadow:0 0 0 3px var(--vermell-suau),0 14px 34px -18px rgba(37,33,34,.4)}
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
 
-  .card-top{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:1.1rem}
-  .codi{font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--negre);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
-  .tags{display:flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end}
-  .tag{font-size:.76rem;font-weight:600;padding:.28rem .55rem;border-radius:6px;white-space:nowrap;background:var(--fons);color:var(--gris-text)}
-  .tag.hores{background:var(--vermell-suau);color:var(--vermell-fosc)}
-  .tag.pc{background:var(--negre);color:var(--blanc)}
-  .card h2{font-weight:750;font-stretch:92%;font-size:1.3rem;letter-spacing:-.01em;line-height:1.2}
-  .card p{color:var(--gris-text);font-size:.95rem;margin-top:.6rem;flex:1}
-  .obrir{margin-top:1.3rem;font-size:.9rem;font-weight:700;color:var(--vermell);display:inline-flex;align-items:center;gap:.4rem}
-  .obrir .fletxa{transition:transform .22s ease}
-  .card:hover .obrir .fletxa,.card:focus-visible .obrir .fletxa{transform:translateX(4px)}
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
 
-  /* Fase 0: targeta destacada a tota l'amplada */
-  .card.fase0{grid-column:1/-1;background:var(--negre);color:var(--blanc);border-color:var(--negre);
-    display:grid;grid-template-columns:1fr auto;align-items:end;gap:1rem 2.5rem;padding:2rem 2.2rem}
-  .card.fase0 .codi{background:var(--vermell)}
-  .card.fase0 h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:850;font-stretch:84%}
-  .card.fase0 p{color:#CFC9C9;max-width:60ch;font-size:1.02rem}
-  .card.fase0 .obrir{color:var(--blanc);margin-top:0;white-space:nowrap}
-  .card.fase0 .card-top{justify-content:flex-start;align-items:flex-start}
-  .card.fase0 .tag{background:#3A3435;color:#E6E2E2}
-  .card.fase0:hover,.card.fase0:focus-visible{border-color:var(--negre)}
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
 
-  .card.disabled{cursor:not-allowed;background:#FAFAF9;opacity:.6;filter:grayscale(.5)}
-  .card.disabled:hover,.card.disabled:focus-visible{transform:none;box-shadow:none;border-color:var(--linia)}
-  .card.disabled:hover::before,.card.disabled:focus-visible::before{transform:scaleY(0)}
-  .card.disabled .codi{background:#A39C9D}
-  .card.disabled .obrir{color:#A39C9D}
-  .card.disabled:hover .obrir .fletxa{transform:none}
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
 
   footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
   @media (max-width:880px){
-    .grid{grid-template-columns:1fr}
-    .card.fase0{grid-template-columns:1fr}
-    header{grid-template-columns:1fr}
-    .logo{order:-1}
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
   }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
   @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+  .wrap{max-width:1180px}
+  section{display:block;padding:0;border-bottom:0}
+  .barra-sup{margin-bottom:1.6rem}
+  .modul{font-weight:700;font-size:.9rem;color:var(--gris-text)}
+
+  /* hero */
+  .hero{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(1.5rem,4vw,3rem);align-items:center;overflow:hidden}
+  .hero h1{font-size:clamp(3rem,8vw,5.6rem)}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.8rem}
+  .boto.fosc{background:#3A3435}
+  .boto.fosc:hover{background:#4A4445}
+  .escena{margin:0}
+  .escena svg{width:100%;height:auto;display:block}
+  .t-zona{font:600 10px var(--font);fill:#8D8687}
+  .t-et{font:700 12px var(--font);fill:#E6E2E2}
+  .t-val-l{font:600 9px var(--font);fill:#6B6566}
+  .t-val{font:800 15px var(--font);fill:#252122}
+  .t-val-l.r{fill:#8A1F1E}.t-val.r{fill:#BC2C2B}
+  .node{fill:#BC2C2B}
+  .ant{stroke:#E6E2E2;stroke-width:2;stroke-linecap:round}
+  .ona{fill:none;stroke:#E06A69;stroke-width:1.5;opacity:0;transform-origin:0 0;animation:ona 3s ease-out infinite}
+  .ona.o2{animation-delay:1.5s}
+  .ona.d1{animation-delay:.5s}.ona.o2.d1{animation-delay:2s}
+  .ona.d2{animation-delay:1s}.ona.o2.d2{animation-delay:2.5s}
+  @keyframes ona{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(5)}}
+  .arc{fill:none;stroke:#E06A69;stroke-width:2;stroke-linecap:round}
+  .arc.a2{opacity:.5}
+
+  .hero{position:relative}
+  .guia-prof{position:absolute;top:clamp(1.2rem,3vw,2rem);right:clamp(1.2rem,3vw,2rem);font-weight:700;font-size:.9rem;color:#E6E2E2;text-decoration:none;border:1px solid #6B6566;border-radius:8px;padding:.5rem .85rem}
+  .guia-prof:hover{background:var(--blanc);color:var(--negre);border-color:var(--blanc)}
+  @media (max-width:560px){ .guia-prof{position:static;justify-self:start;order:-1} }
+  /* camí de les dades */
+  .cami{margin-top:clamp(2.5rem,6vw,4rem)}
+  .cami h2,.fases-cap h2{font-weight:850;font-stretch:84%;font-size:clamp(1.7rem,3.2vw,2.3rem);line-height:1.05;letter-spacing:-.01em}
+  .passos-cami{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:1.4rem;background:var(--blanc);border:1px solid var(--linia);border-radius:16px;overflow:hidden}
+  .passos-cami li{padding:1.3rem 1.3rem 1.5rem;position:relative;border-left:1px solid var(--linia)}
+  .passos-cami li:first-child{border-left:0}
+  .passos-cami li + li::before{content:"";position:absolute;left:-9px;top:2.1rem;width:16px;height:16px;background:var(--blanc);border-top:1px solid var(--linia);border-right:1px solid var(--linia);transform:rotate(45deg)}
+  .passos-cami svg{width:56px;height:56px;display:block}
+  .passos-cami b{display:block;font-size:1.15rem;margin-top:.6rem}
+  .passos-cami span{display:block;color:var(--gris-text);font-size:.93rem;line-height:1.45;margin-top:.25rem}
+  .s{fill:none;stroke:var(--negre);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .s2{stroke:var(--gris-text);stroke-width:2;stroke-linecap:round}
+  .f{fill:var(--negre)}
+  .r{fill:var(--vermell)}
+  .r2{fill:none;stroke:var(--vermell);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+  .mini{font:800 10px var(--font);fill:var(--gris-text)}
+  .mini.w{fill:#fff;font-size:11px}
+
+  /* fases */
+  .fases-cap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:.6rem 2rem;margin-top:clamp(2.5rem,6vw,4rem)}
+  .fases-cap p{color:var(--gris-text);max-width:46ch}
+  .fases{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.4rem}
+  .fase{position:relative;display:flex;flex-direction:column;background:var(--blanc);border:1px solid var(--linia);border-radius:16px;padding:1.3rem 1.4rem 1.2rem;text-decoration:none;color:var(--negre);overflow:hidden;transition:border-color .15s, transform .15s}
+  .fase:hover,.fase:focus-visible{border-color:var(--negre);transform:translateY(-2px)}
+  .fase .il{background:var(--fons);border-radius:10px;height:112px;display:grid;place-items:center;margin-bottom:1rem}
+  .fase .il svg{width:150px;height:100px}
+  .fase .il .s{stroke-width:2.6}
+  .fase .il .sf{fill:#CFC9C9}
+  .fase .il .rf{fill:var(--vermell)}
+  .fase .il .r{fill:none;stroke:var(--vermell);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .fase .num{position:absolute;top:1.3rem;left:1.4rem;font-weight:900;font-stretch:80%;font-size:1.05rem;color:var(--blanc);background:var(--negre);width:2rem;height:2rem;border-radius:8px;display:grid;place-items:center;transform:translate(.6rem,.6rem)}
+  .fase h3{font-weight:850;font-stretch:86%;font-size:1.45rem;line-height:1.1}
+  .fase p{color:var(--gris-text);font-size:.95rem;line-height:1.5;margin-top:.45rem}
+  .fase .peu{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:1.1rem}
+  .fase .pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.25rem .55rem;border-radius:6px}
+  .fase .obrir{margin-left:auto;font-weight:700;color:var(--vermell);font-size:.92rem}
+  .fase:hover .obrir{text-decoration:underline}
+  .fase.disabled{opacity:.45;pointer-events:none}
+
+  @media (max-width:960px){
+    .hero{grid-template-columns:1fr}
+    .passos-cami{grid-template-columns:1fr 1fr}
+    .passos-cami li:nth-child(3){border-left:0}
+    .passos-cami li:nth-child(n+3){border-top:1px solid var(--linia)}
+    .passos-cami li:nth-child(3)::before{display:none}
+    .fases{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:560px){
+    .passos-cami{grid-template-columns:1fr}
+    .passos-cami li{border-left:0;border-top:1px solid var(--linia)}
+    .passos-cami li:first-child{border-top:0}
+    .passos-cami li::before{display:none}
+    .fases{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ona{animation:none;opacity:0}
+    .paquet{display:none}
+    .fase{transition:none}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header>
-    <div>
-      <span class="modul">1713 · Projecte intermodular · SMX</span>
-      <h1>Espais que parlen</h1>
-      <p class="lede">Cada equip s'encarrega d'una zona de l'institut i crea un sistema de monitoratge amb sensors connectats a una xarxa LoRaWAN. El projecte segueix sis fases: comenceu per la Fase 0 per saber com funciona tot.</p>
-    </div>
+  <div class="barra-sup">
+    <span class="modul">1713 Projecte intermodular · Cicle SMX</span>
     <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <a class="guia-prof" href="#ENLLAC-GUIA-PROFESSORAT" target="_blank" rel="noopener">Guia del professorat</a>
+    <div class="hero-text">
+      <span class="codi">PROJECTE LORAWAN</span>
+      <h1>Espais que parlen</h1>
+      <p>Sensors repartits per l'institut que envien dades sense fils per una xarxa LoRaWAN. Cada equip fa parlar una zona: què hi passa, quan cal actuar i qui ho ha de saber.</p>
+      <div class="botons">
+        <a class="boto" href="fase1.html">Començar per la Fase 1</a>
+        <a class="boto fosc" href="Presentacio_Espais_que_parlen.html">Veure la presentació</a>
+      </div>
+    </div>
+
+    <figure class="escena" aria-label="Il·lustració: nodes amb sensors a les aules envien dades a un gateway al terrat, que les passa al servidor i al panell">
+      <svg viewBox="0 0 520 420" role="img" aria-hidden="true">
+        <defs>
+          <pattern id="finestres" width="26" height="22" patternUnits="userSpaceOnUse">
+            <rect x="6" y="6" width="12" height="9" rx="1.5" fill="#3A3435"/>
+          </pattern>
+        </defs>
+        <!-- edifici -->
+        <rect x="36" y="128" width="268" height="262" rx="6" fill="#2F2A2B" stroke="#4A4445" stroke-width="2"/>
+        <rect x="44" y="136" width="252" height="246" fill="url(#finestres)" opacity=".55"/>
+        <line x1="36" y1="215" x2="304" y2="215" stroke="#4A4445" stroke-width="2"/>
+        <line x1="36" y1="302" x2="304" y2="302" stroke="#4A4445" stroke-width="2"/>
+        <line x1="170" y1="128" x2="170" y2="390" stroke="#4A4445" stroke-width="2"/>
+        <text x="48" y="208" class="t-zona">Biblioteca</text>
+        <text x="182" y="208" class="t-zona">Aula</text>
+        <text x="48" y="295" class="t-zona">Sala de servidors</text>
+        <text x="182" y="295" class="t-zona">Passadís</text>
+        <text x="48" y="382" class="t-zona">Bar</text>
+        <text x="182" y="382" class="t-zona">Taller</text>
+
+        <!-- enllaços ràdio nodes → gateway -->
+        <g class="radio" stroke="#BC2C2B" stroke-width="1.6" stroke-dasharray="3 6" fill="none" opacity=".75">
+          <path d="M100 168 Q130 110 168 92"/>
+          <path d="M248 168 Q210 115 172 92"/>
+          <path d="M118 255 Q95 150 166 94"/>
+          <path d="M240 255 Q262 150 174 94"/>
+          <path d="M92 342 Q40 190 164 96"/>
+          <path d="M252 342 Q300 190 176 96"/>
+        </g>
+
+        <!-- nodes -->
+        <g class="nodes">
+          <g transform="translate(100 168)"><circle class="ona" r="6"/><circle class="ona o2" r="6"/><line x1="4" y1="-6" x2="4" y2="-16" class="ant"/><rect x="-8" y="-6" width="16" height="11" rx="2" class="node"/></g>
+          <g transform="translate(248 168)"><circle class="ona" r="6"/><circle class="ona o2" r="6"/><line x1="4" y1="-6" x2="4" y2="-16" class="ant"/><rect x="-8" y="-6" width="16" height="11" rx="2" class="node"/></g>
+          <g transform="translate(118 255)"><circle class="ona d1" r="6"/><circle class="ona o2 d1" r="6"/><line x1="4" y1="-6" x2="4" y2="-16" class="ant"/><rect x="-8" y="-6" width="16" height="11" rx="2" class="node"/></g>
+          <g transform="translate(240 255)"><circle class="ona d2" r="6"/><circle class="ona o2 d2" r="6"/><line x1="4" y1="-6" x2="4" y2="-16" class="ant"/><rect x="-8" y="-6" width="16" height="11" rx="2" class="node"/></g>
+          <g transform="translate(92 342)"><circle class="ona d2" r="6"/><circle class="ona o2 d2" r="6"/><line x1="4" y1="-6" x2="4" y2="-16" class="ant"/><rect x="-8" y="-6" width="16" height="11" rx="2" class="node"/></g>
+          <g transform="translate(252 342)"><circle class="ona d1" r="6"/><circle class="ona o2 d1" r="6"/><line x1="4" y1="-6" x2="4" y2="-16" class="ant"/><rect x="-8" y="-6" width="16" height="11" rx="2" class="node"/></g>
+        </g>
+
+        <!-- gateway al terrat -->
+        <line x1="170" y1="128" x2="170" y2="104" stroke="#CFC9C9" stroke-width="3"/>
+        <rect x="150" y="86" width="40" height="20" rx="4" fill="#F5F4F3"/>
+        <line x1="160" y1="86" x2="160" y2="58" stroke="#F5F4F3" stroke-width="3" stroke-linecap="round"/>
+        <line x1="180" y1="86" x2="180" y2="58" stroke="#F5F4F3" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="157" cy="96" r="2.5" fill="#BC2C2B"/><circle cx="165" cy="96" r="2.5" fill="#4CAF7A"/>
+        <path d="M150 52 Q170 34 190 52" class="arc"/>
+        <path d="M140 44 Q170 18 200 44" class="arc a2"/>
+        <text x="144" y="100" class="t-et" text-anchor="end">Gateway</text>
+
+        <!-- gateway → servidor → panell -->
+        <path d="M190 96 C 270 96, 320 96, 378 96" stroke="#CFC9C9" stroke-width="2" fill="none"/>
+        <circle r="4" fill="#BC2C2B" class="paquet"><animateMotion dur="2.6s" repeatCount="indefinite" path="M190 96 C 270 96, 320 96, 378 96"/></circle>
+        <g transform="translate(378 62)">
+          <rect width="96" height="20" rx="4" fill="#3A3435" stroke="#6B6566"/>
+          <rect y="24" width="96" height="20" rx="4" fill="#3A3435" stroke="#6B6566"/>
+          <rect y="48" width="96" height="20" rx="4" fill="#3A3435" stroke="#6B6566"/>
+          <circle cx="12" cy="10" r="3" fill="#4CAF7A"/><circle cx="12" cy="34" r="3" fill="#4CAF7A"/><circle cx="12" cy="58" r="3" fill="#BC2C2B"/>
+          <rect x="24" y="8" width="44" height="4" rx="2" fill="#6B6566"/><rect x="24" y="32" width="36" height="4" rx="2" fill="#6B6566"/><rect x="24" y="56" width="50" height="4" rx="2" fill="#6B6566"/>
+        </g>
+        <text x="378" y="48" class="t-et">Servidor</text>
+        <path d="M426 130 L426 206" stroke="#CFC9C9" stroke-width="2" fill="none"/>
+        <circle r="4" fill="#BC2C2B" class="paquet" visibility="hidden"><set attributeName="visibility" to="visible" begin="1.3s"/><animateMotion dur="1.6s" begin="1.3s" repeatCount="indefinite" path="M426 130 L426 206"/></circle>
+        <!-- panell -->
+        <g transform="translate(340 206)">
+          <rect width="172" height="120" rx="8" fill="#F5F4F3"/>
+          <rect x="10" y="10" width="70" height="40" rx="5" fill="#FFFFFF" stroke="#E2DFDD"/>
+          <text x="18" y="27" class="t-val-l">CO₂</text><text x="18" y="44" class="t-val">612</text>
+          <rect x="88" y="10" width="74" height="40" rx="5" fill="#F7E4E3"/>
+          <text x="96" y="27" class="t-val-l r">Temp.</text><text x="96" y="44" class="t-val r">27,4°</text>
+          <rect x="10" y="58" width="152" height="52" rx="5" fill="#FFFFFF" stroke="#E2DFDD"/>
+          <polyline points="18,98 34,90 50,94 66,80 82,84 98,72 114,76 130,64 146,68 154,62" fill="none" stroke="#BC2C2B" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+        </g>
+        <text x="340" y="346" class="t-et">Panell i alertes</text>
+      </svg>
+    </figure>
   </header>
 
-  <div class="rule"></div>
+  <section class="cami" aria-labelledby="cami-t">
+    <h2 id="cami-t">El camí de les dades</h2>
+    <ol class="passos-cami">
+      <li>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="14" y="26" width="36" height="24" rx="4" class="s"/><line x1="40" y1="26" x2="40" y2="10" class="s"/><circle cx="40" cy="9" r="2.5" class="f"/><rect x="20" y="33" width="10" height="10" rx="2" class="r"/><line x1="35" y1="36" x2="44" y2="36" class="s2"/><line x1="35" y1="42" x2="42" y2="42" class="s2"/></svg>
+        <b>Mesurar</b><span>El node llegeix el sensor de la zona: temperatura, CO₂, llum, presència…</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="16" cy="44" r="4" class="f"/><path d="M24 38 Q30 44 24 50" class="r2"/><path d="M30 32 Q40 44 30 56" class="r2"/><path d="M36 26 Q50 44 36 62" class="r2"/><text x="40" y="20" class="mini">km</text></svg>
+        <b>Enviar</b><span>Per LoRaWAN: ràdio de llarg abast i poc consum, paquets petits cada cert temps.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="18" y="30" width="28" height="14" rx="3" class="s"/><line x1="24" y1="30" x2="24" y2="12" class="s"/><line x1="40" y1="30" x2="40" y2="12" class="s"/><line x1="32" y1="44" x2="32" y2="56" class="s"/><line x1="20" y1="56" x2="44" y2="56" class="s"/><circle cx="25" cy="37" r="2" class="r"/></svg>
+        <b>Rebre</b><span>Els gateways capten els missatges i els passen al servidor de xarxa.</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="12" width="48" height="34" rx="4" class="s"/><polyline points="14,38 22,30 30,34 38,22 50,26" class="r2"/><line x1="24" y1="54" x2="40" y2="54" class="s"/><line x1="32" y1="46" x2="32" y2="54" class="s"/><circle cx="52" cy="14" r="7" class="r"/><text x="49.5" y="18" class="mini w">!</text></svg>
+        <b>Mostrar i avisar</b><span>Un panell amb les dades de totes les zones i alertes quan cal actuar.</span>
+      </li>
+    </ol>
+  </section>
 
   <!--
   ============================================================
    COM DESACTIVAR UNA FASE QUE ENCARA NO TOCA
-   Totes les targetes comencen actives amb  class="card".
-   Per desactivar-la temporalment, afegeix-hi  disabled :
-        class="card"   ->   class="card disabled"
-   Recorda treure també l'enllaç (href) si no vols que s'obri.
+   Afegeix  disabled  a la classe de la targeta:
+        class="fase"   ->   class="fase disabled"
+   i treu-ne l'atribut href perquè no s'obri.
   ============================================================
   -->
 
-  <main class="grid">
+  <section aria-labelledby="fases-t">
+    <div class="fases-cap">
+      <h2 id="fases-t">Les sis fases</h2>
+      <p>Al diari, cada activitat té un codi: F1.1, F2.3, F4.7… Obriu la fase i busqueu-hi el codi del dia.</p>
+    </div>
+    <div class="fases">
 
-    <a class="card fase0" href="fase0.html">
-      <div>
-        <div class="card-top">
-          <span class="codi">FASE 0</span>
-          <span class="tags"><span class="tag">Presentació</span><span class="tag">Dossier</span><span class="tag">Lliurament</span></span>
-        </div>
-        <h2>Com funciona el projecte</h2>
-        <p>El repte, les zones, les fases, el dossier que anireu completant i com el lliurareu al vostre portafoli.</p>
-      </div>
-      <span class="obrir">Obrir <span class="fletxa">→</span></span>
-    </a>
+      <a class="fase" href="fase1.html">
+        <div class="il"><svg viewBox="0 0 120 80" aria-hidden="true">
+          <circle cx="36" cy="34" r="10" class="s"/><path d="M20 66 Q36 46 52 66" class="s"/>
+          <circle cx="84" cy="34" r="10" class="s"/><path d="M68 66 Q84 46 100 66" class="s"/>
+          <circle cx="60" cy="26" r="11" class="rf"/><path d="M42 64 Q60 40 78 64" class="r"/>
+        </svg></div>
+        <span class="num">1</span>
+        <h3>Presentació</h3>
+        <p>Coneixem el repte, formem els equips, escoltem una empresa que treballa amb LoRaWAN i mirem la nostra zona.</p>
+        <span class="peu"><span class="obrir">Obrir la fase</span></span>
+      </a>
 
-    <a class="card" href="fase1.html">
-      <div class="card-top">
-        <span class="codi">FASE 1</span>
-        
-      </div>
-      <h2>Presentació del projecte</h2>
-      <p>Formem els equips, coneixem LoRaWAN amb la xerrada d'una empresa del sector i observem la zona que ens toca.</p>
-      <span class="obrir">Obrir <span class="fletxa">→</span></span>
-    </a>
+      <a class="fase" href="fase2.html">
+        <div class="il"><svg viewBox="0 0 120 80" aria-hidden="true">
+          <rect x="22" y="22" width="52" height="36" rx="4" class="s"/>
+          <circle cx="34" cy="34" r="3" class="rf"/><circle cx="34" cy="46" r="3" class="sf"/>
+          <rect x="44" y="30" width="22" height="20" rx="2" class="s"/>
+          <line x1="74" y1="40" x2="88" y2="40" class="s"/>
+          <rect x="88" y="30" width="16" height="20" rx="3" class="rf"/>
+          <line x1="64" y1="22" x2="64" y2="10" class="s"/>
+        </svg></div>
+        <span class="num">2</span>
+        <h3>Proposta de solució</h3>
+        <p>Aprenem la placa i els sensors, visitem la zona i decidim què mesurarem, on i amb quina alerta.</p>
+        <span class="peu"><span class="pc">PC1</span><span class="obrir">Obrir la fase</span></span>
+      </a>
 
-    <a class="card" href="fase2.html">
-      <div class="card-top">
-        <span class="codi">FASE 2</span>
-        <span class="tags"><span class="tag pc">PC1</span></span>
-      </div>
-      <h2>Proposta de solució</h2>
-      <p>Coneixem l'entorn de treball, investiguem, comparem alternatives i decidim què mesurarem i com.</p>
-      <span class="obrir">Obrir <span class="fletxa">→</span></span>
-    </a>
+      <a class="fase" href="fase3.html">
+        <div class="il"><svg viewBox="0 0 120 80" aria-hidden="true">
+          <rect x="16" y="14" width="26" height="54" rx="4" class="s"/>
+          <rect x="47" y="14" width="26" height="54" rx="4" class="s"/>
+          <rect x="78" y="14" width="26" height="54" rx="4" class="s"/>
+          <rect x="21" y="22" width="16" height="9" rx="2" class="sf"/><rect x="21" y="35" width="16" height="9" rx="2" class="sf"/>
+          <rect x="52" y="22" width="16" height="9" rx="2" class="rf"/>
+          <rect x="83" y="22" width="16" height="9" rx="2" class="sf"/><rect x="83" y="35" width="16" height="9" rx="2" class="sf"/><rect x="83" y="48" width="16" height="9" rx="2" class="sf"/>
+        </svg></div>
+        <span class="num">3</span>
+        <h3>Planificació</h3>
+        <p>Convertim la proposta en tasques amb responsable i data al tauler de Trello.</p>
+        <span class="peu"><span class="pc">PC2</span><span class="obrir">Obrir la fase</span></span>
+      </a>
 
-    <a class="card" href="fase3.html">
-      <div class="card-top">
-        <span class="codi">FASE 3</span>
-        <span class="tags"><span class="tag pc">PC2</span></span>
-      </div>
-      <h2>Planificació</h2>
-      <p>Convertim la proposta en un pla de treball: què hem de fer, qui ho farà i quan ho farem.</p>
-      <span class="obrir">Obrir <span class="fletxa">→</span></span>
-    </a>
+      <a class="fase" href="fase4.html">
+        <div class="il"><svg viewBox="0 0 120 80" aria-hidden="true">
+          <rect x="18" y="40" width="30" height="22" rx="3" class="rf"/>
+          <line x1="40" y1="40" x2="40" y2="24" class="s"/>
+          <path d="M50 26 Q56 32 50 38" class="r"/><path d="M56 20 Q66 32 56 44" class="r"/>
+          <rect x="78" y="34" width="26" height="12" rx="3" class="s"/>
+          <line x1="84" y1="34" x2="84" y2="20" class="s"/><line x1="98" y1="34" x2="98" y2="20" class="s"/>
+          <line x1="91" y1="46" x2="91" y2="62" class="s"/>
+        </svg></div>
+        <span class="num">4</span>
+        <h3>Implementació</h3>
+        <p>Muntem i programem el node, el connectem a la xarxa, fem el panell i l'alerta i l'instal·lem a la zona.</p>
+        <span class="peu"><span class="pc">PC3</span><span class="obrir">Obrir la fase</span></span>
+      </a>
 
-    <a class="card" href="fase4.html">
-      <div class="card-top">
-        <span class="codi">FASE 4</span>
-        <span class="tags"><span class="tag pc">PC3</span></span>
-      </div>
-      <h2>Implementació</h2>
-      <p>Construïm el node, el connectem a la xarxa, visualitzem les dades, creem alertes i ho provem a la zona.</p>
-      <span class="obrir">Obrir <span class="fletxa">→</span></span>
-    </a>
+      <a class="fase" href="fase5.html">
+        <div class="il"><svg viewBox="0 0 120 80" aria-hidden="true">
+          <rect x="20" y="12" width="80" height="44" rx="4" class="s"/>
+          <polyline points="30,46 44,36 56,40 70,26 90,30" class="r"/>
+          <line x1="60" y1="56" x2="60" y2="66" class="s"/><line x1="44" y1="68" x2="76" y2="68" class="s"/>
+        </svg></div>
+        <span class="num">5</span>
+        <h3>Presentació de resultats</h3>
+        <p>Preparem la presentació i la demostració i ho ensenyem al Demo Day, 8 minuts per equip.</p>
+        <span class="peu"><span class="obrir">Obrir la fase</span></span>
+      </a>
 
-    <a class="card" href="fase5.html">
-      <div class="card-top">
-        <span class="codi">FASE 5</span>
-        
-      </div>
-      <h2>Presentació de resultats</h2>
-      <p>Presentem el projecte en 8 minuts i demostrem que la nostra zona parla: dades en directe i alertes funcionant.</p>
-      <span class="obrir">Obrir <span class="fletxa">→</span></span>
-    </a>
+      <a class="fase" href="fase6.html">
+        <div class="il"><svg viewBox="0 0 120 80" aria-hidden="true">
+          <path d="M22 40 A18 18 0 1 1 40 58" class="s"/>
+          <polyline points="34,64 40,58 34,52" class="s"/>
+          <rect x="66" y="22" width="34" height="42" rx="3" class="s"/>
+          <line x1="72" y1="32" x2="94" y2="32" class="r"/><line x1="72" y1="40" x2="90" y2="40" class="s"/><line x1="72" y1="48" x2="92" y2="48" class="s"/>
+        </svg></div>
+        <span class="num">6</span>
+        <h3>Reflexió i avaluació</h3>
+        <p>Mirem enrere, recollim el que hem après i tanquem el dossier al portafoli.</p>
+        <span class="peu"><span class="obrir">Obrir la fase</span></span>
+      </a>
 
-    <a class="card" href="fase6.html">
-      <div class="card-top">
-        <span class="codi">FASE 6</span>
-        
-      </div>
-      <h2>Reflexió i avaluació</h2>
-      <p>Mirem enrere, reflexionem sobre què hem après i tanquem el projecte amb l'autoavaluació i la coavaluació.</p>
-      <span class="obrir">Obrir <span class="fletxa">→</span></span>
-    </a>
-
-  </main>
+    </div>
+  </section>
 
   <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
 </div>

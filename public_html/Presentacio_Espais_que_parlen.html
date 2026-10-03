@@ -115,6 +115,43 @@
   .final h2{color:#E06A69}
   .final .gran{font-size:120px;font-stretch:82%;max-width:14ch}
 
+  /* EQUIPS (8 + 2) */
+  .tipus{display:flex;flex-direction:column;gap:34px;margin-top:10px}
+  .tipus > div{display:grid;grid-template-columns:120px 1fr;column-gap:24px;align-items:center}
+  .tipus b{grid-row:span 2;font-size:120px;font-weight:900;font-stretch:78%;line-height:.85;color:var(--vermell)}
+  .tipus .i b{color:var(--negre)}
+  .tipus span{font-size:38px;font-weight:800;font-stretch:90%;line-height:1.1}
+  .tipus p{font-size:23px;line-height:1.4;color:var(--gris-text);margin-top:8px;max-width:26ch}
+  .gw rect{fill:var(--negre)}
+  .gw line{stroke:var(--negre);stroke-width:4;stroke-linecap:round}
+  .gwt{font-size:20px}
+  .fase .pc{font-style:normal;font-size:18px;font-weight:700;background:var(--negre);color:var(--blanc);padding:4px 10px;border-radius:7px;vertical-align:middle;margin-left:10px}
+
+  /* CODIS */
+  .codis{display:grid;grid-template-columns:.95fr 1.05fr;gap:80px;align-items:center;height:100%}
+  .ruta{list-style:none;display:flex;flex-direction:column;gap:34px}
+  .ruta li{position:relative;padding-left:0}
+  .ruta li + li::before{content:"";position:absolute;left:40px;top:-30px;height:24px;border-left:4px dotted var(--gris-linia)}
+  .ruta .et{display:block;font-size:20px;font-weight:700;color:var(--gris-text);margin-bottom:10px}
+  .ruta .fila{font-size:27px;background:var(--gris);border:2px solid var(--gris-linia);border-radius:10px;padding:18px 22px;font-weight:600;color:var(--negre)}
+  .ruta .fila b{color:var(--vermell)}
+  .ruta .targeta{display:flex;align-items:center;gap:22px;border:2px solid var(--gris-linia);border-radius:12px;padding:16px 22px}
+  .ruta .targeta b{font-size:40px;font-weight:900;font-stretch:80%;color:var(--blanc);background:var(--vermell);border-radius:10px;padding:6px 12px}
+  .ruta .targeta span{font-size:25px;line-height:1.3}
+  .ruta .dossier-r{font-size:25px;line-height:1.35;border:2px solid var(--gris-linia);border-left:8px solid var(--vermell);border-radius:12px;padding:18px 22px}
+  .ruta .dossier-r b{color:var(--vermell)}
+
+  /* DOSSIER */
+  .dossier{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:start;margin-top:10px}
+  .notes{list-style:none;margin-top:44px;display:flex;flex-direction:column;gap:18px}
+  .notes li{font-size:26px;line-height:1.35;padding-left:32px;position:relative}
+  .notes li::before{content:"";position:absolute;left:0;top:.42em;width:13px;height:13px;background:var(--vermell)}
+  .aps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .aps li{background:var(--gris);border-radius:12px;padding:20px 20px 22px;font-size:23px;font-weight:700;line-height:1.2;min-height:132px}
+  .aps li b{display:block;font-size:46px;font-weight:900;font-stretch:80%;color:var(--vermell);line-height:1;margin-bottom:10px}
+  .aps li.v{background:var(--negre);color:var(--blanc)}
+  .aps li.v b{color:#E06A69}
+
   /* navegació */
   .nav{position:fixed;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:10px;z-index:10;pointer-events:none}
   .nav button{pointer-events:auto;width:12px;height:12px;border-radius:50%;border:0;background:#6B6566;cursor:pointer;padding:0}
@@ -190,9 +227,11 @@
     <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
     <div class="zones">
       <div>
-        <h2>Set zones, set equips</h2>
-        <p class="gran" style="font-size:72px">Cada equip s'encarrega d'una zona.</p>
-        <p class="text" style="margin-top:34px;font-size:27px;color:var(--gris-text)">Què cal mesurar i com fer-ho ho decidireu vosaltres.</p>
+        <h2>Deu equips, una xarxa</h2>
+        <div class="tipus">
+          <div><b>8</b><span>equips de nodes</span><p>Cada equip fa parlar una zona: decideix què mesura, amb quin sensor, on i quina alerta cal.</p></div>
+          <div class="i"><b>2</b><span>equips d'infraestructura</span><p>Construeixen la xarxa: la cobertura, els dos gateways i el panell de salut.</p></div>
+        </div>
       </div>
       <svg class="plano" viewBox="0 0 900 600" role="img" aria-label="Plànol esquemàtic de l'institut amb set zones">
         <rect class="exterior" x="10" y="10" width="880" height="110"/>
@@ -223,6 +262,11 @@
         <rect class="sala" x="530" y="410" width="360" height="180"/>
         <text class="nom" x="556" y="460">Bar</text>
         <circle class="node" cx="850" cy="550" r="9"/><circle class="pols" cx="850" cy="550" r="22" style="animation-delay:2.4s"/>
+
+        <g class="gw" transform="translate(560 66)"><line x1="-8" y1="-14" x2="-8" y2="-32"/><line x1="8" y1="-14" x2="8" y2="-32"/><rect x="-18" y="-14" width="36" height="24" rx="4"/></g>
+        <text class="nom gwt" x="590" y="74">Gateway 1</text>
+        <g class="gw" transform="translate(600 388)"><line x1="-8" y1="-14" x2="-8" y2="-32"/><line x1="8" y1="-14" x2="8" y2="-32"/><rect x="-18" y="-14" width="36" height="24" rx="4"/></g>
+        <text class="nom gwt" x="630" y="396">Gateway 2</text>
       </svg>
     </div>
     <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
@@ -234,16 +278,62 @@
     <h2>Com ho farem?</h2>
     <div class="fases">
       <div class="fase"><span class="n">1</span><span class="nf">Presentació</span><span class="ds">Coneixem el repte i la nostra zona.</span></div>
-      <div class="fase"><span class="n">2</span><span class="nf">Proposta de solució</span><span class="ds">Investiguem i decidim què mesurarem i com.</span></div>
-      <div class="fase"><span class="n">3</span><span class="nf">Planificació</span><span class="ds">Organitzem qui farà què i quan.</span></div>
-      <div class="fase clau"><span class="n">4</span><span class="nf">Implementació</span><span class="ds">Construïm, connectem i provem el sistema.</span></div>
-      <div class="fase"><span class="n">5</span><span class="nf">Presentació de resultats</span><span class="ds">Demostrem que la zona parla.</span></div>
+      <div class="fase"><span class="n">2</span><span class="nf">Proposta de solució <em class="pc">PC1</em></span><span class="ds">Aprenem la placa i els sensors i decidim què mesurarem.</span></div>
+      <div class="fase"><span class="n">3</span><span class="nf">Planificació <em class="pc">PC2</em></span><span class="ds">Organitzem qui farà què i quan amb Trello.</span></div>
+      <div class="fase clau"><span class="n">4</span><span class="nf">Implementació <em class="pc">PC3</em></span><span class="ds">Construïm, connectem i instal·lem el sistema.</span></div>
+      <div class="fase"><span class="n">5</span><span class="nf">Presentació de resultats</span><span class="ds">Demostrem que la zona parla al Demo Day.</span></div>
       <div class="fase"><span class="n">6</span><span class="nf">Reflexió i avaluació</span><span class="ds">Mirem enrere i valorem què hem après.</span></div>
     </div>
     <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
   </section>
 
-  <!-- 6 · XERRADA -->
+  <!-- 6 · CADA DIA, UN CODI -->
+  <section class="slide" aria-label="Cada dia, un codi">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <div class="codis">
+      <div>
+        <h2>Cada dia, un codi</h2>
+        <p class="gran" style="font-size:70px">El diari us diu què toca. La fase us diu com fer-ho.</p>
+      </div>
+      <ol class="ruta">
+        <li><span class="et">1 · Al diari</span><div class="fila"><b>F2.5</b> · Proposta i justificació (ap. 3)</div></li>
+        <li><span class="et">2 · A la pàgina de la Fase 2</span><div class="targeta"><b>F2.5</b><span>Busqueu el codi i seguiu els passos en ordre.</span></div></li>
+        <li><span class="et">3 · Al dossier</span><div class="dossier-r">El recuadre <b>Al dossier</b> us diu quin apartat toca i què hi heu d'escriure.</div></li>
+      </ol>
+    </div>
+    <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
+  </section>
+
+  <!-- 7 · EL DOSSIER -->
+  <section class="slide" aria-label="El dossier">
+    <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
+    <h2>El dossier</h2>
+    <div class="dossier">
+      <div>
+        <p class="gran" style="font-size:66px">Un document per equip. Nou apartats.</p>
+        <ul class="notes">
+          <li>L'ompliu a poc a poc, quan ho indica cada activitat.</li>
+          <li>Cada alumne l'incrusta al seu portafoli.</li>
+          <li>El vídeo demostratiu va a l'apartat 8.</li>
+          <li>No hi ha lliurament a Classroom.</li>
+        </ul>
+      </div>
+      <ol class="aps">
+        <li><b>1</b>Acord de treball</li>
+        <li><b>2</b>Zona i necessitat</li>
+        <li><b>3</b>Proposta i justificació</li>
+        <li><b>4</b>Material</li>
+        <li><b>5</b>Planificació</li>
+        <li><b>6</b>Implementació i decisions</li>
+        <li><b>7</b>Proves i solucions</li>
+        <li class="v"><b>8</b>Resultats i vídeo</li>
+        <li><b>9</b>Feedback i reflexió</li>
+      </ol>
+    </div>
+    <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
+  </section>
+
+  <!-- 8 · XERRADA -->
   <section class="slide fosc" aria-label="Xerrada d'empresa">
     <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
     <div class="xerrada">
@@ -265,7 +355,7 @@
     <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
   </section>
 
-  <!-- 7 · NO CAL SABER-HO TOT -->
+  <!-- 9 · NO CAL SABER-HO TOT -->
   <section class="slide" aria-label="No cal saber-ho tot">
     <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
     <div class="verbs">
@@ -284,7 +374,7 @@
     <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
   </section>
 
-  <!-- 8 · TREBALLAREM EN EQUIP -->
+  <!-- 10 · TREBALLAREM EN EQUIP -->
   <section class="slide" aria-label="Treballarem en equip">
     <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
     <div class="equip">
@@ -292,13 +382,13 @@
       <p class="gran">Una bona idea no és suficient.</p>
       <div class="dues">
         <p>Haureu de decidir, organitzar-vos, construir i demostrar que funciona.</p>
-        <p>Cada zona és una peça. Entre tots, l'institut sencer parlarà.</p>
+        <p>Cada zona és una peça i la xarxa les uneix. Entre tots, l'institut sencer parlarà.</p>
       </div>
     </div>
     <div class="peu"><span>1713 · Projecte intermodular</span><strong>Espais que parlen</strong></div>
   </section>
 
-  <!-- 9 · LA PREGUNTA FINAL -->
+  <!-- 11 · LA PREGUNTA FINAL -->
   <section class="slide fosc" aria-label="La pregunta final">
     <div class="cicle">Sistemes microinformàtics<br>i xarxes</div>
     <div class="final">
