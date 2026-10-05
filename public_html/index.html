@@ -140,9 +140,10 @@
   .arc.a2{opacity:.5}
 
   .hero{position:relative}
-  .guia-prof{position:absolute;top:clamp(1.2rem,3vw,2rem);right:clamp(1.2rem,3vw,2rem);font-weight:700;font-size:.9rem;color:#E6E2E2;text-decoration:none;border:1px solid #6B6566;border-radius:8px;padding:.5rem .85rem}
+  .enllacos-prof{position:absolute;top:clamp(1.2rem,3vw,2rem);right:clamp(1.2rem,3vw,2rem);display:flex;flex-wrap:wrap;gap:.6rem}
+  .guia-prof{font-weight:700;font-size:.9rem;color:#E6E2E2;text-decoration:none;border:1px solid #6B6566;border-radius:8px;padding:.5rem .85rem}
   .guia-prof:hover{background:var(--blanc);color:var(--negre);border-color:var(--blanc)}
-  @media (max-width:560px){ .guia-prof{position:static;justify-self:start;order:-1} }
+  @media (max-width:560px){ .enllacos-prof{position:static;justify-self:start;order:-1} }
   /* camí de les dades */
   .cami{margin-top:clamp(2.5rem,6vw,4rem)}
   .cami h2,.fases-cap h2{font-weight:850;font-stretch:84%;font-size:clamp(1.7rem,3.2vw,2.3rem);line-height:1.05;letter-spacing:-.01em}
@@ -237,7 +238,10 @@
   </div>
 
   <header class="hero">
-    <a class="guia-prof" href="https://docs.google.com/document/d/1HmCNw-wZh6At6ql_wJNeOMPvR9aWmn4QAoYdMeGPAo0/edit?usp=drive_link" target="_blank" rel="noopener">Guia del professorat</a>
+    <div class="enllacos-prof">
+      <a class="guia-prof" href="https://docs.google.com/spreadsheets/d/1Zmtz5FZRAEK4s14VsyaAAd8Q7Ns0PR4BvxAG9GN9sqY/edit?usp=sharing" target="_blank" rel="noopener">Calendari d'activitats</a>
+      <a class="guia-prof" href="https://docs.google.com/document/d/1HmCNw-wZh6At6ql_wJNeOMPvR9aWmn4QAoYdMeGPAo0/edit?usp=drive_link" target="_blank" rel="noopener">Guia del professorat</a>
+    </div>
     <div class="hero-text">
       <span class="codi">PROJECTE LORAWAN</span>
       <h1>Espais que parlen</h1>
