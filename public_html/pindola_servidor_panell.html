@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Píndola · Del servidor al panell · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+
+  /* activitats */
+  .temps{display:grid;grid-template-columns:1fr auto;max-width:640px;border:1px solid var(--linia);border-radius:12px;background:var(--blanc);overflow:hidden}
+  .temps div{padding:.65rem 1rem;border-bottom:1px solid var(--linia)}
+  .temps div:nth-child(even){text-align:right;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .temps .tot{background:var(--negre);color:var(--blanc);font-weight:800;border-bottom:0}
+  .temps .pind{color:var(--vermell-fosc);background:var(--vermell-suau)}
+  .activitat{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:clamp(1.3rem,3vw,2rem);scroll-margin-top:1rem}
+  .activitat + .activitat{margin-top:1rem}
+  .act-cap{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
+  .act-num{font-weight:800;font-size:.8rem;background:var(--negre);color:var(--blanc);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dur{font-weight:700;font-size:.8rem;background:var(--fons);color:var(--gris-text);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dos{font-weight:700;font-size:.8rem;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.3rem .6rem;border-radius:6px;text-decoration:none;white-space:nowrap}
+  .act-dos:hover{background:var(--vermell);color:var(--blanc)}
+  .activitat h3{font-weight:850;font-stretch:86%;font-size:clamp(1.35rem,2.4vw,1.7rem);line-height:1.1;margin:0 0 .6rem}
+  .activitat h4{font-size:1rem;font-weight:750;margin:1.3rem 0 .45rem;color:var(--vermell)}
+  .activitat p{max-width:68ch;margin-top:.5rem}
+  .activitat.pindola{border:2px solid var(--vermell);background:linear-gradient(var(--blanc),var(--blanc))}
+  .activitat.pindola .act-num{background:var(--vermell)}
+  .passos-l{list-style:none;counter-reset:ps;margin-top:.4rem;max-width:70ch}
+  .passos-l li{counter-increment:ps;position:relative;padding:.5rem 0 .5rem 2.6rem;border-top:1px solid var(--linia)}
+  .passos-l li:first-child{border-top:0}
+  .passos-l li::before{content:counter(ps);position:absolute;left:0;top:.45rem;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--negre);color:var(--blanc);font-weight:800;font-size:.85rem;display:grid;place-items:center}
+  .pistes{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.45rem 2rem;max-width:70ch;margin-top:.3rem}
+  .pistes li{padding-left:1.3rem;position:relative}
+  .pistes li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+  .clau{margin-top:1.1rem;background:var(--negre);color:var(--blanc);border-radius:10px;padding:1rem 1.2rem;font-weight:750;font-size:1.1rem;max-width:62ch}
+  .clau small{display:block;font-weight:600;color:#E06A69;font-size:.78rem;letter-spacing:.02em;margin-bottom:.2rem}
+  .evid{margin-top:1rem;border-left:4px solid var(--vermell);padding:.2rem 0 .2rem 1rem;max-width:66ch}
+  .evid b{display:block;font-size:.85rem;color:var(--vermell)}
+  .exemple{color:var(--gris-text);font-style:italic}
+  .check-l{list-style:none;max-width:60ch}
+  .check-l label{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-top:1px solid var(--linia);cursor:pointer}
+  .check-l li:first-child label{border-top:0}
+  .check-l input{width:1.15rem;height:1.15rem;margin-top:.2rem;accent-color:var(--vermell);flex:none}
+  .no-l{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem}
+  .no-l li{background:var(--blanc);border:1px dashed #BDB6B4;border-radius:8px;padding:.4rem .8rem;color:var(--gris-text);text-decoration:line-through;text-decoration-color:var(--vermell)}
+  .seguent{display:flex;justify-content:space-between;gap:1rem;margin-top:clamp(2rem,5vw,3rem);flex-wrap:wrap}
+  .seguent a{flex:1;min-width:220px;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.2rem;text-decoration:none;color:var(--negre)}
+  .seguent a:hover{border-color:var(--vermell)}
+  .seguent small{display:block;color:var(--gris-text);font-weight:600;font-size:.8rem}
+  .seguent b{font-size:1.05rem}
+  .seguent a.nx{text-align:right}
+  @media (max-width:880px){.pistes{grid-template-columns:1fr}}
+
+  .passos{list-style:none;counter-reset:p;max-width:68ch}
+  .passos li{counter-increment:p;position:relative;padding:0 0 .75rem 2.4rem}
+  .passos li::before{content:counter(p);position:absolute;left:0;top:.05rem;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--negre);color:var(--blanc);
+    font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* índex de píndoles */
+  .pind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
+  .pind-card{display:flex;flex-direction:column;gap:.35rem;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;color:var(--negre);transition:border-color .2s,transform .2s}
+  .pind-card:hover{border-color:var(--vermell);transform:translateY(-2px)}
+  .pind-card .meta{display:flex;gap:.4rem;flex-wrap:wrap}
+  .pind-card .f{font-size:.72rem;font-weight:800;background:var(--negre);color:var(--blanc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card .est{font-size:.72rem;font-weight:700;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card b{font-size:1.02rem;line-height:1.25}
+  .pind-card span.d{font-size:.88rem;color:var(--gris-text)}
+  .pind-card.disabled{opacity:.55;pointer-events:none;background:#FAFAF9}
+  .pind-card.disabled .f{background:#A39C9D}
+  .pind-card.disabled .est{background:var(--fons);color:var(--gris-text)}
+
+  /* capçalera de píndola */
+  .pind-hero{background:var(--vermell);color:var(--blanc);border-radius:14px;padding:clamp(1.4rem,3vw,2.2rem);margin-top:clamp(2.5rem,6vw,4rem);scroll-margin-top:1rem}
+  .pind-hero small{font-weight:800;font-size:.8rem;background:rgba(0,0,0,.18);padding:.28rem .6rem;border-radius:6px}
+  .pind-hero h2{font-weight:900;font-stretch:82%;font-size:clamp(2rem,5vw,3.2rem);line-height:1;margin-top:.8rem;letter-spacing:-.015em}
+  .pind-hero p{margin-top:.8rem;max-width:60ch;color:#FBE9E9}
+
+  /* recorregut de la dada */
+  .viatge{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .etapes{list-style:none;display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;position:relative}
+  .etapes li{text-align:center;padding:.8rem .3rem;border-radius:10px;border:2px solid var(--linia);background:var(--fons);font-weight:700;font-size:.85rem;line-height:1.2;transition:all .25s;cursor:pointer}
+  .etapes li svg{display:block;width:34px;height:34px;margin:0 auto .45rem;stroke:var(--gris-text);transition:stroke .25s}
+  .etapes li.feta{border-color:var(--negre);background:var(--blanc)}
+  .etapes li.feta svg{stroke:var(--negre)}
+  .etapes li.actual{border-color:var(--vermell);background:var(--vermell);color:var(--blanc)}
+  .etapes li.actual svg{stroke:var(--blanc)}
+  .explica{margin-top:1rem;min-height:7.5rem;background:var(--fons);border-radius:10px;padding:1rem 1.2rem}
+  .explica b{display:block;color:var(--vermell);font-size:.8rem;letter-spacing:.02em}
+  .explica h4{margin:.15rem 0 .35rem;font-size:1.15rem}
+  .explica .dada{display:inline-block;margin-top:.5rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;background:var(--negre);color:#fff;padding:.3rem .6rem;border-radius:6px}
+  .ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:.9rem;gap:.6rem}
+  .ctrl button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .ctrl button.pri{background:var(--vermell)}
+  .ctrl button:disabled{opacity:.35;cursor:default}
+  .ctrl span{font-size:.85rem;color:var(--gris-text);font-weight:600}
+
+  /* peces */
+  .peces{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .peca{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem;border-top:4px solid var(--negre)}
+  .peca:last-child{border-top-color:var(--vermell)}
+  .peca h3{margin:0 0 .4rem !important;font-size:1.2rem}
+  .peca p{color:var(--gris-text);margin-top:.35rem;font-size:.95rem}
+  .peca ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text);font-size:.93rem}
+
+  /* test */
+  .test{counter-reset:t;list-style:none;display:flex;flex-direction:column;gap:1rem}
+  .test > li{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;counter-increment:t}
+  .test > li > p{font-weight:700;margin:0 0 .6rem}
+  .test > li > p::before{content:counter(t) ". ";color:var(--vermell)}
+  .opcions{display:flex;flex-direction:column;gap:.4rem}
+  .opcions button{font:inherit;text-align:left;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.55rem .8rem;cursor:pointer;color:var(--negre)}
+  .opcions button:hover{border-color:var(--linia)}
+  .opcions button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .opcions button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .resposta{margin-top:.6rem;font-size:.92rem;color:var(--gris-text);display:none}
+  .resposta.vista{display:block}
+  @media (max-width:880px){
+    .pind-grid,.peces{grid-template-columns:1fr}
+    .etapes{grid-template-columns:repeat(3,1fr)}
+  }
+
+  /* botons de filtre / selecció */
+  .parts{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none}
+  .parts button{font:inherit;font-size:.85rem;font-weight:700;border:2px solid var(--linia);background:var(--blanc);color:var(--negre);border-radius:8px;padding:.4rem .7rem;cursor:pointer}
+  .parts button:hover{border-color:var(--negre)}
+  .parts button.actual{background:var(--vermell);border-color:var(--vermell);color:var(--blanc)}
+
+  /* catàleg de sensors */
+  .cat{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:1rem}
+  .sens{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;border-top:4px solid var(--negre)}
+  .sens[hidden]{display:none}
+  .sens h3{margin:0 !important;font-size:1.15rem;line-height:1.2}
+  .sens .mesura{color:var(--gris-text);font-size:.92rem;margin-top:.15rem}
+  .sens .etq{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+  .sens .etq span{font-size:.72rem;font-weight:800;padding:.2rem .5rem;border-radius:5px;background:var(--fons);color:var(--gris-text)}
+  .sens .etq span.cn{background:var(--negre);color:var(--blanc)}
+  .sens .etq span.alt{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .sens dl{display:grid;grid-template-columns:auto 1fr;gap:.25rem .8rem;margin-top:.7rem;font-size:.9rem}
+  .sens dt{font-weight:700}
+  .sens dd{color:var(--gris-text)}
+  .sens p.obs{font-size:.9rem;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--linia)}
+
+  /* connexió */
+  .cable{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .cable svg{width:100%;height:auto;display:block}
+
+  /* codi */
+  pre.prog{background:var(--negre);color:#F2EFEF;border-radius:12px;padding:1.1rem 1.3rem;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;line-height:1.6}
+  pre.prog .cm{color:#A39C9D;font-style:italic}
+  pre.prog .kw{color:#E06A69;font-weight:700}
+  pre.prog .fn{color:#FFFFFF;font-weight:700}
+  pre.prog .st{color:#F4C9A8}
+
+  /* fitxa tècnica */
+  .fitxa{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;overflow:hidden}
+  .fitxa-cap{background:var(--negre);color:var(--blanc);padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
+  .fitxa-cap b{font-size:1.2rem;font-stretch:88%}
+  .fitxa-cap small{color:#CFC9C9;font-size:.8rem}
+  .fitxa table{min-width:480px}
+  .fitxa tbody tr{cursor:pointer}
+  .fitxa tbody tr:hover td{background:#FBF9F8}
+  .fitxa tbody tr.actual td{background:var(--vermell-suau)}
+  .fitxa tbody tr.actual td:first-child{box-shadow:inset 4px 0 0 var(--vermell)}
+  .fitxa td:first-child{font-weight:700;white-space:nowrap}
+  .fitxa td.val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88rem}
+  .fitxa .explica{margin:0;border-radius:0;border-top:1px solid var(--linia)}
+
+  /* precisió */
+  .regle{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem}
+  .regle svg{width:100%;height:auto;display:block}
+
+  /* desplegable */
+  details.noms{background:var(--blanc);border:1px solid var(--linia);border-left:4px solid var(--vermell);border-radius:12px;max-width:72ch}
+  details.noms summary{cursor:pointer;font-weight:750;padding:.9rem 1.2rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+  details.noms summary::-webkit-details-marker{display:none}
+  details.noms summary::after{content:"+";font-weight:800;font-size:1.3rem;color:var(--vermell);line-height:1}
+  details.noms[open] summary::after{content:"−"}
+  details.noms summary:focus-visible{outline:3px solid var(--vermell);outline-offset:2px;border-radius:10px}
+  details.noms .dins{padding:0 1.2rem 1.1rem}
+  details.noms .dins h4{font-size:1rem;font-weight:750;color:var(--vermell);margin-top:1rem}
+  details.noms .dins p{margin-top:.35rem;max-width:66ch}
+  @media (max-width:880px){.cat{grid-template-columns:1fr}}
+  .cos{min-width:0}
+  .video{position:relative;aspect-ratio:16/9;width:100%;max-width:820px;border-radius:12px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .tauler{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;max-width:820px}
+  .llista{background:#EBE8E6;border-radius:12px;padding:.8rem;min-height:9rem}
+  .llista h3{margin:0 0 .6rem !important;font-size:.95rem !important;font-weight:800}
+  .llista h3 small{font-weight:600;color:var(--gris-text)}
+  .targeta{background:var(--blanc);border-radius:9px;padding:.65rem .75rem;box-shadow:0 1px 0 rgba(0,0,0,.12);font-size:.92rem}
+  .targeta + .targeta{margin-top:.5rem}
+  .targeta .tt{font-weight:700;display:block}
+  .targeta .meta{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
+  .targeta .meta span{font-size:.75rem;font-weight:700;border-radius:5px;padding:.1rem .4rem;background:var(--fons);color:var(--gris-text)}
+  .targeta .meta span.et{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .targeta .acc{display:flex;gap:.3rem;margin-top:.5rem}
+  .targeta .acc button{font:inherit;font-size:.78rem;font-weight:700;background:var(--negre);color:var(--blanc);border:0;border-radius:6px;padding:.25rem .5rem;cursor:pointer}
+  .targeta .acc button:hover{background:var(--vermell)}
+  .targeta .acc button:focus-visible{outline:3px solid var(--vermell);outline-offset:2px}
+  .estat-tauler{margin-top:.8rem;font-weight:600;color:var(--gris-text);max-width:68ch}
+  @media (max-width:700px){.tauler{grid-template-columns:1fr}}
+
+  .cos{min-width:0}
+  .calc{display:grid;grid-template-columns:repeat(2,minmax(0,220px));gap:1rem;align-items:end;max-width:560px}
+  .calc label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.92rem}
+  .calc input{font:inherit;padding:.6rem .8rem;border:1px solid var(--linia);border-radius:8px;background:var(--blanc);width:100%}
+  .veredicte{margin-top:1rem;border-radius:12px;padding:1rem 1.2rem;font-weight:700;max-width:560px;border:2px solid var(--linia);background:var(--blanc)}
+  .veredicte small{display:block;font-weight:400;color:var(--gris-text);margin-top:.25rem}
+  .veredicte.bo{border-color:#1E7A3C;background:#E3F1E7}
+  .veredicte.just{border-color:#B7791F;background:#FBF0DC}
+  .veredicte.feble{border-color:var(--vermell);background:var(--vermell-suau)}
+  .lectures{list-style:none;display:flex;flex-direction:column;gap:.6rem;max-width:640px}
+  .lectures li{background:var(--blanc);border:1px solid var(--linia);border-radius:10px;padding:.8rem 1rem;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between}
+  .lectures .val{font-weight:700}
+  .lectures .bt{display:flex;gap:.4rem}
+  .lectures button{font:inherit;font-size:.88rem;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.35rem .7rem;cursor:pointer}
+  .lectures button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .lectures button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .lectures .exp{flex-basis:100%;font-size:.9rem;color:var(--gris-text);display:none}
+  .lectures .exp.vista{display:block}
+  @media (max-width:520px){ .calc{grid-template-columns:1fr} }
+
+  /* fase 4: píndoles */
+  .etapes.e4{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:880px){.etapes.e4{grid-template-columns:repeat(2,1fr)}}
+  .caixa.si{border-top:4px solid #1E7A3C}
+  .caixa.mai{border-top:4px solid var(--vermell)}
+  .caixa ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text)}
+  .caixa li + li{margin-top:.25rem}
+  .lectures .val{font-weight:600}
+  .clau-hex{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;word-break:break-all}
+
+  /* descodificador */
+  .deco{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.2rem 1.3rem}
+  .deco > * + *{margin-top:.9rem}
+  .deco label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.92rem}
+  .deco input{font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;padding:.6rem .8rem;border:1px solid var(--linia);border-radius:8px;background:var(--fons);width:100%}
+  .bytes{display:flex;flex-wrap:wrap;gap:.3rem}
+  .bytes span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;font-weight:700;padding:.3rem .45rem;border-radius:6px;background:var(--fons);border:2px solid transparent}
+  .bytes span.c{border-color:var(--negre)}
+  .bytes span.t{background:var(--negre);color:var(--blanc)}
+  .bytes span.v{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .bytes span.e{background:#FBF0DC;color:#7A4D0B}
+  .llegenda{display:flex;flex-wrap:wrap;gap:.8rem;font-size:.85rem;color:var(--gris-text)}
+  .llegenda i{display:inline-block;width:.9rem;height:.9rem;border-radius:3px;vertical-align:-2px;margin-right:.3rem}
+
+  /* panell de prova */
+  .prova-panell{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:1.2rem;align-items:start}
+  .controls{display:flex;flex-direction:column;gap:.8rem}
+  .controls label{display:flex;flex-direction:column;gap:.3rem;font-weight:700;font-size:.9rem}
+  .controls select,.controls input{font:inherit;padding:.5rem .7rem;border:1px solid var(--linia);border-radius:8px;background:var(--blanc);width:100%}
+  .giny{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;min-height:15rem}
+  .giny h4{font-size:1rem;margin:0 0 .6rem}
+  .giny h4.buit{color:var(--gris-text);font-style:italic;font-weight:600}
+  .giny .gran{font-weight:900;font-stretch:80%;font-size:3.6rem;line-height:1;margin-top:1.4rem}
+  .giny .gran small{font-size:1.4rem;font-weight:700;color:var(--gris-text);margin-left:.3rem}
+  .giny svg{width:100%;height:auto;display:block}
+  .avisos{list-style:none;margin-top:.8rem;display:flex;flex-direction:column;gap:.4rem}
+  .avisos li{font-size:.9rem;border-radius:8px;padding:.5rem .8rem}
+  .avisos li.ok{background:#E3F1E7;color:#14532B}
+  .avisos li.ko{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  @media (max-width:700px){.prova-panell{grid-template-columns:1fr}}
+
+  /* diagnosi */
+  .diag{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem;max-width:720px}
+  .diag .cami{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.9rem}
+  .diag .cami span{font-size:.78rem;font-weight:700;background:var(--fons);color:var(--gris-text);padding:.2rem .5rem;border-radius:5px}
+  .diag .preg{font-weight:800;font-size:1.2rem;line-height:1.3}
+  .diag .ajuda{color:var(--gris-text);margin-top:.4rem}
+  .diag .resol{border-left:5px solid var(--vermell);padding-left:1rem}
+  .diag .resol b{display:block;color:var(--vermell);font-size:.85rem}
+  .diag .bt{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+  .diag button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1.1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .diag button.pri{background:var(--vermell)}
+  .diag button.sec{background:var(--fons);color:var(--negre)}
+  .diag button:focus-visible,.ctrl button:focus-visible,.opcions button:focus-visible,.lectures button:focus-visible{outline:3px solid var(--vermell);outline-offset:2px}
+
+  /* calculadora EUI */
+  .calc.una{grid-template-columns:minmax(0,320px)}
+  .eui{margin-top:1rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;font-weight:700;max-width:560px;border-radius:12px;padding:1rem 1.2rem;border:2px solid var(--linia);background:var(--blanc);word-break:break-all}
+  .eui small{display:block;font-family:var(--font);font-weight:400;font-size:.9rem;color:var(--gris-text);margin-top:.3rem}
+  .eui em{font-style:normal;color:var(--vermell)}
+
+  /* simulador d'alertes */
+  .sim{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.2rem 1.3rem}
+  .sim > * + *{margin-top:1rem}
+  .sim-ctrl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+  .sim-ctrl label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.9rem}
+  .sim-ctrl output{font-weight:600;color:var(--vermell)}
+  .sim-ctrl input{accent-color:var(--vermell);width:100%}
+  .sim-graf svg{width:100%;height:auto;display:block}
+  .sim .veredicte{max-width:none}
+  @media (max-width:700px){.sim-ctrl{grid-template-columns:1fr}}
+
+  /* llista de sortida */
+  .progres{font-weight:700;color:var(--gris-text);margin-top:.6rem}
+  .progres.fet{color:#1E7A3C}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <a class="tornar" href="index.html" onclick="if(history.length>1){history.back();return false;}">← Tornar a la fase</a>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <span class="codi">PÍNDOLA FORMATIVA · F4.8</span>
+    <h1>Del servidor al panell</h1>
+    <p>Després d'aquesta píndola sabreu quin camí fa una dada des del servidor fins al panell, com es converteixen els bytes en valors, de quines peces està fet un panell i com s'adapta un panell de plantilla.</p>
+    <nav class="salts" aria-label="Continguts d'aquesta pàgina">
+      <a href="#cami">El camí d'una dada</a>
+      <a href="#bytes">De bytes a valors</a>
+      <a href="#peces">Com està fet un panell</a>
+      <a href="#ginys">Els ginys</a>
+      <a href="#plantilla">Adaptar una plantilla</a>
+      <a href="#prova">Proveu-ho</a>
+      <a href="#test">Comproveu-ho</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="cami">
+      <h2>El camí d'una dada</h2>
+      <div class="cos">
+        <p>Quan una lectura arriba al servidor LoRaWAN, encara li queda camí per arribar a la pantalla. Seguiu una temperatura de 22,5 °C pas a pas.</p>
+        <div class="viatge">
+          <ol class="etapes" id="etapes">
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>Node</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8M8 22h8"/><path d="M6.5 5.5a8 8 0 0 1 11 0M9 8a4 4 0 0 1 6 0"/></svg>Gateway</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01"/></svg>Servidor</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12M12 8l4 4-4 4"/><path d="M20 5v14"/></svg>Integració</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="7" ry="2.5"/><path d="M5 5.5v13c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-13M5 12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5"/></svg>Base de dades</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 15l3-3 3 2 4-5"/></svg>Panell</li>
+          </ol>
+          <div class="explica" id="ecami" aria-live="polite"></div>
+          <div class="ctrl"><button type="button" id="cant">← Anterior</button><span id="cpas"></span><button type="button" class="pri" id="cseg">Següent →</button></div>
+        </div>
+        <div class="evid"><b>Recordeu</b>En algunes eines, la integració, la base de dades i el panell són un sol programa. En d'altres, són peces separades. El camí de la dada és el mateix.</div>
+      </div>
+    </section>
+
+    <section id="bytes">
+      <h2>De bytes a valors</h2>
+      <div class="cos">
+        <p>LoRaWAN només permet enviar missatges molt curts. Per això el node no envia «temperatura = 22,5 °C», sinó uns quants bytes. El <strong>descodificador</strong> és un petit programa del servidor que sap llegir aquests bytes i convertir-los en valors amb nom.</p>
+        <p>Perquè el descodificador funcioni, el node i el servidor han de fer servir el mateix <strong>format</strong>. Un format molt habitual és <strong>Cayenne LPP</strong>: cada valor ocupa tres parts.</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Part</th><th>Mida</th><th>Què indica</th></tr></thead>
+            <tbody>
+              <tr><td><b>Canal</b></td><td>1 byte</td><td>Un número per distingir els sensors. Per exemple, 01 per al primer i 02 per al segon.</td></tr>
+              <tr><td><b>Tipus</b></td><td>1 byte</td><td>Què es mesura. Per exemple, 67 és temperatura i 68 és humitat.</td></tr>
+              <tr><td><b>Valor</b></td><td>1 o 2 bytes</td><td>El número, amb una escala fixa. La temperatura va en dècimes: 00 E1 és 225, és a dir, 22,5 °C.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Descodificador</h3>
+        <p>Trieu un exemple o escriviu bytes en hexadecimal, separats per espais.</p>
+        <div class="deco">
+          <div class="parts" id="exdeco"></div>
+          <label>Dades en brut (payload)<input type="text" id="hex" value="01 67 00 E1 02 68 6C" spellcheck="false" autocomplete="off"></label>
+          <div class="bytes" id="bytesv" aria-hidden="true"></div>
+          <div class="llegenda"><span><i style="background:#fff;border:2px solid #252122"></i>Canal</span><span><i style="background:#252122"></i>Tipus</span><span><i style="background:#F7E4E3"></i>Valor</span><span><i style="background:#FBF0DC"></i>No s'entén</span></div>
+          <div class="taula"><table class="compacta" style="min-width:0"><thead><tr><th>Canal</th><th>Magnitud</th><th>Valor</th></tr></thead><tbody id="sortida"></tbody></table></div>
+        </div>
+        <div class="evid"><b>Recordeu</b>Si els valors del servidor no tenen sentit però el monitor sèrie sí, el problema és al format: el node envia una cosa i el descodificador n'espera una altra.</div>
+      </div>
+    </section>
+
+    <section id="peces">
+      <h2>Com està fet un panell</h2>
+      <div class="cos">
+        <p>Totes les eines de panells, encara que tinguin noms diferents, fan servir les mateixes quatre peces.</p>
+        <div class="peces">
+          <div class="peca"><h3>Font de dades</h3><p>D'on llegeix el panell: una base de dades, un dispositiu o un servei. Una plantilla ja porta la font configurada.</p></div>
+          <div class="peca"><h3>Consulta</h3><p>Quina dada concreta es demana a la font: quin dispositiu, quin camp i de quin període. Per exemple: «la temperatura del dispositiu biblioteca-01 de les últimes 24 hores».</p></div>
+          <div class="peca"><h3>Giny</h3><p>La peça que dibuixa la dada: un número, un indicador, un gràfic… Cada giny té la seva consulta, un títol, una unitat i un rang.</p></div>
+          <div class="peca"><h3>Panell</h3><p>El conjunt de ginys en una pàgina, amb un enllaç propi, un període de temps i una actualització automàtica.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ginys">
+      <h2>Els ginys</h2>
+      <div class="cos">
+        <p>Cada giny respon bé un tipus de pregunta. Trieu-lo per la pregunta, no perquè queda bé.</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Giny</th><th>Respon</th><th>Exemple</th></tr></thead>
+            <tbody>
+              <tr><td><b>Valor actual</b></td><td>Quin valor hi ha ara?</td><td>Un número gran amb la unitat: 21,8 °C.</td></tr>
+              <tr><td><b>Indicador</b></td><td>El valor d'ara és alt o baix?</td><td>Una agulla o un arc entre un mínim i un màxim.</td></tr>
+              <tr><td><b>Gràfic temporal</b></td><td>Com ha canviat al llarg del temps?</td><td>Una línia amb les lectures de les últimes hores.</td></tr>
+              <tr><td><b>Estat</b></td><td>Va bé o va malament?</td><td>Un requadre que canvia de color segons uns llindars.</td></tr>
+              <tr><td><b>Taula</b></td><td>Quins són els últims valors exactes?</td><td>Les últimes lectures amb l'hora.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="punts">
+          <li><strong>Títol</strong>: diu què es mesura i on, en paraules que entengui tothom.</li>
+          <li><strong>Unitat</strong>: sempre. Un 800 sense unitat no vol dir res.</li>
+          <li><strong>Rang</strong>: el mínim i el màxim que té sentit per a aquella magnitud.</li>
+          <li><strong>Llindars</strong>: els valors a partir dels quals el color canvia.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="plantilla">
+      <h2>Adaptar un panell de plantilla</h2>
+      <div class="cos">
+        <p>Una plantilla és un panell que ja funciona amb unes dades d'exemple. Adaptar-la és més ràpid i segur que començar de zero, sempre que ho feu per ordre.</p>
+        <ol class="passos">
+          <li>Feu una còpia de la plantilla amb un nom propi. No modifiqueu mai l'original: la fan servir altres persones.</li>
+          <li>Canvieu la font de dades o el dispositiu perquè el panell llegeixi les vostres dades.</li>
+          <li>Repasseu els ginys un per un: canvieu la consulta perquè llegeixi el camp que toca.</li>
+          <li>Comproveu que cada giny mostra el mateix valor que el servidor en aquell moment.</li>
+          <li>Poseu a cada giny el títol, la unitat, el rang i, si cal, els llindars de color.</li>
+          <li>Esborreu els ginys que sobren i ordeneu els que queden: el més important, a dalt.</li>
+          <li>Trieu el període que es mostra i activeu l'actualització automàtica.</li>
+          <li>Obtingueu l'enllaç del panell i obriu-lo des d'un altre ordinador per comprovar que funciona.</li>
+        </ol>
+        <div class="evid"><b>Recordeu</b>Si un giny mostra «sense dades», gairebé sempre és la consulta: un nom de dispositiu o de camp mal escrit, o un període en què encara no hi havia dades.</div>
+      </div>
+    </section>
+
+    <section id="prova">
+      <h2>Proveu-ho</h2>
+      <div class="cos">
+        <p>Configureu aquest giny amb dades d'un dispositiu d'exemple i mireu què us diu la revisió.</p>
+        <div class="prova-panell">
+          <div class="controls">
+            <label>Camp<select id="pcamp"><option value="t">temperatura</option><option value="h">humitat</option><option value="c">co2</option><option value="l">llum</option></select></label>
+            <label>Giny<select id="pginy"><option value="v">Valor actual</option><option value="i">Indicador</option><option value="g" selected>Gràfic temporal</option></select></label>
+            <label>Unitat<select id="punit"><option value="">(cap)</option><option>°C</option><option>%</option><option>ppm</option><option>lux</option></select></label>
+            <label>Títol<input type="text" id="ptit" value="Giny 1" autocomplete="off"></label>
+            <label>Rang mínim<input type="number" id="pmin" value="0"></label>
+            <label>Rang màxim<input type="number" id="pmax" value="2000"></label>
+          </div>
+          <div>
+            <div class="giny" id="giny" aria-live="polite"></div>
+            <ul class="avisos" id="avisos" aria-live="polite"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="test">
+      <h2>Comproveu-ho</h2>
+      <div class="cos">
+        <p>Responeu en equip.</p>
+        <ol class="test" id="qtest">
+          <li data-ok="1"><p>On es converteixen els bytes del missatge en valors amb nom i unitat?</p><div class="opcions"><button type="button">Al gateway</button><button type="button">Al descodificador del servidor</button><button type="button">Al panell</button></div><div class="resposta">El gateway no entén el contingut. El descodificador del servidor el converteix en valors, i el panell els dibuixa.</div></li>
+          <li data-ok="0"><p>En format Cayenne LPP arriben els bytes <code>01 67 01 0E</code>. Quina temperatura és?</p><div class="opcions"><button type="button">27,0 °C</button><button type="button">270 °C</button><button type="button">1,4 °C</button></div><div class="resposta">01 és el canal, 67 vol dir temperatura i 01 0E és 270 en hexadecimal. La temperatura va en dècimes: 27,0 °C.</div></li>
+          <li data-ok="1"><p>Voleu mostrar com ha canviat una magnitud durant tot el matí. Quin giny trieu?</p><div class="opcions"><button type="button">Valor actual</button><button type="button">Gràfic temporal</button><button type="button">Indicador</button></div><div class="resposta">El gràfic temporal és l'únic dels tres que mostra l'evolució al llarg del temps.</div></li>
+          <li data-ok="0"><p>Heu copiat el panell de plantilla i tots els ginys mostren dades d'un altre dispositiu. Què heu de canviar primer?</p><div class="opcions"><button type="button">La font de dades o el dispositiu</button><button type="button">Els colors</button><button type="button">Els títols</button></div><div class="resposta">Mentre el panell llegeixi el dispositiu de la plantilla, la resta de canvis no serveixen de res.</div></li>
+          <li data-ok="1"><p>Un gràfic de temperatura té el rang de 0 a 2000. Què passarà?</p><div class="opcions"><button type="button">Res: es veurà igual</button><button type="button">La línia quedarà gairebé plana i els canvis no es veuran</button><button type="button">La temperatura es mostrarà en ppm</button></div><div class="resposta">Amb un rang tan ample, una variació de pocs graus ocupa una part minúscula del gràfic.</div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="fi">
+      <h2>I ara què?</h2>
+      <div class="cos">
+        <p>Ja sabeu com arriben les dades al panell i com s'adapta una plantilla. Aquesta píndola <strong>no us diu quines dades heu de mostrar ni amb quins ginys</strong>: ho decidireu vosaltres, pensant en qui mirarà el panell.</p>
+        <p class="destacat">Quina pregunta ha de respondre el vostre panell d'un sol cop d'ull?</p>
+        <div class="botons"><a class="boto" href="index.html" onclick="if(history.length>1){history.back();return false;}">Tornar a la fase</a></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+
+<script>
+(function(){
+  /* el camí d'una dada */
+  const C=[
+    ['El node llegeix i empaqueta','La funció de lectura obté 22,5 °C. La plantilla ho converteix en quatre bytes i ho envia per ràdio.','01 67 00 E1'],
+    ['El gateway rep i reenvia','El gateway rep el missatge xifrat, hi afegeix l\'RSSI i l\'SNR i el reenvia al servidor. No en sap llegir el contingut.','missatge xifrat + RSSI −97 dBm · SNR 5 dB'],
+    ['El servidor desxifra i descodifica','El servidor LoRaWAN comprova de quin dispositiu és, el desxifra i el descodificador converteix els bytes en un valor amb nom.','temperatura: 22.5'],
+    ['La integració el reenvia','Una integració envia cada missatge descodificat a un altre programa, per exemple per MQTT o per una crida web. Hi va el nom del dispositiu, l\'hora i els valors.','biblioteca-01 · 10:42 · temperatura 22.5'],
+    ['La base de dades el guarda','Cada valor es guarda amb la seva hora. Sense base de dades, el panell només podria mostrar l\'últim valor, no la història.','10:42 → 22.5 · 10:37 → 22.3 · 10:32 → 22.1'],
+    ['El panell el mostra','El panell consulta la base de dades cada pocs segons i dibuixa els ginys: el valor actual, el gràfic de les últimes hores…','22,5 °C']
+  ];
+  const et=[...document.querySelectorAll('#etapes li')], ec=document.getElementById('ecami'),
+        ba=document.getElementById('cant'), bs=document.getElementById('cseg'), sp=document.getElementById('cpas');
+  let p=0;
+  function mostra(n){
+    p=n;
+    et.forEach((e,i)=>{e.classList.toggle('feta',i<n);e.classList.toggle('actual',i===n);});
+    ec.innerHTML='<b>Pas '+(n+1)+' de '+C.length+'</b><h4>'+C[n][0]+'</h4><p>'+C[n][1]+'</p><span class="dada">'+C[n][2]+'</span>';
+    ba.disabled=n===0; bs.disabled=n===C.length-1; sp.textContent=(n+1)+' / '+C.length;
+  }
+  et.forEach((e,i)=>{e.addEventListener('click',()=>mostra(i));e.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();mostra(i);}});});
+  ba.addEventListener('click',()=>p>0&&mostra(p-1));
+  bs.addEventListener('click',()=>p<C.length-1&&mostra(p+1));
+  mostra(0);
+
+  /* descodificador Cayenne LPP (subconjunt) */
+  const T={
+    0x67:{n:'Temperatura',m:2,s:true,d:10,u:'°C'},
+    0x68:{n:'Humitat',m:1,s:false,d:2,u:'%'},
+    0x65:{n:'Llum',m:2,s:false,d:1,u:'lux'},
+    0x66:{n:'Presència',m:1,s:false,d:1,u:''},
+    0x73:{n:'Pressió',m:2,s:false,d:10,u:'hPa'},
+    0x02:{n:'Entrada analògica',m:2,s:true,d:100,u:''}
+  };
+  const EX=[['Temperatura','01 67 00 E1'],['Temperatura i humitat','01 67 00 E1 02 68 6C'],['Llum i presència','01 65 01 2C 02 66 01'],['Temperatura sota zero','01 67 FF EC'],['Missatge tallat','01 67 00']];
+  const hex=document.getElementById('hex'), bx=document.getElementById('bytesv'), so=document.getElementById('sortida'), exd=document.getElementById('exdeco');
+  EX.forEach(([n,v])=>{const b=document.createElement('button');b.type='button';b.textContent=n;b.onclick=()=>{hex.value=v;deco();exd.querySelectorAll('button').forEach(x=>x.classList.toggle('actual',x===b));};exd.appendChild(b);});
+  const fmt=(x)=>String(Math.round(x*100)/100).replace('.',',').replace('-','−');
+  function deco(){
+    const net=hex.value.trim().split(/\s+/).filter(Boolean);
+    const by=[]; let bo=true;
+    net.forEach(t=>{ if(/^[0-9a-fA-F]{2}$/.test(t)) by.push(parseInt(t,16)); else bo=false; });
+    bx.innerHTML=''; so.innerHTML='';
+    if(!bo){ so.innerHTML='<tr><td colspan="3">Escriviu bytes en hexadecimal de dos caràcters, separats per espais. Per exemple: 01 67 00 E1.</td></tr>'; return; }
+    const cls=new Array(by.length).fill('e'); let i=0;
+    while(i<by.length){
+      if(i+1>=by.length){ so.insertAdjacentHTML('beforeend','<tr><td>—</td><td>Missatge incomplet</td><td>Falten bytes</td></tr>'); break; }
+      const ch=by[i], ty=T[by[i+1]];
+      if(!ty){ so.insertAdjacentHTML('beforeend','<tr><td>'+ch+'</td><td>Tipus desconegut ('+by[i+1].toString(16).toUpperCase().padStart(2,'0')+')</td><td>El descodificador no el sap llegir</td></tr>'); cls[i]='c'; break; }
+      if(i+2+ty.m>by.length){ cls[i]='c'; cls[i+1]='t'; so.insertAdjacentHTML('beforeend','<tr><td>'+ch+'</td><td>'+ty.n+'</td><td>Missatge incomplet: falten bytes del valor</td></tr>'); break; }
+      let v=0; for(let k=0;k<ty.m;k++) v=v*256+by[i+2+k];
+      if(ty.s && v>=Math.pow(2,8*ty.m-1)) v-=Math.pow(2,8*ty.m);
+      v=v/ty.d;
+      cls[i]='c'; cls[i+1]='t'; for(let k=0;k<ty.m;k++) cls[i+2+k]='v';
+      const txt=ty.n==='Presència'?(v?'Sí':'No'):fmt(v)+(ty.u?' '+ty.u:'');
+      so.insertAdjacentHTML('beforeend','<tr><td>'+ch+'</td><td>'+ty.n+'</td><td><strong>'+txt+'</strong></td></tr>');
+      i+=2+ty.m;
+    }
+    by.forEach((b,k)=>{const s=document.createElement('span');s.className=cls[k];s.textContent=b.toString(16).toUpperCase().padStart(2,'0');bx.appendChild(s);});
+    if(!so.children.length) so.innerHTML='<tr><td colspan="3">Escriviu algun byte.</td></tr>';
+  }
+  hex.addEventListener('input',()=>{exd.querySelectorAll('button').forEach(x=>x.classList.remove('actual'));deco();});
+  exd.querySelectorAll('button')[1].classList.add('actual');
+  deco();
+
+  /* giny de prova */
+  const D={
+    t:{n:'temperatura',u:'°C',r:[0,40],v:[20.1,20.3,20.2,20.6,21.0,21.4,21.9,22.3,22.6,22.8,23.1,23.4,23.2,22.9,22.7,22.5]},
+    h:{n:'humitat',u:'%',r:[0,100],v:[41,42,42,44,46,47,49,51,52,53,54,55,53,52,50,49]},
+    c:{n:'co2',u:'ppm',r:[400,2000],v:[460,470,520,640,780,910,1020,1110,1150,980,760,650,700,820,940,1010]},
+    l:{n:'llum',u:'lux',r:[0,1000],v:[120,150,210,280,330,380,420,450,470,480,460,430,410,390,360,340]}
+  };
+  const gc=document.getElementById('pcamp'), gg=document.getElementById('pginy'), gu=document.getElementById('punit'),
+        gt=document.getElementById('ptit'), gmin=document.getElementById('pmin'), gmax=document.getElementById('pmax'),
+        out=document.getElementById('giny'), av=document.getElementById('avisos');
+  function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+  function dibuixa(){
+    const d=D[gc.value], vals=d.v, ult=vals[vals.length-1], u=gu.value, tit=gt.value.trim();
+    let mn=parseFloat(gmin.value), mx=parseFloat(gmax.value); const rangOk=!isNaN(mn)&&!isNaN(mx)&&mx>mn;
+    if(!rangOk){mn=d.r[0];mx=d.r[1];}
+    let h='<h4'+(tit?'':' class="buit"')+'>'+(tit?esc(tit):'Sense títol')+'</h4>';
+    const fv=String(ult).replace('.',',');
+    if(gg.value==='v'){
+      h+='<div class="gran">'+fv+(u?'<small>'+u+'</small>':'')+'</div>';
+    } else if(gg.value==='i'){
+      const f=Math.max(0,Math.min(1,(ult-mn)/(mx-mn))), a=Math.PI*(1-f), x=100+80*Math.cos(a), y=110-80*Math.sin(a);
+      h+='<svg viewBox="0 0 200 130" role="img" aria-label="Indicador"><path d="M20 110 A80 80 0 0 1 180 110" fill="none" stroke="#E2DFDD" stroke-width="16" stroke-linecap="round"/>'+
+         (f>0?'<path d="M20 110 A80 80 0 0 1 '+x.toFixed(1)+' '+y.toFixed(1)+'" fill="none" stroke="#BC2C2B" stroke-width="16" stroke-linecap="round"/>':'')+
+         '<text x="100" y="100" text-anchor="middle" font-size="26" font-weight="800" fill="#252122">'+fv+(u?' '+u:'')+'</text>'+
+         '<text x="20" y="128" text-anchor="middle" font-size="11" fill="#6B6566">'+mn+'</text><text x="180" y="128" text-anchor="middle" font-size="11" fill="#6B6566">'+mx+'</text></svg>';
+    } else {
+      const W=320,H=170,L=38,R=8,T=10,B=24;
+      const pts=vals.map((v,i)=>{const px=L+(W-L-R)*i/(vals.length-1);const fy=(v-mn)/(mx-mn);const py=T+(H-T-B)*(1-fy);return [px,py];});
+      h+='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Gràfic temporal"><defs><clipPath id="cl"><rect x="'+L+'" y="'+T+'" width="'+(W-L-R)+'" height="'+(H-T-B)+'"/></clipPath></defs>'+
+         '<line x1="'+L+'" y1="'+(H-B)+'" x2="'+(W-R)+'" y2="'+(H-B)+'" stroke="#E2DFDD"/><line x1="'+L+'" y1="'+T+'" x2="'+L+'" y2="'+(H-B)+'" stroke="#E2DFDD"/>'+
+         '<text x="'+(L-5)+'" y="'+(T+8)+'" text-anchor="end" font-size="10" fill="#6B6566">'+mx+'</text><text x="'+(L-5)+'" y="'+(H-B)+'" text-anchor="end" font-size="10" fill="#6B6566">'+mn+'</text>'+
+         '<text x="'+L+'" y="'+(H-6)+'" font-size="10" fill="#6B6566">8:00</text><text x="'+(W-R)+'" y="'+(H-6)+'" text-anchor="end" font-size="10" fill="#6B6566">ara</text>'+
+         '<polyline clip-path="url(#cl)" fill="none" stroke="#BC2C2B" stroke-width="2.5" stroke-linejoin="round" points="'+pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')+'"/>'+
+         (u?'<text x="'+(W-R)+'" y="'+(T+8)+'" text-anchor="end" font-size="10" fill="#6B6566">'+u+'</text>':'')+'</svg>';
+    }
+    out.innerHTML=h;
+    const A=[];
+    if(!u) A.push([0,'Falta la unitat: qui miri el panell no sabrà què vol dir el número.']);
+    else if(u!==d.u) A.push([0,'La unitat no correspon al camp: '+d.n+' es mesura en '+d.u+'.']);
+    else A.push([1,'La unitat és correcta.']);
+    if(!tit) A.push([0,'Poseu-hi un títol que digui què es mesura i on.']);
+    else if(/^(giny|panel|panell|widget|gr[aà]fic|nou)\s*\d*$/i.test(tit)) A.push([0,'«'+esc(tit)+'» no diu què es mesura. Feu servir un títol que s\'entengui sense explicacions.']);
+    else A.push([1,'El títol diu què es mesura.']);
+    if(gg.value!=='v'){
+      const vmn=Math.min(...vals), vmx=Math.max(...vals);
+      if(!rangOk) A.push([0,'El rang no és vàlid: el màxim ha de ser més gran que el mínim.']);
+      else if(vmn<mn||vmx>mx) A.push([0,'Hi ha valors fora del rang: part de la informació no es veurà.']);
+      else if((vmx-vmn)/(mx-mn)<0.15) A.push([0,'El rang és massa ample per a aquests valors: els canvis gairebé no es veuran.']);
+      else A.push([1,'El rang deixa veure bé els valors.']);
+    }
+    av.innerHTML=A.map(a=>'<li class="'+(a[0]?'ok':'ko')+'">'+a[1]+'</li>').join('');
+  }
+  [gc,gg,gu,gt,gmin,gmax].forEach(e=>e.addEventListener('input',dibuixa));
+  dibuixa();
+
+  /* test */
+  document.querySelectorAll('#qtest > li').forEach(q=>{
+    const ok=+q.dataset.ok, bs=[...q.querySelectorAll('.opcions button')], r=q.querySelector('.resposta');
+    r.dataset.t=r.textContent;
+    bs.forEach((b,k)=>b.addEventListener('click',()=>{
+      bs.forEach(x=>x.classList.remove('be','mal'));
+      b.classList.add(k===ok?'be':'mal');
+      r.textContent=(k===ok?'Correcte! ':'No és aquesta. ')+r.dataset.t;
+      r.classList.add('vista');
+    }));
+  });
+})();
+</script>
+</body>
+
+</html>

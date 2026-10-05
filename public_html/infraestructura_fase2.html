@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fase 2 · Equips d'infraestructura · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+  /* activitats */
+  .activitat > h2 .n{display:block;font-weight:900;font-stretch:80%;font-size:2.6rem;line-height:1;color:var(--vermell);margin-bottom:.35rem}
+  .etiqueta{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:700;text-decoration:none;background:var(--blanc);color:var(--negre);border:1px solid var(--linia);border-radius:7px;padding:.3rem .65rem}
+  .etiqueta b{color:var(--vermell)}
+  .etiqueta:hover{border-color:var(--vermell)}
+  .etiquetes{display:flex;flex-wrap:wrap;gap:.45rem}
+  .passos{list-style:none;counter-reset:p;max-width:68ch}
+  .passos li{counter-increment:p;position:relative;padding:0 0 .75rem 2.4rem}
+  .passos li::before{content:counter(p);position:absolute;left:0;top:.05rem;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--negre);color:var(--blanc);
+    font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .infra{background:var(--blanc);border:1px solid var(--linia);border-left:5px solid var(--negre);border-radius:10px;padding:1rem 1.2rem;max-width:68ch}
+  .infra h3{margin-top:0 !important;font-size:1rem !important}
+  .infra p,.infra li{color:var(--gris-text)}
+  .infra ul{margin-top:.4rem;padding-left:1.1rem}
+  .rols{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;list-style:none;max-width:68ch}
+  .rols li{background:var(--blanc);border:1px solid var(--linia);border-radius:10px;padding:.8rem 1rem}
+  .rols b{display:block}
+  .rols span{color:var(--gris-text);font-size:.92rem;line-height:1.45;display:block;margin-top:.15rem}
+
+  /* comprovació */
+  .check{list-style:none;max-width:68ch}
+  .check li{padding:.5rem 0 .5rem 2rem;position:relative;border-bottom:1px solid var(--linia)}
+  .check li:last-child{border-bottom:0}
+  .check li::before{content:"";position:absolute;left:0;top:.75rem;width:1.05rem;height:1.05rem;border:2px solid var(--negre);border-radius:4px}
+  .no{list-style:none;max-width:68ch}
+  .no li{padding:.45rem 0 .45rem 2rem;position:relative;color:var(--gris-text)}
+  .no li::before{content:"";position:absolute;left:.15rem;top:1.05rem;width:.8rem;height:2px;background:var(--gris-text)}
+
+  /* navegació entre fases */
+  .navfases{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:clamp(2rem,5vw,3rem)}
+  .navfases a{display:block;text-decoration:none;color:var(--negre);background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.2rem}
+  .navfases a:hover{border-color:var(--negre)}
+  .navfases small{display:block;color:var(--gris-text);font-weight:700;font-size:.85rem}
+  .navfases b{font-size:1.1rem}
+  .navfases .seg{text-align:right;background:var(--negre);color:var(--blanc);border-color:var(--negre)}
+  .navfases .seg small{color:#CFC9C9}
+  @media (max-width:880px){ .rols{grid-template-columns:1fr} }
+  @media (max-width:520px){ .navfases{grid-template-columns:1fr} }
+  /* barra de fases (substitueix l'índex) */
+  .barra-sup{flex-wrap:wrap}
+  .fasesnav{display:flex;flex-wrap:wrap;gap:.35rem}
+  .fasesnav a{font-weight:700;font-size:.85rem;text-decoration:none;color:var(--negre);background:var(--blanc);border:1px solid var(--linia);border-radius:7px;padding:.35rem .6rem}
+  .fasesnav a:hover{border-color:var(--negre)}
+  .fasesnav a[aria-current="page"]{background:var(--negre);color:var(--blanc);border-color:var(--negre)}
+
+  /* activitats amb codi del diari */
+  section.activitat{display:block}
+  .act-cap{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.4rem}
+  .codi-act{flex:0 0 auto;font-weight:900;font-stretch:80%;font-size:clamp(1.6rem,3.4vw,2.2rem);line-height:1;color:var(--blanc);background:var(--vermell);border-radius:10px;padding:.45rem .65rem}
+  .act-cap h2{font-weight:850;font-stretch:84%;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.08;letter-spacing:-.01em;max-width:34ch}
+  .act-cap .etiquetes{margin-top:.6rem}
+  .activitat > .cos{max-width:820px;margin-left:clamp(0rem,6vw,5.2rem)}
+  .part{border-top:1px solid var(--linia);padding-top:1.4rem;margin-top:1.8rem}
+  .part:first-child{border-top:0;padding-top:0;margin-top:0}
+  .part > * + *{margin-top:1rem}
+  .infra > * + *{margin-top:.5rem}
+  .part h3{margin-top:0 !important;font-size:1.3rem !important;font-weight:800 !important}
+  .bloc{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .bloc h3{margin-top:0 !important}
+  .descarrega{display:flex;flex-direction:column;gap:.4rem;align-items:flex-start}
+  .descarrega small{color:var(--gris-text);font-size:.82rem}
+  .bloc > * + *{margin-top:1rem}
+  .bloc + .bloc{margin-top:1rem}
+  .aldossier{background:var(--blanc);border:1px solid var(--linia);border-left:5px solid var(--vermell);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.6rem}
+  .aldossier h3{margin-top:0 !important;font-size:1rem !important;color:var(--vermell)}
+  .aldossier p{color:var(--negre);margin-top:.3rem}
+  .aldossier ul{list-style:none;margin-top:.4rem}
+  .aldossier li{padding:.55rem 0;border-top:1px solid var(--linia)}
+  .aldossier li:first-child{border-top:0;padding-top:.2rem}
+  .aldossier a{font-weight:700;text-decoration:none;color:var(--negre)}
+  .aldossier a b{color:var(--vermell)}
+  .aldossier a:hover{text-decoration:underline}
+  .aldossier span{display:block;color:var(--gris-text);font-size:.95rem;line-height:1.5;margin-top:.15rem}
+  .flux{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:880px){ .activitat > .cos{margin-left:0} .flux{grid-template-columns:1fr 1fr} }
+  @media (max-width:480px){ .flux{grid-template-columns:1fr} .act-cap{flex-direction:column;gap:.6rem} }
+  /* recuadre de píndola */
+  .pindola{background:var(--blanc);border:2px solid var(--vermell);border-radius:12px;padding:1.1rem 1.3rem;max-width:68ch}
+  .pindola > * + *{margin-top:.6rem}
+  .pindola small{display:block;font-weight:800;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--vermell)}
+  .pindola h3{margin-top:.2rem !important;font-size:1.1rem !important}
+  .pindola p{color:var(--gris-text)}
+  .infra .taula{margin-top:.8rem}
+  .infra .passos{margin-top:.6rem}
+  .cos{min-width:0}
+  .aldossier .ap{font-weight:700;color:var(--negre)}
+  .aldossier .ap b{color:var(--vermell)}
+  td .ap{font-weight:400}
+  .aldossier .ap-infra{max-width:none;border-top:1px solid var(--linia);padding-top:.6rem;margin-top:.4rem;font-weight:400}
+  .cos{min-width:0}
+  .taula table.compacta{min-width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <nav class="fasesnav" aria-label="Fases del projecte · equips d'infraestructura">
+      <a href="infraestructura_fase1.html">Fase 1</a>
+      <a href="infraestructura_fase2.html" aria-current="page">Fase 2</a>
+      <a href="infraestructura_fase3.html">Fase 3</a>
+      <a href="infraestructura_fase4.html">Fase 4</a>
+      <a href="infraestructura_fase5.html">Fase 5</a>
+      <a href="infraestructura_fase6.html">Fase 6</a>
+    </nav>
+    <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAhEAAADcCAYAAADOd/NRAAANtklEQVR42u3dW27cSBIFUEmojdiAv7qX4WXPMuwvAdJSNB8DdtdYKqlI5isizgGEftiSSOYjbmaRVY8PpPPj2/e3qMf+/PryqAVrtr32h3gMWEVEMdH22h445MklQEF0vZwLIEQoJCZfAIQIoG54FIhBiACFBECIAEGCcdxcCUIEJl6ELECIABCGASHCBGy1jf4LNGDAJucNiLSt9gSECMoXH4UndhtqPxAiUIgUIe2m3YCHhwf3RJQWbXJ3b4Q+BggRmOQpEKT0LRAiAAQIQIgg/oTvJQ0AIQJBQpBw3oAQAQgQMQMpIEQAAEIE5FuZAwgRgMAEIESguAIgRICgBCBEgCILIEQAAhIgRIBiC4AQAQAIEfCvbLsRdlcAIQIQIAAhAgBAiMAKHgAhAjIFCUEIECIAACECrOYdN8BHLi4BZzy/vjwqgHMCxHbtBRFgFjsRnA4QtwoaAEIElFjZRw1wAEIECpvAAyBEUDcwrBQkshZnYQ0QIkCQsAsBCBEozoxhFwIQIlDoABAiZq2Cty9NKCjc018cF4AQ8W7iNRELGVUKth0eQIgAdocaAQIQIihF4WsTIACECFC8AYSIlVa3Vrtkp48DQkTjSXX70oQK4B6zdyPshgBCBFhJDwkQrh0gREDwYi58AQgRAIAQQSTVV9XeFwIQIqBoUQfgvYtLcLvIWA229fz68rhS8R7VxgKLuWTkXLKnv5njKBki/hwk9wyEWwPr+ns/+1yOI4PtTPEwuPMUEG2v3bf/7tG2Z+aZs3McXCIOyJbfd+/P3jMJHAksdiMgf0hsvSvRcixl2n39z99/3XVdfv76LTj1CBH3NsBZKzVg7wL/1TttKqzzisBKE6fVYL7FTKRj6bljslqAuP67wsSJEDEqMNxqwHsab/TqdRtAH/3Or4rOR99zz4CstEKvcq6CobZrHVxH9alouxJn65gwcdzUpzP2NNiRDn3v96wyWCK9nXemArnKudiFmNsHrr/0UyGYO3citkI+c0ci+6o3wxah3QgTsDZx3Bl3IexINNiJiBIgjhbhz77vyJ+dudFz9dWOAmMXIusuQ8T+5gPjxgUIDu5E3EpdPRqnQrrbs8Ku/nhV1t0IAVFbEDtA3Hu/Hp/cE9H6Arb4eZk/OMnuRF12IQSIleeDqvOSXY6TIcIOhAFbrYAKccaRY49xTKMKvCBxMkQo/ueK49EnLRSzuJOltoNcBIkTIYK2gUIxun19qgYQL2UghK5f1AUJIWKJone9O6F4mMj1AQQI4SW6UB/Ale1u/s/eGRMFAH0GVveUYdCt9k5unrSwKkd/Ih+7EYFDxD2Fe4U/u/7/Pgo87jn3DoGKHAgSQkSACf3ox4G3+hhxOxJxRXlXQQS1SlZ4alCQCBYiek8GLd9O+6P/t2dHw02XOYOG4jZv7nBDM4JEP5eIk8KeyfurmzFvTSrb9/3552c+N+OrYzLB1fpIdGLMISsvpKqOlZ+/fj+uUMS9PXagEPHnINpTcHvvNOwZ8NufXRdL4WHtnYaW7aOtBdaW/UXoZjbvEzE5CCkqcQutyVtfW+HYRswjK16nVXYAqr+sIURgch8UFgRGevaVXv1r5X4rSAgREJJdCIF1xeOpGFQFicVDhA/hwuTe7v0/INK4iRJKfv76/ejRz0VDBPBveDgaILyUwch+UrW/CRLjXQzbMR3Hjg4wOpBUDL2rPP4pRNA0VX70cwSLvhNhttUl+fv6CuMnQ3+dHSQqvX+EENE5POhoggSsEk4qvcndNrfOChNV5nchYkJ4+Oj3CRNWl6A/9gkTgkQ/bqycGCAAGBMk1JU+7EQcbORbnfJoh7Ej8fUKKtpLGnYh0FfWCxIzinrmHYnyOxF7O9RXzyMLAQBrhwnztBAxNcm2+nstQo3VmmMF+s3nsxasQoQOqogAAufi8/TIuTpjkCgdIvY0qI5mwlUUwKLP/C5E2C0A4F09GFUTMgWJp0onSw5W+kD0xWWW2uqeiIU6FQIOYM4XIhJ1lqOdyQ6OYg3Erg29w0SGOuHNpv4ICj7PAsEGuK4PPYt99JojRHwSKKomSwQI4H1dML+/556IRkly+3I1FG7AIrPK4lOIaBAeXAlBAu2BIFExSAgRwgMKJ7AzSPQIExHrSrp7Ij5qhBaNLTSsXcSjfcInkCNMtK4N0W60dGNlw/DQ+y5e1gwwrgIc81X4jzC+qgcJIaJBeNg60vU/j/wMyFAUBCuhYPTPm93nejy9ESVIpLonolUDHg0Q1NoRUCzhf4V++5p9DCvsSlRr/8s9F6XKilp4iB8kKt8b4b4Qqve16+OaFfJb7kpE2I1IsxNxtsEECOxCwNo7DkeOd9bvb1UjVl/E+xTPBc9RQCHyytCOiP7l2OsEiRQ7EaMvsCJfe4fALoQgYech5rnMChKZ32ag/JtNeYICBRtq9KnouxIr1qvwIUIIoPJOwcqTvXBjxa5fvg8S2XayQ4eI0TdTwioBJcpkn2lLXHgQJFqGiSx1K2yIWD0AnDm+COFm9dV+j+Nb4ZwjT/aChHa5Hku3vgSJWDViyDtWtnzWdYWL99X52OFAsT12bm5azdvX7m3b7e+NOLbZ77B65j0lVnkPiadRBfvsJ1+u9smZt46l17tm+uTQmDsHVXYZXAMBovVYrBQoj4aBFWrCZfTB7UlPmV+y2HOtrn/P9u8eMxVIIGN4qOrorsTsHYnLjKJtRX3uWgkQ+yaxKDcgaq3/vx4KkAAxYvyu1teifdTE01aoKhZ2xVjRs5pCG699PSu2zd7aNLN+P1Uvpj3OfXsWuMczwYIPcCT0jwr+EYv+iouivfVjVpB4Upz6h5JW11YbjZ/UrFCBKAvdGUHiMjvFrNAAZz+6tffvEB7aBAn3HVB1FyJCYOfzGrBqjdbgO5Nd64K+0o2TeyebiI9QrjwpCjlz+9as69/zXEefU+RziTKf3RMmRtaQywNTG8Mug0KG6y5A0HJXYuRjn0IEpYrTvRPrjAnRJAyC657F52dhYlSQeNJ9AKv2XC8lZXxpTMi+HSY+CxJCBDSeiL6ajExWUGtOyBwkhAgYOHEIEEQ361M5Ffy5QeJWmOi9G+GeCAQJgCRhYvSjoEIEAKHCf6vdlowLiesdiRE3V3o5AyCJKu810urDvbJfJ09nAJC+oI/+vV7KbMfLGQAJVHzH0y0MrPz+L0IEAAQOE8KDEAHADT53RViYxT0RAIAQAQAIEQAleCkCIQIAECLgHm5gAsDTGVBIy61zQRKMayGCw51WEak3wXz0c/UDqDuuhQgwsTT9nUIF1BnXQgSYZIQKMLbvPo7rMS1EgAmm+zEKEpBnXF+/5CFEgElm2ioGiD2uPeIJJhrHD8bFIXYiwCQz7VzsSmBcxx7XdiLAROO8QP8/xE4EmGSmn6MdCYxrIQIIPNF8VMhHHYOXNzCuY45rL2eAieZm8X5+fXlU2Kmyqjau97MTAYUnmnsnku3v9T42L21gXI8Z063GtZ0IECC6fo+VLcb1egGi1bgWIkCAECTQXsWvzdFxLUSAAGHyBeP6ECECTDRpgwgY131/jhABVtvLBgm7EUKdcb02IQIwIQOHAqkQAYojBSd/jOsWhAhA4SJ18fzx7fvb9ZcxKESACbdQwbdrQ8u+0ytMZOmne+YKIQIURCjZt43F84QIwISfhJeX9veZVrsSVfunEAEgSAh7CBEAMDrMzApOK+w8CRFQYJWWZZvbKjdGe89sp4xPYKxMiADhBVL0uaO/070kQgSYVGGxwhjhJQWPPgsRABQOErNfPqncx4QIKCLLm+vY0REkrn/umZ+d4WWMHveA7Pl5F0MMBAnyB4nZbX/9+88W7xbnku0+iFntK0QAFAkSqwTJ7Rj2FnIheD1CBAClVs+tdiGEGvdEQOrJEnoVUOePEAGgkDpvhAigDjs7bQpqlaJa6VyFCAArStfS+YXgxkpAUXBNl3lyQz+JxU4EAGkKr5cuxrITAQoFfNg/Iu1MeOpkzvnbiQATDYRe1QsQ887fTgSH/fj2/U1RMtFQq++ssjuhP69xHYQIAA4XrVGhQmhY85oIEWCygSZ9q3Wg0G/XJ0RAAV56Qlg1rntwYyUAIESAFRqAEAEACBEAkI8dRiECABAiAPbzseIgRACKJSBEAABCBPAPN2GBcd3a7B1GIQIAECLAqgUwroUIoAM3V4JxLUQAANMJEVihDlb9RiwwrvOMayECCk44giwgRGDyJnyb//j2/W07nu3f9UksDmKMayECAaTohLN6/9G3MK7XJ0SYxN9W+BkIgPoWxBszQgQm+8Krllnttucliwp9y/gxrqP2JyGicNFv3dFMhCYc/QRqjWshwq6BAmHCGdJubpjEuM43roUIAUKQMOGUDZf6Kub8cz/bs+o6UurCqK3mtlmLc+nVh1YNEMaMcb1637o+F51VhzVBar+mbdby2Hv0lyi7D8aKMR1hXOukOqsJUjueardex7najojxQqVxfe+x6pg6qIlRe6bsF5mvnbFjXK/CjZU6puNVLJyvsY5+LkSACcd5KrIY1+NcNCXEmXAyFke7DxjXcce1nQhQcJ0PGAeH2IkAqxeTJhjXQgSYdIQHMK7HMaCTUVC0vXaONxaMHSL24+fXl0cdUaczCeoDadvYjagY1337n86ow5kA9YP0bZshTBg7zOjPX/U7nRJMQooaGNeHxvV/AZGqO7LCyA3wAAAAAElFTkSuQmCC" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <span class="codi">FASE 2 · EQUIPS D'INFRAESTRUCTURA</span>
+    <h1>Proposta de solució</h1>
+    <p>Coneixem el gateway provisional, mesurem la cobertura de l'institut, proposem on aniran els dos gateways i presentem el mapa al primer punt de control.</p>
+    <nav class="salts" aria-label="Activitats d'aquesta fase">
+      <a href="#objectiu">Objectiu</a>
+      <a href="#f2-1">F2.1</a>
+      <a href="#f2-2">F2.2</a>
+      <a href="#f2-3">F2.3</a>
+      <a href="#f2-4">F2.4</a>
+      <a href="#f2-5">F2.5</a>
+      <a href="#f2-6">F2.6</a>
+      <a href="#f2-7">F2.7</a>
+      <a href="#tancament">Abans de passar a la Fase 3</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="objectiu">
+      <h2>Objectiu de la fase</h2>
+      <div class="cos">
+        <p class="destacat">Saber quin senyal arriba a cada zona de l'institut i proposar on aniran els dos gateways perquè totes les zones quedin cobertes.</p>
+        <p>Començareu amb el gateway provisional i un node de prova. Amb les mesures fareu el mapa de cobertura, i a partir del mapa decidireu la ubicació del gateway 1 i del gateway 2. La fase acaba amb la presentació del mapa i el primer punt de control.</p>
+        <p class="nota">Com feu servir aquesta pàgina: al diari, cada sessió té un codi (F2.1, F2.2…). Busqueu aquest codi aquí i seguiu els passos de l'activitat en ordre.</p>
+      </div>
+    </section>
+
+    <!-- F2.1 -->
+    <section id="f2-1" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F2.1</span>
+        <div>
+          <h2>Píndola: placa i Arduino IDE</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <p>En aquest punt no s'escriu res al dossier. Apunteu els problemes que trobeu i com els resoleu: els fareu servir a l'apartat 7.4, a l'F4.16.</p>
+        </div>
+        <p>Per mesurar la cobertura fareu servir un node de prova, i a la Fase 4 donareu suport a la instal·lació dels nodes. Per això heu de saber com és la placa, com s'instal·la l'entorn i com s'hi carrega un programa.</p>
+        <ol class="passos">
+          <li>Obriu la píndola i seguiu-la en ordre.</li>
+          <li>Instal·leu l'Arduino IDE i afegiu-hi el suport per a la placa, tal com explica la píndola.</li>
+          <li>Connecteu la placa a l'ordinador amb el cable USB i comproveu que l'Arduino IDE la reconeix i que teniu seleccionat el port correcte.</li>
+          <li>Carregueu l'exemple de la píndola i comproveu que funciona.</li>
+          <li>Apunteu cada problema, el missatge d'error i com l'heu resolt.</li>
+        </ol>
+        <div class="pindola">
+          <small>Píndola formativa</small>
+          <h3>La placa i l'Arduino IDE</h3>
+          <p>Com és la placa comuna, com s'instal·la l'Arduino IDE i com es carrega un programa a la placa.</p>
+          <div class="botons"><a class="boto" href="pindola_placa_arduino.html">Obrir la píndola</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- F2.2 -->
+    <section id="f2-2" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F2.2</span>
+        <div>
+          <h2>Primer contacte amb el gateway provisional</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <p>En aquest punt no s'escriu res al dossier. Guardeu les notes del gateway provisional (model, ubicació, alimentació, connexió i configuració): les fareu servir a la fitxa tècnica del gateway 1, a l'F4.4.</p>
+        </div>
+        <p>El professorat ha posat en marxa un gateway provisional perquè pugueu començar a treballar abans d'instal·lar els definitius. La primera part de la píndola us explica què fa un gateway i com es comprova al servidor que funciona.</p>
+        <div class="pindola">
+          <small>Píndola formativa</small>
+          <h3>El gateway i el mapa de cobertura</h3>
+          <p>Què fa un gateway, com es comprova que funciona, què volen dir l'RSSI i l'SNR i com es fa un mapa de cobertura.</p>
+          <div class="botons"><a class="boto" href="pindola_cobertura.html#gateway">Obrir la píndola</a></div>
+        </div>
+        <ol class="passos">
+          <li>Llegiu les seccions «Què fa un gateway» i «Com sabeu que funciona» de la píndola.</li>
+          <li>Localitzeu el gateway provisional: on és, com s'alimenta i com es connecta a la xarxa.</li>
+          <li>Entreu a la seva configuració amb les dades que us dona el professorat.</li>
+          <li>Comproveu que està configurat a la regió EU868.</li>
+          <li>Comproveu al servidor que el gateway hi apareix connectat i mireu quan va enviar l'últim missatge.</li>
+          <li>Apunteu el model, la ubicació, l'alimentació, la connexió, la configuració i els problemes que trobeu.</li>
+        </ol>
+        <p class="nota">No apunteu contrasenyes a les notes compartides: guardeu-les en un lloc privat de l'equip.</p>
+      </div>
+    </section>
+
+    <!-- F2.3 -->
+    <section id="f2-3" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F2.3</span>
+        <div>
+          <h2>Mapa de cobertura amb el node de prova</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <p>Encara no escriviu l'apartat 3: guardeu les dades per a l'F2.5.</p>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap3-2"><b>Ap. 3</b> · 3.2 Mapa de cobertura</a><span>Ara només apunteu on era el gateway provisional i amb què heu mesurat. El plànol el completareu a l'F2.4.</span></li>
+            <li><a href="dossier_infraestructura.html#ap3-3"><b>Ap. 3</b> · 3.3 Mesures</a><span>Guardeu totes les mesures (punt, zona, RSSI, SNR i valoració): les passareu a la taula a l'F2.5.</span></li>
+          </ul>
+        </div>
+        <p>Amb un node de prova que envia missatges a través del gateway provisional, mesurareu quin senyal arriba des de diferents punts de l'institut. La segona part de la píndola explica com es fa un mapa de cobertura, i la de LoRaWAN, com afecten l'edifici i la distància a l'abast.</p>
+        <div class="pindola">
+          <small>Píndola formativa</small>
+          <h3>El gateway i el mapa de cobertura</h3>
+          <p>Com es mesura el senyal en un punt, com es classifica i com es pinta el plànol.</p>
+          <div class="botons"><a class="boto" href="pindola_cobertura.html#mapa">Obrir la píndola</a></div>
+        </div>
+        <div class="pindola">
+          <small>Píndola formativa</small>
+          <h3>LoRaWAN a la pràctica</h3>
+          <p>Què es pot enviar, el temps a l'aire, l'abast dins de l'edifici, cada quant convé enviar i quant dura la bateria.</p>
+          <div class="botons"><a class="boto" href="pindola_lorawan.html">Obrir la píndola</a></div>
+        </div>
+        <ol class="passos">
+          <li>Apunteu on és el gateway provisional: planta, alçada i si és a l'interior o a l'exterior. Totes les mesures depenen d'aquesta posició.</li>
+          <li>Recolliu el node de prova i comproveu que els seus missatges arriben al servidor.</li>
+          <li>Prepareu un plànol de l'institut i marqueu-hi els punts on mesurareu: com a mínim un a cada zona del projecte.</li>
+          <li>Abans de sortir de l'aula, aviseu el professorat.</li>
+          <li>A cada punt, deixeu el node uns minuts i apunteu l'RSSI i l'SNR de diversos missatges.</li>
+          <li>Classifiqueu cada mesura amb aquesta taula:</li>
+        </ol>
+        <div class="taula"><table class=""><thead><tr><th>Senyal</th><th>RSSI</th><th>SNR</th></tr></thead><tbody><tr><td><strong>Bo</strong></td><td>més de −100 dBm</td><td>més de 0 dB</td></tr><tr><td><strong>Just</strong></td><td>entre −100 i −115 dBm</td><td>—</td></tr><tr><td><strong>Feble</strong></td><td>menys de −115 dBm</td><td>o bé menys de −10 dB</td></tr></tbody></table></div>
+        <p class="nota">Si l'SNR baixa de −10 dB, el senyal és feble encara que l'RSSI sigui bo.</p>
+      </div>
+    </section>
+
+    <!-- F2.4 -->
+    <section id="f2-4" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F2.4</span>
+        <div>
+          <h2>Completar el mapa de cobertura</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap2-5"><b>Ap. 2</b> · 2.5 Llocs possibles per als gateways</a><span>Què heu observat, la taula de llocs possibles (lloc, per què és bo i inconvenients) i fotografies de cada lloc.</span></li>
+            <li><a href="dossier_infraestructura.html#ap3-2"><b>Ap. 3</b> · 3.2 Mapa de cobertura</a><span>Enganxeu-hi el plànol amb els punts pintats segons la qualitat del senyal.</span></li>
+          </ul>
+        </div>
+        <p>Completeu el mapa amb totes les zones del projecte i busqueu llocs possibles per als gateways.</p>
+        <ol class="passos">
+          <li>Abans de sortir de l'aula, aviseu el professorat.</li>
+          <li>Mesureu els punts que us falten, sobretot les zones exteriors i les més allunyades del gateway provisional.</li>
+          <li>Passeu totes les mesures a una taula: punt, zona, RSSI, SNR i valoració (bo, just o feble).</li>
+          <li>Pinteu el plànol amb un color per a cada qualitat de senyal i marqueu les zones on el senyal és just o feble.</li>
+          <li>Busqueu llocs possibles per als gateways: alts, amb accés a la xarxa i, si pot ser, alimentació per PoE, i fàcils d'arribar-hi per fer el manteniment.</li>
+          <li>Feu fotografies de cada lloc i escriviu l'apartat 2.5. Enganxeu el plànol a l'apartat 3.2.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- F2.5 -->
+    <section id="f2-5" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F2.5</span>
+        <div>
+          <h2>Proposta d'ubicació dels gateways (ap. 3)</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <p><a href="dossier_infraestructura.html#ap3"><b>Ap. 3</b> Proposta i justificació</a></p>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap3-1"><b>3.1</b> Què hem investigat</a><span>La xerrada de l'F1.3, el gateway provisional de l'F2.2, les píndoles i les fonts consultades, explicant per a què us han servit.</span></li>
+            <li><a href="dossier_infraestructura.html#ap3-2"><b>3.2</b> Mapa de cobertura</a><span>Comproveu que hi ha el plànol i on era el gateway provisional.</span></li>
+            <li><a href="dossier_infraestructura.html#ap3-3"><b>3.3</b> Mesures</a><span>La taula amb totes les mesures i la seva valoració.</span></li>
+            <li><a href="dossier_infraestructura.html#ap3-4"><b>3.4</b> Ubicació proposada dels gateways</a><span>Per a cada gateway: ubicació, alçada, zones que cobreix, alimentació, connexió a la xarxa i accés per al manteniment.</span></li>
+            <li><a href="dossier_infraestructura.html#ap3-5"><b>3.5</b> Zones cobertes</a><span>Quin gateway cobreix cada zona, amb quin senyal previst, i què proposeu si alguna no queda ben coberta.</span></li>
+            <li><a href="dossier_infraestructura.html#ap3-6"><b>3.6</b> Alternatives</a><span>Altres ubicacions que heu considerat, amb avantatges i inconvenients.</span></li>
+            <li><a href="dossier_infraestructura.html#ap3-7"><b>3.7</b> Per què aquesta proposta i és viable?</a><span>Per què responen la necessitat de l'apartat 2, si es poden fer amb el temps, el material i els permisos, i quines limitacions hi veieu.</span></li>
+            <li><a href="dossier_infraestructura.html#ap3-8"><b>3.8</b> Què considerarem un bon resultat</a><span>De 3 a 5 aspectes que ha de complir la xarxa perquè considereu que funciona bé.</span></li>
+          </ul>
+        </div>
+        <p>Cada equip lidera un gateway, però la cobertura s'ha de mirar conjuntament: coordineu-vos amb l'altre equip d'infraestructura.</p>
+        <ol class="passos">
+          <li>Repasseu les notes de la xerrada, del gateway provisional, de les píndoles i del mapa de cobertura.</li>
+          <li>Amb el plànol, decidiu on aniran el gateway 1 i el gateway 2.</li>
+          <li>Per a cada ubicació, decidiu com s'alimentarà, com es connectarà a la xarxa, a quina alçada anirà i com s'hi accedirà.</li>
+          <li>Comproveu sobre el plànol quin gateway cobreix cada zona. Si alguna no queda ben coberta, proposeu una solució.</li>
+          <li>Penseu almenys una ubicació alternativa i expliqueu per què l'heu descartada.</li>
+          <li>Escriviu la justificació i de 3 a 5 criteris d'un bon resultat. Per exemple: «totes les zones tenen senyal bo o just».</li>
+          <li>Repartiu els subapartats entre els membres i, quan acabeu, llegiu-los tots junts.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- F2.6 -->
+    <section id="f2-6" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F2.6</span>
+        <div>
+          <h2>Material (ap. 4) i preparació de la presentació</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <p><a href="dossier_infraestructura.html#ap4"><b>Ap. 4</b> Material</a></p>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap4-1"><b>4.1</b> Llista de material</a><span>Gateway, antena, cable de xarxa, injector PoE o alimentador, suport i fixacions i node de prova: si ja el tenim, on es compra i quant costa el que falta.</span></li>
+            <li><a href="dossier_infraestructura.html#ap4-2"><b>4.2</b> Disponibilitat</a><span>Què no teniu, què cal solucionar (permisos, accés al lloc, punt de xarxa…) i el cost total estimat.</span></li>
+          </ul>
+        </div>
+        <h3>Material</h3>
+        <ol class="passos">
+          <li>Feu la llista de material per instal·lar cada gateway.</li>
+          <li>Marqueu el que ja té l'institut. Per al que falta, busqueu on es compra i el preu.</li>
+          <li>Calculeu el cost total i indiqueu què cal solucionar: permisos, accés al lloc, punt de xarxa, endoll…</li>
+        </ol>
+        <h3>Presentació del mapa de cobertura</h3>
+        <ol class="passos">
+          <li>Prepareu la presentació: mapa de cobertura, mesures, ubicació proposada dels gateways i zones amb senyal just o feble.</li>
+          <li>Prepareu-vos per respondre preguntes sobre la cobertura de cada zona: tingueu la taula de mesures a mà.</li>
+          <li>Repartiu qui explica cada part: han de parlar tots els membres.</li>
+          <li>Assageu la presentació.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- F2.7 -->
+    <section id="f2-7" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F2.7</span>
+        <div>
+          <h2>Presentació del mapa de cobertura</h2>
+          <div class="etiquetes"><span class="pc">Punt de control 1</span></div>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <p>En aquest punt no s'escriu res de nou al dossier. Si el professorat demana canvis al mapa o a la ubicació dels gateways, corregiu-los als apartats 2.5, 3 i 4 abans de començar l'F3.1.</p>
+        </div>
+        <p>La sessió de presentacions comença amb el mapa de cobertura: tot el grup ha de saber quin senyal arriba a cada zona abans de presentar les propostes.</p>
+        <ol class="passos">
+          <li>Presenteu el mapa de cobertura, les mesures, la ubicació dels gateways i les zones cobertes. Parlen tots els membres.</li>
+          <li>Responeu els dubtes sobre la cobertura de cada zona.</li>
+          <li>Durant la resta de presentacions, apunteu on es proposa posar cada node i comproveu al vostre mapa si hi arriba bé el senyal.</li>
+          <li>Si algun node quedaria en un lloc amb senyal feble, apunteu-ho: ho tindreu en compte en la ubicació dels gateways.</li>
+          <li>Apunteu els comentaris del professorat.</li>
+        </ol>
+        <p class="nota">El punt de control no és una nota: si el professorat demana ajustos, els feu i continueu.</p>
+      </div>
+    </section>
+
+    <section id="tancament">
+      <h2>Abans de passar a la Fase 3</h2>
+      <div class="cos">
+        <h3 style="margin-top:0">Apartats del dossier que heu de tenir fets</h3>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Ap.</th><th>Contingut</th><th>Activitat</th></tr></thead>
+            <tbody>
+              <tr><td class="num">2</td><td><a href="dossier_infraestructura.html#ap2-5"><strong class="ap">Zona i necessitat</strong></a> · 2.5 Llocs possibles per als gateways</td><td class="fase">F2.4</td></tr>
+              <tr><td class="num">3</td><td><a href="dossier_infraestructura.html#ap3"><strong class="ap">Proposta i justificació</strong></a> · 3.1 a 3.8</td><td class="fase">F2.5</td></tr>
+              <tr><td class="num">4</td><td><a href="dossier_infraestructura.html#ap4"><strong class="ap">Material</strong></a></td><td class="fase">F2.6</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Llista de comprovació</h3>
+        <ul class="check">
+          <li>Tenim guardades les notes del gateway provisional.</li>
+          <li>El mapa de cobertura té com a mínim un punt mesurat a cada zona del projecte.</li>
+          <li>L'apartat 2.5 té els llocs possibles per als gateways i les fotografies.</li>
+          <li>L'apartat 3 té el mapa (3.2), les mesures (3.3), la ubicació dels gateways (3.4) i les zones cobertes (3.5).</li>
+          <li>L'apartat 4 té el material per instal·lar els gateways i el cost total estimat.</li>
+          <li>Hem presentat el mapa i el professorat ha validat la ubicació dels gateways al punt de control 1.</li>
+          <li>Sabem on es proposa posar cada node i si hi arriba bé el senyal.</li>
+        </ul>
+
+        <h3>El que encara no heu de tenir</h3>
+        <ul class="no">
+          <li>Les dates d'instal·lació dels gateways.</li>
+          <li>Cap gateway definitiu instal·lat.</li>
+          <li>El panell de salut de la xarxa.</li>
+        </ul>
+        <p>Tot això ho fareu a les fases 3 i 4.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="navfases" aria-label="Fases">
+    <a href="infraestructura_fase1.html"><small>← Fase anterior</small><b>Fase 1 · Presentació</b></a>
+    <a class="seg" href="infraestructura_fase3.html"><small>Fase següent →</small><b>Fase 3 · Planificació</b></a>
+  </nav>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+</body>
+</html>
