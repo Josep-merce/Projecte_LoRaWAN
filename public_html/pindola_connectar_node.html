@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Píndola · Connectar el node a la xarxa · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+
+  /* activitats */
+  .temps{display:grid;grid-template-columns:1fr auto;max-width:640px;border:1px solid var(--linia);border-radius:12px;background:var(--blanc);overflow:hidden}
+  .temps div{padding:.65rem 1rem;border-bottom:1px solid var(--linia)}
+  .temps div:nth-child(even){text-align:right;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .temps .tot{background:var(--negre);color:var(--blanc);font-weight:800;border-bottom:0}
+  .temps .pind{color:var(--vermell-fosc);background:var(--vermell-suau)}
+  .activitat{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:clamp(1.3rem,3vw,2rem);scroll-margin-top:1rem}
+  .activitat + .activitat{margin-top:1rem}
+  .act-cap{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
+  .act-num{font-weight:800;font-size:.8rem;background:var(--negre);color:var(--blanc);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dur{font-weight:700;font-size:.8rem;background:var(--fons);color:var(--gris-text);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dos{font-weight:700;font-size:.8rem;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.3rem .6rem;border-radius:6px;text-decoration:none;white-space:nowrap}
+  .act-dos:hover{background:var(--vermell);color:var(--blanc)}
+  .activitat h3{font-weight:850;font-stretch:86%;font-size:clamp(1.35rem,2.4vw,1.7rem);line-height:1.1;margin:0 0 .6rem}
+  .activitat h4{font-size:1rem;font-weight:750;margin:1.3rem 0 .45rem;color:var(--vermell)}
+  .activitat p{max-width:68ch;margin-top:.5rem}
+  .activitat.pindola{border:2px solid var(--vermell);background:linear-gradient(var(--blanc),var(--blanc))}
+  .activitat.pindola .act-num{background:var(--vermell)}
+  .passos-l{list-style:none;counter-reset:ps;margin-top:.4rem;max-width:70ch}
+  .passos-l li{counter-increment:ps;position:relative;padding:.5rem 0 .5rem 2.6rem;border-top:1px solid var(--linia)}
+  .passos-l li:first-child{border-top:0}
+  .passos-l li::before{content:counter(ps);position:absolute;left:0;top:.45rem;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--negre);color:var(--blanc);font-weight:800;font-size:.85rem;display:grid;place-items:center}
+  .pistes{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.45rem 2rem;max-width:70ch;margin-top:.3rem}
+  .pistes li{padding-left:1.3rem;position:relative}
+  .pistes li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+  .clau{margin-top:1.1rem;background:var(--negre);color:var(--blanc);border-radius:10px;padding:1rem 1.2rem;font-weight:750;font-size:1.1rem;max-width:62ch}
+  .clau small{display:block;font-weight:600;color:#E06A69;font-size:.78rem;letter-spacing:.02em;margin-bottom:.2rem}
+  .evid{margin-top:1rem;border-left:4px solid var(--vermell);padding:.2rem 0 .2rem 1rem;max-width:66ch}
+  .evid b{display:block;font-size:.85rem;color:var(--vermell)}
+  .exemple{color:var(--gris-text);font-style:italic}
+  .check-l{list-style:none;max-width:60ch}
+  .check-l label{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-top:1px solid var(--linia);cursor:pointer}
+  .check-l li:first-child label{border-top:0}
+  .check-l input{width:1.15rem;height:1.15rem;margin-top:.2rem;accent-color:var(--vermell);flex:none}
+  .no-l{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem}
+  .no-l li{background:var(--blanc);border:1px dashed #BDB6B4;border-radius:8px;padding:.4rem .8rem;color:var(--gris-text);text-decoration:line-through;text-decoration-color:var(--vermell)}
+  .seguent{display:flex;justify-content:space-between;gap:1rem;margin-top:clamp(2rem,5vw,3rem);flex-wrap:wrap}
+  .seguent a{flex:1;min-width:220px;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.2rem;text-decoration:none;color:var(--negre)}
+  .seguent a:hover{border-color:var(--vermell)}
+  .seguent small{display:block;color:var(--gris-text);font-weight:600;font-size:.8rem}
+  .seguent b{font-size:1.05rem}
+  .seguent a.nx{text-align:right}
+  @media (max-width:880px){.pistes{grid-template-columns:1fr}}
+
+  .passos{list-style:none;counter-reset:p;max-width:68ch}
+  .passos li{counter-increment:p;position:relative;padding:0 0 .75rem 2.4rem}
+  .passos li::before{content:counter(p);position:absolute;left:0;top:.05rem;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--negre);color:var(--blanc);
+    font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* índex de píndoles */
+  .pind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
+  .pind-card{display:flex;flex-direction:column;gap:.35rem;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;color:var(--negre);transition:border-color .2s,transform .2s}
+  .pind-card:hover{border-color:var(--vermell);transform:translateY(-2px)}
+  .pind-card .meta{display:flex;gap:.4rem;flex-wrap:wrap}
+  .pind-card .f{font-size:.72rem;font-weight:800;background:var(--negre);color:var(--blanc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card .est{font-size:.72rem;font-weight:700;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card b{font-size:1.02rem;line-height:1.25}
+  .pind-card span.d{font-size:.88rem;color:var(--gris-text)}
+  .pind-card.disabled{opacity:.55;pointer-events:none;background:#FAFAF9}
+  .pind-card.disabled .f{background:#A39C9D}
+  .pind-card.disabled .est{background:var(--fons);color:var(--gris-text)}
+
+  /* capçalera de píndola */
+  .pind-hero{background:var(--vermell);color:var(--blanc);border-radius:14px;padding:clamp(1.4rem,3vw,2.2rem);margin-top:clamp(2.5rem,6vw,4rem);scroll-margin-top:1rem}
+  .pind-hero small{font-weight:800;font-size:.8rem;background:rgba(0,0,0,.18);padding:.28rem .6rem;border-radius:6px}
+  .pind-hero h2{font-weight:900;font-stretch:82%;font-size:clamp(2rem,5vw,3.2rem);line-height:1;margin-top:.8rem;letter-spacing:-.015em}
+  .pind-hero p{margin-top:.8rem;max-width:60ch;color:#FBE9E9}
+
+  /* recorregut de la dada */
+  .viatge{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .etapes{list-style:none;display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;position:relative}
+  .etapes li{text-align:center;padding:.8rem .3rem;border-radius:10px;border:2px solid var(--linia);background:var(--fons);font-weight:700;font-size:.85rem;line-height:1.2;transition:all .25s;cursor:pointer}
+  .etapes li svg{display:block;width:34px;height:34px;margin:0 auto .45rem;stroke:var(--gris-text);transition:stroke .25s}
+  .etapes li.feta{border-color:var(--negre);background:var(--blanc)}
+  .etapes li.feta svg{stroke:var(--negre)}
+  .etapes li.actual{border-color:var(--vermell);background:var(--vermell);color:var(--blanc)}
+  .etapes li.actual svg{stroke:var(--blanc)}
+  .explica{margin-top:1rem;min-height:7.5rem;background:var(--fons);border-radius:10px;padding:1rem 1.2rem}
+  .explica b{display:block;color:var(--vermell);font-size:.8rem;letter-spacing:.02em}
+  .explica h4{margin:.15rem 0 .35rem;font-size:1.15rem}
+  .explica .dada{display:inline-block;margin-top:.5rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;background:var(--negre);color:#fff;padding:.3rem .6rem;border-radius:6px}
+  .ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:.9rem;gap:.6rem}
+  .ctrl button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .ctrl button.pri{background:var(--vermell)}
+  .ctrl button:disabled{opacity:.35;cursor:default}
+  .ctrl span{font-size:.85rem;color:var(--gris-text);font-weight:600}
+
+  /* peces */
+  .peces{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .peca{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem;border-top:4px solid var(--negre)}
+  .peca:last-child{border-top-color:var(--vermell)}
+  .peca h3{margin:0 0 .4rem !important;font-size:1.2rem}
+  .peca p{color:var(--gris-text);margin-top:.35rem;font-size:.95rem}
+  .peca ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text);font-size:.93rem}
+
+  /* test */
+  .test{counter-reset:t;list-style:none;display:flex;flex-direction:column;gap:1rem}
+  .test > li{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;counter-increment:t}
+  .test > li > p{font-weight:700;margin:0 0 .6rem}
+  .test > li > p::before{content:counter(t) ". ";color:var(--vermell)}
+  .opcions{display:flex;flex-direction:column;gap:.4rem}
+  .opcions button{font:inherit;text-align:left;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.55rem .8rem;cursor:pointer;color:var(--negre)}
+  .opcions button:hover{border-color:var(--linia)}
+  .opcions button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .opcions button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .resposta{margin-top:.6rem;font-size:.92rem;color:var(--gris-text);display:none}
+  .resposta.vista{display:block}
+  @media (max-width:880px){
+    .pind-grid,.peces{grid-template-columns:1fr}
+    .etapes{grid-template-columns:repeat(3,1fr)}
+  }
+
+  /* botons de filtre / selecció */
+  .parts{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none}
+  .parts button{font:inherit;font-size:.85rem;font-weight:700;border:2px solid var(--linia);background:var(--blanc);color:var(--negre);border-radius:8px;padding:.4rem .7rem;cursor:pointer}
+  .parts button:hover{border-color:var(--negre)}
+  .parts button.actual{background:var(--vermell);border-color:var(--vermell);color:var(--blanc)}
+
+  /* catàleg de sensors */
+  .cat{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:1rem}
+  .sens{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;border-top:4px solid var(--negre)}
+  .sens[hidden]{display:none}
+  .sens h3{margin:0 !important;font-size:1.15rem;line-height:1.2}
+  .sens .mesura{color:var(--gris-text);font-size:.92rem;margin-top:.15rem}
+  .sens .etq{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+  .sens .etq span{font-size:.72rem;font-weight:800;padding:.2rem .5rem;border-radius:5px;background:var(--fons);color:var(--gris-text)}
+  .sens .etq span.cn{background:var(--negre);color:var(--blanc)}
+  .sens .etq span.alt{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .sens dl{display:grid;grid-template-columns:auto 1fr;gap:.25rem .8rem;margin-top:.7rem;font-size:.9rem}
+  .sens dt{font-weight:700}
+  .sens dd{color:var(--gris-text)}
+  .sens p.obs{font-size:.9rem;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--linia)}
+
+  /* connexió */
+  .cable{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .cable svg{width:100%;height:auto;display:block}
+
+  /* codi */
+  pre.prog{background:var(--negre);color:#F2EFEF;border-radius:12px;padding:1.1rem 1.3rem;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;line-height:1.6}
+  pre.prog .cm{color:#A39C9D;font-style:italic}
+  pre.prog .kw{color:#E06A69;font-weight:700}
+  pre.prog .fn{color:#FFFFFF;font-weight:700}
+  pre.prog .st{color:#F4C9A8}
+
+  /* fitxa tècnica */
+  .fitxa{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;overflow:hidden}
+  .fitxa-cap{background:var(--negre);color:var(--blanc);padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
+  .fitxa-cap b{font-size:1.2rem;font-stretch:88%}
+  .fitxa-cap small{color:#CFC9C9;font-size:.8rem}
+  .fitxa table{min-width:480px}
+  .fitxa tbody tr{cursor:pointer}
+  .fitxa tbody tr:hover td{background:#FBF9F8}
+  .fitxa tbody tr.actual td{background:var(--vermell-suau)}
+  .fitxa tbody tr.actual td:first-child{box-shadow:inset 4px 0 0 var(--vermell)}
+  .fitxa td:first-child{font-weight:700;white-space:nowrap}
+  .fitxa td.val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88rem}
+  .fitxa .explica{margin:0;border-radius:0;border-top:1px solid var(--linia)}
+
+  /* precisió */
+  .regle{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem}
+  .regle svg{width:100%;height:auto;display:block}
+
+  /* desplegable */
+  details.noms{background:var(--blanc);border:1px solid var(--linia);border-left:4px solid var(--vermell);border-radius:12px;max-width:72ch}
+  details.noms summary{cursor:pointer;font-weight:750;padding:.9rem 1.2rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+  details.noms summary::-webkit-details-marker{display:none}
+  details.noms summary::after{content:"+";font-weight:800;font-size:1.3rem;color:var(--vermell);line-height:1}
+  details.noms[open] summary::after{content:"−"}
+  details.noms summary:focus-visible{outline:3px solid var(--vermell);outline-offset:2px;border-radius:10px}
+  details.noms .dins{padding:0 1.2rem 1.1rem}
+  details.noms .dins h4{font-size:1rem;font-weight:750;color:var(--vermell);margin-top:1rem}
+  details.noms .dins p{margin-top:.35rem;max-width:66ch}
+  @media (max-width:880px){.cat{grid-template-columns:1fr}}
+  .cos{min-width:0}
+  .video{position:relative;aspect-ratio:16/9;width:100%;max-width:820px;border-radius:12px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .tauler{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;max-width:820px}
+  .llista{background:#EBE8E6;border-radius:12px;padding:.8rem;min-height:9rem}
+  .llista h3{margin:0 0 .6rem !important;font-size:.95rem !important;font-weight:800}
+  .llista h3 small{font-weight:600;color:var(--gris-text)}
+  .targeta{background:var(--blanc);border-radius:9px;padding:.65rem .75rem;box-shadow:0 1px 0 rgba(0,0,0,.12);font-size:.92rem}
+  .targeta + .targeta{margin-top:.5rem}
+  .targeta .tt{font-weight:700;display:block}
+  .targeta .meta{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
+  .targeta .meta span{font-size:.75rem;font-weight:700;border-radius:5px;padding:.1rem .4rem;background:var(--fons);color:var(--gris-text)}
+  .targeta .meta span.et{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .targeta .acc{display:flex;gap:.3rem;margin-top:.5rem}
+  .targeta .acc button{font:inherit;font-size:.78rem;font-weight:700;background:var(--negre);color:var(--blanc);border:0;border-radius:6px;padding:.25rem .5rem;cursor:pointer}
+  .targeta .acc button:hover{background:var(--vermell)}
+  .targeta .acc button:focus-visible{outline:3px solid var(--vermell);outline-offset:2px}
+  .estat-tauler{margin-top:.8rem;font-weight:600;color:var(--gris-text);max-width:68ch}
+  @media (max-width:700px){.tauler{grid-template-columns:1fr}}
+
+  .cos{min-width:0}
+  .calc{display:grid;grid-template-columns:repeat(2,minmax(0,220px));gap:1rem;align-items:end;max-width:560px}
+  .calc label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.92rem}
+  .calc input{font:inherit;padding:.6rem .8rem;border:1px solid var(--linia);border-radius:8px;background:var(--blanc);width:100%}
+  .veredicte{margin-top:1rem;border-radius:12px;padding:1rem 1.2rem;font-weight:700;max-width:560px;border:2px solid var(--linia);background:var(--blanc)}
+  .veredicte small{display:block;font-weight:400;color:var(--gris-text);margin-top:.25rem}
+  .veredicte.bo{border-color:#1E7A3C;background:#E3F1E7}
+  .veredicte.just{border-color:#B7791F;background:#FBF0DC}
+  .veredicte.feble{border-color:var(--vermell);background:var(--vermell-suau)}
+  .lectures{list-style:none;display:flex;flex-direction:column;gap:.6rem;max-width:640px}
+  .lectures li{background:var(--blanc);border:1px solid var(--linia);border-radius:10px;padding:.8rem 1rem;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between}
+  .lectures .val{font-weight:700}
+  .lectures .bt{display:flex;gap:.4rem}
+  .lectures button{font:inherit;font-size:.88rem;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.35rem .7rem;cursor:pointer}
+  .lectures button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .lectures button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .lectures .exp{flex-basis:100%;font-size:.9rem;color:var(--gris-text);display:none}
+  .lectures .exp.vista{display:block}
+  @media (max-width:520px){ .calc{grid-template-columns:1fr} }
+
+  /* fase 4: píndoles */
+  .etapes.e4{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:880px){.etapes.e4{grid-template-columns:repeat(2,1fr)}}
+  .caixa.si{border-top:4px solid #1E7A3C}
+  .caixa.mai{border-top:4px solid var(--vermell)}
+  .caixa ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text)}
+  .caixa li + li{margin-top:.25rem}
+  .lectures .val{font-weight:600}
+  .clau-hex{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;word-break:break-all}
+
+  /* descodificador */
+  .deco{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.2rem 1.3rem}
+  .deco > * + *{margin-top:.9rem}
+  .deco label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.92rem}
+  .deco input{font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;padding:.6rem .8rem;border:1px solid var(--linia);border-radius:8px;background:var(--fons);width:100%}
+  .bytes{display:flex;flex-wrap:wrap;gap:.3rem}
+  .bytes span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;font-weight:700;padding:.3rem .45rem;border-radius:6px;background:var(--fons);border:2px solid transparent}
+  .bytes span.c{border-color:var(--negre)}
+  .bytes span.t{background:var(--negre);color:var(--blanc)}
+  .bytes span.v{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .bytes span.e{background:#FBF0DC;color:#7A4D0B}
+  .llegenda{display:flex;flex-wrap:wrap;gap:.8rem;font-size:.85rem;color:var(--gris-text)}
+  .llegenda i{display:inline-block;width:.9rem;height:.9rem;border-radius:3px;vertical-align:-2px;margin-right:.3rem}
+
+  /* panell de prova */
+  .prova-panell{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:1.2rem;align-items:start}
+  .controls{display:flex;flex-direction:column;gap:.8rem}
+  .controls label{display:flex;flex-direction:column;gap:.3rem;font-weight:700;font-size:.9rem}
+  .controls select,.controls input{font:inherit;padding:.5rem .7rem;border:1px solid var(--linia);border-radius:8px;background:var(--blanc);width:100%}
+  .giny{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;min-height:15rem}
+  .giny h4{font-size:1rem;margin:0 0 .6rem}
+  .giny h4.buit{color:var(--gris-text);font-style:italic;font-weight:600}
+  .giny .gran{font-weight:900;font-stretch:80%;font-size:3.6rem;line-height:1;margin-top:1.4rem}
+  .giny .gran small{font-size:1.4rem;font-weight:700;color:var(--gris-text);margin-left:.3rem}
+  .giny svg{width:100%;height:auto;display:block}
+  .avisos{list-style:none;margin-top:.8rem;display:flex;flex-direction:column;gap:.4rem}
+  .avisos li{font-size:.9rem;border-radius:8px;padding:.5rem .8rem}
+  .avisos li.ok{background:#E3F1E7;color:#14532B}
+  .avisos li.ko{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  @media (max-width:700px){.prova-panell{grid-template-columns:1fr}}
+
+  /* diagnosi */
+  .diag{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem;max-width:720px}
+  .diag .cami{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.9rem}
+  .diag .cami span{font-size:.78rem;font-weight:700;background:var(--fons);color:var(--gris-text);padding:.2rem .5rem;border-radius:5px}
+  .diag .preg{font-weight:800;font-size:1.2rem;line-height:1.3}
+  .diag .ajuda{color:var(--gris-text);margin-top:.4rem}
+  .diag .resol{border-left:5px solid var(--vermell);padding-left:1rem}
+  .diag .resol b{display:block;color:var(--vermell);font-size:.85rem}
+  .diag .bt{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+  .diag button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1.1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .diag button.pri{background:var(--vermell)}
+  .diag button.sec{background:var(--fons);color:var(--negre)}
+  .diag button:focus-visible,.ctrl button:focus-visible,.opcions button:focus-visible,.lectures button:focus-visible{outline:3px solid var(--vermell);outline-offset:2px}
+
+  /* calculadora EUI */
+  .calc.una{grid-template-columns:minmax(0,320px)}
+  .eui{margin-top:1rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;font-weight:700;max-width:560px;border-radius:12px;padding:1rem 1.2rem;border:2px solid var(--linia);background:var(--blanc);word-break:break-all}
+  .eui small{display:block;font-family:var(--font);font-weight:400;font-size:.9rem;color:var(--gris-text);margin-top:.3rem}
+  .eui em{font-style:normal;color:var(--vermell)}
+
+  /* simulador d'alertes */
+  .sim{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.2rem 1.3rem}
+  .sim > * + *{margin-top:1rem}
+  .sim-ctrl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+  .sim-ctrl label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.9rem}
+  .sim-ctrl output{font-weight:600;color:var(--vermell)}
+  .sim-ctrl input{accent-color:var(--vermell);width:100%}
+  .sim-graf svg{width:100%;height:auto;display:block}
+  .sim .veredicte{max-width:none}
+  @media (max-width:700px){.sim-ctrl{grid-template-columns:1fr}}
+
+  /* llista de sortida */
+  .progres{font-weight:700;color:var(--gris-text);margin-top:.6rem}
+  .progres.fet{color:#1E7A3C}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <a class="tornar" href="index.html" onclick="if(history.length>1){history.back();return false;}">← Tornar a la fase</a>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <span class="codi">PÍNDOLA FORMATIVA · F4.4</span>
+    <h1>Connectar el node a la xarxa</h1>
+    <p>Després d'aquesta píndola sabreu com es registra un node al servidor, què són el DevEUI, el JoinEUI i l'AppKey, on s'han de guardar les claus, què passa quan el node entra a la xarxa i com es veu que les dades arriben.</p>
+    <nav class="salts" aria-label="Continguts d'aquesta pàgina">
+      <a href="#registrar">Registrar un node</a>
+      <a href="#claus">Les tres claus</a>
+      <a href="#guardar">On es guarden</a>
+      <a href="#join">Entrar a la xarxa</a>
+      <a href="#dades">Com arriben les dades</a>
+      <a href="#prova">Proveu-ho</a>
+      <a href="#falla">Si no es connecta</a>
+      <a href="#test">Comproveu-ho</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="registrar">
+      <h2>Registrar un node</h2>
+      <div class="cos">
+        <p>Un servidor LoRaWAN no accepta missatges de qualsevol aparell. Abans que un node pugui enviar dades, el servidor l'ha de conèixer: s'hi ha de crear un <strong>dispositiu</strong> amb el seu nom, les seves claus i la seva configuració. Això és registrar-lo.</p>
+        <ol class="flux">
+          <li><strong>Crear el dispositiu</strong><span>Al servidor, dins d'una aplicació, amb un nom i les claus.</span></li>
+          <li><strong>Posar les claus al node</strong><span>Les mateixes claus van al programa del node.</span></li>
+          <li><strong>Entrar a la xarxa</strong><span>El node demana permís i el servidor comprova que les claus coincideixen.</span></li>
+          <li><strong>Enviar dades</strong><span>El servidor rep els missatges i els associa al dispositiu.</span></li>
+        </ol>
+        <h3>Dues maneres d'activar un node</h3>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Activació</th><th>Com funciona</th><th>Al projecte</th></tr></thead>
+            <tbody>
+              <tr><td><b>OTAA</b><br><span class="exemple">Over-The-Air Activation</span></td><td>El node demana entrar a la xarxa cada vegada que s'engega. Si les claus són correctes, el servidor l'accepta i tots dos generen unes claus de sessió noves.</td><td><strong>És la que fareu servir.</strong></td></tr>
+              <tr><td><b>ABP</b><br><span class="exemple">Activation By Personalization</span></td><td>Les claus de sessió s'escriuen a mà al node i al servidor i no canvien mai. És més senzill però menys segur, i dona problemes quan el node es reinicia.</td><td>No la fareu servir.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Al servidor, el dispositiu també porta la <strong>regió</strong> (a Europa, EU868) i el format de les dades. El professorat us indica quina configuració heu de triar.</p>
+      </div>
+    </section>
+
+    <section id="claus">
+      <h2>Les tres claus</h2>
+      <div class="cos">
+        <p>Amb OTAA, cada node té tres valors que han de ser iguals al servidor i al programa del node. Totes tres s'escriuen en hexadecimal: xifres del 0 al 9 i lletres de la A a la F. Toqueu cada fila per veure què és.</p>
+        <div class="fitxa">
+          <div class="fitxa-cap"><b>Dispositiu d'exemple</b><small>Valors inventats</small></div>
+          <div class="taula" style="border:0;border-radius:0">
+            <table>
+              <thead><tr><th>Clau</th><th>Valor</th><th>Mida</th></tr></thead>
+              <tbody id="fclaus">
+                <tr data-k="0" tabindex="0"><td>DevEUI</td><td class="val">A8610A0000123456</td><td>8 bytes</td></tr>
+                <tr data-k="1" tabindex="0"><td>JoinEUI</td><td class="val">0000000000000000</td><td>8 bytes</td></tr>
+                <tr data-k="2" tabindex="0"><td>AppKey</td><td class="val">••••••••••••••••••••••••••••••••</td><td>16 bytes</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="explica" id="eclaus" aria-live="polite"></div>
+        </div>
+        <div class="evid"><b>Compte amb l'ordre dels bytes</b>Alguns programes demanen les claus «de més a menys significatiu» (MSB) i d'altres al revés (LSB). Si el servidor us ofereix tots dos formats, feu servir el que indiqui la plantilla. Una clau amb els bytes girats és una clau equivocada.</div>
+      </div>
+    </section>
+
+    <section id="guardar">
+      <h2>On es guarden les claus</h2>
+      <div class="cos">
+        <p>Qui té l'AppKey d'un node pot fer-se passar per ell i enviar dades falses al servidor. El DevEUI i el JoinEUI no són contrasenyes, però juntes, les tres claus identifiquen el vostre node. Per això al projecte cap de les tres es publica.</p>
+        <div class="dues">
+          <div class="caixa si">
+            <h3>On han de ser</h3>
+            <ul>
+              <li>Al dispositiu del servidor.</li>
+              <li>A la part de claus del programa del node.</li>
+              <li>En un lloc privat de l'equip, compartit només amb l'equip i el professorat.</li>
+            </ul>
+          </div>
+          <div class="caixa mai">
+            <h3>On no han de ser mai</h3>
+            <ul>
+              <li>Al dossier ni al portafoli.</li>
+              <li>En una captura de pantalla.</li>
+              <li>En un repositori o una carpeta pública.</li>
+              <li>Al xat de classe o en un correu a tot el grup.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="evid"><b>Si se n'escapa una</b>Aviseu el professorat. Al servidor es genera una AppKey nova, es posa al programa i es torna a carregar. És una feina de cinc minuts, però només si se sap.</div>
+      </div>
+    </section>
+
+    <section id="join">
+      <h2>Què passa quan el node entra a la xarxa</h2>
+      <div class="cos">
+        <p>Aquest procés s'anomena <em>join</em> (unió). Passa cada vegada que el node s'engega. Aneu pas a pas.</p>
+        <div class="viatge">
+          <ol class="etapes" id="etapes">
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>El node s'engega</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M8 14l4-4 4 4"/><path d="M5 7a10 10 0 0 1 14 0M8 4.5a6 6 0 0 1 8 0"/></svg>Petició d'unió</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V8M8 22h8"/><path d="M6.5 5.5a8 8 0 0 1 11 0M9 8a4 4 0 0 1 6 0"/></svg>El gateway la reenvia</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="7" rx="1.5"/><rect x="4" y="14" width="16" height="7" rx="1.5"/><path d="M8 6.5h.01M8 17.5h.01"/></svg>El servidor comprova</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/></svg>Acceptació</li>
+            <li tabindex="0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 16l4-5 4 3 6-8"/></svg>Arriben dades</li>
+          </ol>
+          <div class="explica" id="ejoin" aria-live="polite"></div>
+          <div class="ctrl"><button type="button" id="jant">← Anterior</button><span id="jpas"></span><button type="button" class="pri" id="jseg">Següent →</button></div>
+        </div>
+        <div class="evid"><b>Recordeu</b>L'AppKey no viatja mai per l'aire. El node i el servidor la fan servir per signar i xifrar els missatges, i així comproven que tots dos la tenen.</div>
+      </div>
+    </section>
+
+    <section id="dades">
+      <h2>Com es veu que arriben les dades</h2>
+      <div class="cos">
+        <p>Al servidor, cada dispositiu té una vista en directe on apareix tot el que fa. Els noms exactes canvien d'un servidor a un altre, però hi trobareu aquests elements:</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Què hi veieu</th><th>Què vol dir</th></tr></thead>
+            <tbody>
+              <tr><td><b>Unió</b> (join)</td><td>El node ha demanat entrar i el servidor l'ha acceptat. N'hi ha una cada vegada que el node s'engega.</td></tr>
+              <tr><td><b>Missatge de pujada</b> (uplink)</td><td>Un missatge de dades del node cap al servidor.</td></tr>
+              <tr><td><b>Comptador</b> (fCnt)</td><td>El número del missatge. Augmenta d'un en un i torna a començar després de cada unió. Si en falta algun, s'ha perdut un missatge.</td></tr>
+              <tr><td><b>Port</b> (fPort)</td><td>Un número que indica de quin tipus és el missatge. La plantilla el fixa.</td></tr>
+              <tr><td><b>Dades en brut</b> (payload)</td><td>El contingut del missatge en bytes, escrit en hexadecimal. Per exemple: <code>01 67 00 E1</code>.</td></tr>
+              <tr><td><b>Dades descodificades</b></td><td>Els mateixos bytes convertits en valors amb nom i unitat. Per exemple: temperatura 22,5.</td></tr>
+              <tr><td><b>RSSI i SNR</b></td><td>Amb quin senyal ha arribat el missatge a cada gateway que l'ha rebut.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="destacat">El node funciona quan arriben missatges seguits i els valors descodificats coincideixen amb els del monitor sèrie.</p>
+        <p>Com es passa dels bytes als valors ho veureu a la píndola <a href="pindola_servidor_panell.html">Del servidor al panell</a>.</p>
+      </div>
+    </section>
+
+    <section id="prova">
+      <h2>Proveu-ho</h2>
+      <div class="cos">
+        <p>El dossier és visible al portafoli. Decidiu si cada cosa s'hi pot posar.</p>
+        <ul class="lectures" id="publicar"></ul>
+      </div>
+    </section>
+
+    <section id="falla">
+      <h2>Si no es connecta</h2>
+      <div class="cos">
+        <p>Mireu alhora el monitor sèrie i la vista en directe del servidor. El que veieu a cada lloc us diu on és el problema.</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Què veieu</th><th>Causa probable</th><th>Què cal fer</th></tr></thead>
+            <tbody>
+              <tr><td>El node prova d'unir-se, però al servidor no apareix res.</td><td>El missatge no arriba a cap gateway, o el node és d'una altra regió.</td><td>Comproveu l'antena i la regió (EU868). Acosteu el node al gateway.</td></tr>
+              <tr><td>Al servidor apareixen peticions d'unió, però el node no entra.</td><td>Les claus no coincideixen.</td><td>Reviseu les claus caràcter per caràcter i l'ordre dels bytes (MSB o LSB).</td></tr>
+              <tr><td>El node entra, però no arriba cap missatge de dades.</td><td>El programa s'atura després de la unió, o l'interval d'enviament és molt llarg.</td><td>Mireu el monitor sèrie i comproveu cada quant ha d'enviar.</td></tr>
+              <tr><td>Arriben missatges, però els valors són estranys.</td><td>La funció de lectura o el format de les dades.</td><td>Compareu-los amb el monitor sèrie i reviseu la funció de lectura.</td></tr>
+              <tr><td>Arriben alguns missatges i d'altres no.</td><td>El senyal és feble o just.</td><td>Mireu l'RSSI i l'SNR i acosteu el node o canvieu-ne la posició.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="evid"><b>Recordeu</b>Canvieu una sola cosa cada vegada i espereu uns minuts. Si en canvieu tres alhora, no sabreu quina ho ha arreglat.</div>
+      </div>
+    </section>
+
+    <section id="test">
+      <h2>Comproveu-ho</h2>
+      <div class="cos">
+        <p>Responeu en equip.</p>
+        <ol class="test" id="qtest">
+          <li data-ok="2"><p>Quina clau permet fer-se passar pel vostre node si algú la té?</p><div class="opcions"><button type="button">El DevEUI</button><button type="button">El JoinEUI</button><button type="button">L'AppKey</button></div><div class="resposta">L'AppKey és la clau secreta: amb ella el node demostra al servidor qui és.</div></li>
+          <li data-ok="1"><p>Al servidor veieu peticions d'unió del vostre node, però el node no aconsegueix entrar. Què és el més probable?</p><div class="opcions"><button type="button">Que el node no tingui antena</button><button type="button">Que l'AppKey o el JoinEUI no coincideixin amb els del servidor</button><button type="button">Que el panell no estigui configurat</button></div><div class="resposta">Si les peticions arriben al servidor, la ràdio funciona. El servidor les rebutja perquè les claus no coincideixen.</div></li>
+          <li data-ok="2"><p>On no poden aparèixer mai les claus del node?</p><div class="opcions"><button type="button">Al programa del node</button><button type="button">Al dispositiu del servidor</button><button type="button">Al dossier</button></div><div class="resposta">El dossier és visible al portafoli. Les claus només han de ser al servidor, al node i en un lloc privat de l'equip.</div></li>
+          <li data-ok="0"><p>Amb OTAA, què passa cada vegada que el node entra a la xarxa?</p><div class="opcions"><button type="button">Es generen unes claus de sessió noves</button><button type="button">Cal tornar a registrar el dispositiu al servidor</button><button type="button">L'AppKey canvia</button></div><div class="resposta">L'AppKey es manté, però a cada unió el node i el servidor calculen unes claus de sessió noves.</div></li>
+          <li data-ok="1"><p>Com sabeu que les dades del vostre node arriben bé?</p><div class="opcions"><button type="button">Perquè el monitor sèrie diu que s'han enviat</button><button type="button">Perquè al servidor arriben missatges seguits amb els mateixos valors que el monitor sèrie</button><button type="button">Perquè el gateway apareix connectat</button></div><div class="resposta">Que el node digui que ha enviat no vol dir que hagi arribat. La prova és veure els valors al servidor.</div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="fi">
+      <h2>I ara què?</h2>
+      <div class="cos">
+        <p>Ja sabeu com es registra un node i com es comprova que la connexió funciona. Aquesta píndola <strong>no us diu quin nom ha de tenir el vostre dispositiu ni on el posareu</strong>: ho decidireu vosaltres, amb el format que us indiqui el professorat.</p>
+        <p class="destacat">On guardareu les claus perquè només les vegi l'equip?</p>
+        <div class="botons"><a class="boto" href="index.html" onclick="if(history.length>1){history.back();return false;}">Tornar a la fase</a></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+
+<script>
+(function(){
+  /* les tres claus */
+  const K=[
+    ['DevEUI','L\'identificador del node','És únic per a cada node, com el número de sèrie. Moltes plaques el porten de fàbrica i el mostren pel monitor sèrie o en una etiqueta. Si la placa no en té, el pot generar el servidor. No és una contrasenya, però al projecte no es publica.'],
+    ['JoinEUI','A qui demana entrar el node','Indica a quin servidor d\'unió va adreçada la petició. Abans es deia AppEUI. Sovint són tot zeros o el valor que us doni el servidor. No és una contrasenya, però al projecte no es publica.'],
+    ['AppKey','La clau secreta','És la clau que demostra que el node és qui diu ser. El servidor la genera quan creeu el dispositiu, i després la copieu al programa del node. Qui la té pot enviar dades falses en nom del vostre node: és secreta.']
+  ];
+  const files=[...document.querySelectorAll('#fclaus tr')], ek=document.getElementById('eclaus');
+  function triaK(i){
+    files.forEach((f,j)=>f.classList.toggle('actual',i===j));
+    ek.innerHTML='<b>'+K[i][0]+'</b><h4>'+K[i][1]+'</h4><p>'+K[i][2]+'</p>';
+  }
+  files.forEach((f,i)=>{f.addEventListener('click',()=>triaK(i));f.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();triaK(i);}});});
+  triaK(0);
+
+  /* el join pas a pas */
+  const J=[
+    ['El node s\'engega','El node té les tres claus al programa, però encara no pot enviar dades: primer ha d\'entrar a la xarxa.','DevEUI · JoinEUI · AppKey'],
+    ['El node envia una petició d\'unió','És un missatge curt amb el DevEUI i el JoinEUI, signat amb l\'AppKey. La clau no s\'envia: només la signatura.','Petició: DevEUI + JoinEUI + signatura'],
+    ['El gateway la reenvia','Qualsevol gateway que senti la petició la reenvia al servidor amb l\'RSSI i l\'SNR. El gateway no sap què hi ha a dins.','Petició + RSSI −92 dBm · SNR 7 dB'],
+    ['El servidor comprova','Busca un dispositiu registrat amb aquest DevEUI i comprova la signatura amb l\'AppKey que té guardada. Si no coincideix, ignora la petició.','DevEUI conegut? Signatura correcta?'],
+    ['El servidor accepta','Respon amb un missatge d\'acceptació xifrat amb l\'AppKey. Amb aquest missatge, el node i el servidor calculen unes claus de sessió noves.','Acceptació → claus de sessió noves'],
+    ['Arriben les dades','Ara el node envia les lectures xifrades amb les claus de sessió. Cada missatge porta un comptador que augmenta d\'un en un.','Missatge 1 · 01 67 00 E1']
+  ];
+  const et=[...document.querySelectorAll('#etapes li')], ej=document.getElementById('ejoin'),
+        ba=document.getElementById('jant'), bs=document.getElementById('jseg'), sp=document.getElementById('jpas');
+  let p=0;
+  function mostra(n){
+    p=n;
+    et.forEach((e,i)=>{e.classList.toggle('feta',i<n);e.classList.toggle('actual',i===n);});
+    ej.innerHTML='<b>Pas '+(n+1)+' de '+J.length+'</b><h4>'+J[n][0]+'</h4><p>'+J[n][1]+'</p><span class="dada">'+J[n][2]+'</span>';
+    ba.disabled=n===0; bs.disabled=n===J.length-1; sp.textContent=(n+1)+' / '+J.length;
+  }
+  et.forEach((e,i)=>{e.addEventListener('click',()=>mostra(i));e.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();mostra(i);}});});
+  ba.addEventListener('click',()=>p>0&&mostra(p-1));
+  bs.addEventListener('click',()=>p<J.length-1&&mostra(p+1));
+  mostra(0);
+
+  /* es pot publicar? */
+  const P=[
+    ['El nom del dispositiu al servidor',1,'El nom no és cap clau: identifica el node davant de les persones.'],
+    ['Una captura del servidor on es veu l\'AppKey',0,'L\'AppKey és secreta. Retalleu la captura o feu-ne una altra.'],
+    ['El DevEUI de la placa',0,'No és una contrasenya, però al projecte cap de les tres claus es publica.'],
+    ['Una fotografia del node muntat',1,'Una fotografia no mostra cap clau. És una bona evidència.'],
+    ['El fitxer de la plantilla amb les claus escrites',0,'Aquest fitxer conté les claus: és privat de l\'equip.'],
+    ['Una captura de la vista en directe amb valors, RSSI i SNR, sense cap clau',1,'És una evidència perfecta per a l\'apartat 7.']
+  ];
+  const ul=document.getElementById('publicar');
+  P.forEach(([t,ok,ex])=>{
+    const li=document.createElement('li');
+    li.innerHTML='<span class="val">'+t+'</span><span class="bt"></span><span class="exp"></span>';
+    const bt=li.querySelector('.bt'), e=li.querySelector('.exp');
+    [['Sí',1],['No',0]].forEach(([n,v])=>{
+      const b=document.createElement('button'); b.type='button'; b.textContent=n;
+      b.onclick=()=>{bt.querySelectorAll('button').forEach(x=>x.classList.remove('be','mal'));
+        b.classList.add(v===ok?'be':'mal');
+        e.textContent=(v===ok?'Correcte. ':'No. ')+ex; e.classList.add('vista');};
+      bt.appendChild(b);
+    });
+    ul.appendChild(li);
+  });
+
+  /* test */
+  document.querySelectorAll('#qtest > li').forEach(q=>{
+    const ok=+q.dataset.ok, bs=[...q.querySelectorAll('.opcions button')], r=q.querySelector('.resposta');
+    r.dataset.t=r.textContent;
+    bs.forEach((b,k)=>b.addEventListener('click',()=>{
+      bs.forEach(x=>x.classList.remove('be','mal'));
+      b.classList.add(k===ok?'be':'mal');
+      r.textContent=(k===ok?'Correcte! ':'No és aquesta. ')+r.dataset.t;
+      r.classList.add('vista');
+    }));
+  });
+})();
+</script>
+</body>
+
+</html>

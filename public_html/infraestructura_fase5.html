@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fase 5 · Equips d'infraestructura · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+  /* activitats */
+  .activitat > h2 .n{display:block;font-weight:900;font-stretch:80%;font-size:2.6rem;line-height:1;color:var(--vermell);margin-bottom:.35rem}
+  .etiqueta{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:700;text-decoration:none;background:var(--blanc);color:var(--negre);border:1px solid var(--linia);border-radius:7px;padding:.3rem .65rem}
+  .etiqueta b{color:var(--vermell)}
+  .etiqueta:hover{border-color:var(--vermell)}
+  .etiquetes{display:flex;flex-wrap:wrap;gap:.45rem}
+  .passos{list-style:none;counter-reset:p;max-width:68ch}
+  .passos li{counter-increment:p;position:relative;padding:0 0 .75rem 2.4rem}
+  .passos li::before{content:counter(p);position:absolute;left:0;top:.05rem;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--negre);color:var(--blanc);
+    font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .infra{background:var(--blanc);border:1px solid var(--linia);border-left:5px solid var(--negre);border-radius:10px;padding:1rem 1.2rem;max-width:68ch}
+  .infra h3{margin-top:0 !important;font-size:1rem !important}
+  .infra p,.infra li{color:var(--gris-text)}
+  .infra ul{margin-top:.4rem;padding-left:1.1rem}
+  .rols{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;list-style:none;max-width:68ch}
+  .rols li{background:var(--blanc);border:1px solid var(--linia);border-radius:10px;padding:.8rem 1rem}
+  .rols b{display:block}
+  .rols span{color:var(--gris-text);font-size:.92rem;line-height:1.45;display:block;margin-top:.15rem}
+
+  /* comprovació */
+  .check{list-style:none;max-width:68ch}
+  .check li{padding:.5rem 0 .5rem 2rem;position:relative;border-bottom:1px solid var(--linia)}
+  .check li:last-child{border-bottom:0}
+  .check li::before{content:"";position:absolute;left:0;top:.75rem;width:1.05rem;height:1.05rem;border:2px solid var(--negre);border-radius:4px}
+  .no{list-style:none;max-width:68ch}
+  .no li{padding:.45rem 0 .45rem 2rem;position:relative;color:var(--gris-text)}
+  .no li::before{content:"";position:absolute;left:.15rem;top:1.05rem;width:.8rem;height:2px;background:var(--gris-text)}
+
+  /* navegació entre fases */
+  .navfases{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:clamp(2rem,5vw,3rem)}
+  .navfases a{display:block;text-decoration:none;color:var(--negre);background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.2rem}
+  .navfases a:hover{border-color:var(--negre)}
+  .navfases small{display:block;color:var(--gris-text);font-weight:700;font-size:.85rem}
+  .navfases b{font-size:1.1rem}
+  .navfases .seg{text-align:right;background:var(--negre);color:var(--blanc);border-color:var(--negre)}
+  .navfases .seg small{color:#CFC9C9}
+  @media (max-width:880px){ .rols{grid-template-columns:1fr} }
+  @media (max-width:520px){ .navfases{grid-template-columns:1fr} }
+  /* barra de fases (substitueix l'índex) */
+  .barra-sup{flex-wrap:wrap}
+  .fasesnav{display:flex;flex-wrap:wrap;gap:.35rem}
+  .fasesnav a{font-weight:700;font-size:.85rem;text-decoration:none;color:var(--negre);background:var(--blanc);border:1px solid var(--linia);border-radius:7px;padding:.35rem .6rem}
+  .fasesnav a:hover{border-color:var(--negre)}
+  .fasesnav a[aria-current="page"]{background:var(--negre);color:var(--blanc);border-color:var(--negre)}
+
+  /* activitats amb codi del diari */
+  section.activitat{display:block}
+  .act-cap{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.4rem}
+  .codi-act{flex:0 0 auto;font-weight:900;font-stretch:80%;font-size:clamp(1.6rem,3.4vw,2.2rem);line-height:1;color:var(--blanc);background:var(--vermell);border-radius:10px;padding:.45rem .65rem}
+  .act-cap h2{font-weight:850;font-stretch:84%;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.08;letter-spacing:-.01em;max-width:34ch}
+  .act-cap .etiquetes{margin-top:.6rem}
+  .activitat > .cos{max-width:820px;margin-left:clamp(0rem,6vw,5.2rem)}
+  .part{border-top:1px solid var(--linia);padding-top:1.4rem;margin-top:1.8rem}
+  .part:first-child{border-top:0;padding-top:0;margin-top:0}
+  .part > * + *{margin-top:1rem}
+  .infra > * + *{margin-top:.5rem}
+  .part h3{margin-top:0 !important;font-size:1.3rem !important;font-weight:800 !important}
+  .bloc{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .bloc h3{margin-top:0 !important}
+  .descarrega{display:flex;flex-direction:column;gap:.4rem;align-items:flex-start}
+  .descarrega small{color:var(--gris-text);font-size:.82rem}
+  .bloc > * + *{margin-top:1rem}
+  .bloc + .bloc{margin-top:1rem}
+  .aldossier{background:var(--blanc);border:1px solid var(--linia);border-left:5px solid var(--vermell);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.6rem}
+  .aldossier h3{margin-top:0 !important;font-size:1rem !important;color:var(--vermell)}
+  .aldossier p{color:var(--negre);margin-top:.3rem}
+  .aldossier ul{list-style:none;margin-top:.4rem}
+  .aldossier li{padding:.55rem 0;border-top:1px solid var(--linia)}
+  .aldossier li:first-child{border-top:0;padding-top:.2rem}
+  .aldossier a{font-weight:700;text-decoration:none;color:var(--negre)}
+  .aldossier a b{color:var(--vermell)}
+  .aldossier a:hover{text-decoration:underline}
+  .aldossier span{display:block;color:var(--gris-text);font-size:.95rem;line-height:1.5;margin-top:.15rem}
+  .flux{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:880px){ .activitat > .cos{margin-left:0} .flux{grid-template-columns:1fr 1fr} }
+  @media (max-width:480px){ .flux{grid-template-columns:1fr} .act-cap{flex-direction:column;gap:.6rem} }
+  /* recuadre de píndola */
+  .pindola{background:var(--blanc);border:2px solid var(--vermell);border-radius:12px;padding:1.1rem 1.3rem;max-width:68ch}
+  .pindola > * + *{margin-top:.6rem}
+  .pindola small{display:block;font-weight:800;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--vermell)}
+  .pindola h3{margin-top:.2rem !important;font-size:1.1rem !important}
+  .pindola p{color:var(--gris-text)}
+  .infra .taula{margin-top:.8rem}
+  .infra .passos{margin-top:.6rem}
+  .cos{min-width:0}
+  .aldossier .ap{font-weight:700;color:var(--negre)}
+  .aldossier .ap b{color:var(--vermell)}
+  td .ap{font-weight:400}
+  .aldossier .ap-infra{max-width:none;border-top:1px solid var(--linia);padding-top:.6rem;margin-top:.4rem;font-weight:400}
+  .cos{min-width:0}
+  .taula table.compacta{min-width:0}
+
+  /* fase 4: fites i blocs */
+  .fita{font-size:.76rem;font-weight:700;background:var(--vermell);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+  .cal{background:var(--blanc);border:2px solid var(--negre);border-radius:12px;padding:1.1rem 1.3rem;max-width:68ch}
+  .cal > * + *{margin-top:.6rem}
+  .cal h3{margin-top:0 !important;font-size:1.1rem !important}
+  .cal .check li{padding-top:.45rem;padding-bottom:.45rem}
+  .repas{color:var(--gris-text);font-size:.95rem}
+  .part[id]{scroll-margin-top:1rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <nav class="fasesnav" aria-label="Fases del projecte · equips d'infraestructura">
+      <a href="infraestructura_fase1.html">Fase 1</a>
+      <a href="infraestructura_fase2.html">Fase 2</a>
+      <a href="infraestructura_fase3.html">Fase 3</a>
+      <a href="infraestructura_fase4.html">Fase 4</a>
+      <a href="infraestructura_fase5.html" aria-current="page">Fase 5</a>
+      <a href="infraestructura_fase6.html">Fase 6</a>
+    </nav>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <span class="codi">FASE 5 · EQUIPS D'INFRAESTRUCTURA</span>
+    <h1>Presentació de resultats</h1>
+    <p>Expliquem a l'institut com és la xarxa LoRaWAN que hem muntat, ensenyem en directe que funciona al Demo Day, escoltem què en pensen els altres i fem millores a partir dels seus comentaris.</p>
+    <nav class="salts" aria-label="Activitats d'aquesta fase">
+      <a href="#objectiu">Objectiu</a>
+      <a href="#f5-1">F5.1</a>
+      <a href="#f5-2">F5.2</a>
+      <a href="#f5-3">F5.3</a>
+      <a href="#f5-4">F5.4</a>
+      <a href="#tancament">Abans de passar a la Fase 6</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="objectiu">
+      <h2>Objectiu de la fase</h2>
+      <div class="cos">
+        <p class="destacat">Explicar com és la xarxa de l'institut i demostrar en directe que funciona.</p>
+        <p>Primer preparareu la presentació i la demostració. Després les fareu al Demo Day, davant dels altres equips i del professorat, i escoltareu les presentacions de la resta. Vosaltres obrireu el Demo Day, perquè la xarxa és la base de tot el projecte. Al final recollireu tots els comentaris que heu rebut, decidireu què en fareu i aplicareu alguna millora.</p>
+        <p class="nota">Com feu servir aquesta pàgina: al diari, cada sessió té un codi (F5.1, F5.2…). Busqueu aquest codi aquí i seguiu els passos de l'activitat en ordre. Cada equip fa la seva presentació, centrada en el gateway que lidera, però us heu de coordinar amb l'altre equip perquè les dues presentacions no repeteixin el mateix.</p>
+        <p class="nota">Mai cap clau a la presentació, a la demostració ni al dossier: ni les contrasenyes dels gateways o del servidor, ni el DevEUI, el JoinEUI o l'AppKey de cap node.</p>
+      </div>
+    </section>
+
+    <!-- F5.1 -->
+    <section id="f5-1" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F5.1</span>
+        <div>
+          <h2>Preparem la presentació</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap9-1"><b>Ap. 9.1</b> La presentació</a><span>L'enllaç a la presentació. Qui ha presentat cada part ho completareu a l'F5.4.</span></li>
+          </ul>
+        </div>
+        <p>Al Demo Day cada equip té 8 minuts, comptant-hi la demostració en directe. En aquest temps heu d'explicar per què l'institut necessitava una xarxa, com l'heu muntat i què heu aconseguit. Tot el contingut ja el teniu al dossier: ara es tracta de triar-ne el més important i explicar-lo bé.</p>
+        <ol class="flux">
+          <li><strong>El repte</strong><span>Per què calia una xarxa i què vau descobrir a l'estudi de cobertura.</span></li>
+          <li><strong>La solució</strong><span>El gateway que lidereu: on és, per què allà, com s'alimenta i com es connecta al servidor.</span></li>
+          <li><strong>La demostració</strong><span>El panell de salut amb trames en directe i la fitxa tècnica.</span></li>
+          <li><strong>Els resultats</strong><span>Què funciona, què no, què heu après i què milloraríeu.</span></li>
+        </ol>
+        <div class="pindola">
+          <small>Píndola formativa</small>
+          <h3>Presentar i fer una demostració en directe</h3>
+          <p>Com s'estructura una presentació tècnica curta, què s'hi ensenya i què no, com es prepara una demostració, què fer si falla i com respondre preguntes.</p>
+          <div class="botons"><a class="boto" href="pindola_presentacio_demo.html">Obrir la píndola</a></div>
+        </div>
+        <ol class="passos">
+          <li>Seguiu la píndola en equip i feu el test del final.</li>
+          <li>Rellegiu el dossier i marqueu el que ha de sortir a cada part: la necessitat, l'estudi de cobertura, el gateway, el panell de salut i els resultats.</li>
+          <li>Parleu amb l'altre equip d'infraestructura: quines parts de la xarxa explica cada equip, com el mapa de cobertura o el panell de salut, perquè no les expliqueu dues vegades.</li>
+          <li>Repartiu les parts. Tots els membres de l'equip han de presentar alguna part.</li>
+          <li>Feu les diapositives amb poques paraules i moltes imatges: fotografies del gateway instal·lat, el mapa de cobertura, captures del panell de salut i de la taula de senyal.</li>
+          <li>Reviseu cada captura abans de posar-la: no hi pot sortir cap clau ni cap contrasenya.</li>
+          <li>Afegiu una diapositiva de tancament amb el que heu après i el que milloraríeu si tinguéssiu més temps.</li>
+          <li>Compartiu la presentació amb un enllaç que s'obri sense demanar permís i poseu-lo a l'apartat 9.1.</li>
+        </ol>
+        <div class="dues">
+          <div class="caixa">
+            <h3>Hi ha de sortir</h3>
+            <p>El nom de l'equip, el problema, el mapa de cobertura, el gateway i on és, el panell de salut amb dades reals, la fitxa tècnica, els resultats i el que heu après.</p>
+          </div>
+          <div class="caixa">
+            <h3>No hi ha de sortir</h3>
+            <p>Contrasenyes dels gateways o del servidor, claus de cap node, adreces IP internes, pantalles de configuració amb dades privades i paràgrafs copiats del dossier.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- F5.2 -->
+    <section id="f5-2" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F5.2</span>
+        <div>
+          <h2>Preparem la demostració</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap8-4"><b>Ap. 8.4</b> Producte final</a><span>No hi heu d'escriure res. Hi teniu els enllaços al panell de salut i al vídeo, que fareu servir a la demostració i al pla B.</span></li>
+          </ul>
+        </div>
+        <p>La demostració és la part més convincent de la presentació: ensenya que el que expliqueu funciona de debò. També és la part que més fàcilment pot fallar, i per això s'ha de preparar i assajar.</p>
+        <ol class="passos">
+          <li>Decidiu què ensenyareu en directe: el panell de salut de la xarxa, el vostre gateway connectat i una trama que arriba, amb l'RSSI i l'SNR.</li>
+          <li>Mireu cada quant arriben trames al vostre gateway, perquè en pugueu ensenyar una sense esperar gaire. Si cal, tingueu a punt un node de prova a l'aula que n'enviï.</li>
+          <li>Trieu un pas de la fitxa tècnica per ensenyar-lo: per exemple, com es comprova que el gateway està connectat.</li>
+          <li>Prepareu l'ordinador: la sessió del panell de salut iniciada, les pestanyes que fareu servir obertes i la mida del text prou gran per llegir-la des del fons de l'aula.</li>
+          <li>Tanqueu les pestanyes de configuració del gateway i del servidor i qualsevol document on surtin contrasenyes o claus.</li>
+          <li>Prepareu el pla B: el vídeo demostratiu de la Fase 4 descarregat a l'ordinador i unes quantes captures del panell de salut i de les trames.</li>
+          <li>Feu un assaig complet de la presentació i la demostració amb el cronòmetre. Si passeu dels 8 minuts, retalleu.</li>
+          <li>Apunteu les preguntes que creieu que us poden fer i decidiu qui respondrà cada tipus de pregunta.</li>
+        </ol>
+        <div class="cal">
+          <h3>Abans del Demo Day</h3>
+          <ul class="check">
+            <li>Els dos gateways estan connectats i el panell de salut s'actualitza.</li>
+            <li>Sabeu com ensenyar una trama en directe, o teniu l'evidència a punt.</li>
+            <li>El pla B és a l'ordinador i s'obre sense internet.</li>
+            <li>Heu fet un assaig sencer i no passeu dels 8 minuts.</li>
+            <li>A la pantalla no hi surt cap clau ni cap contrasenya.</li>
+          </ul>
+        </div>
+        <p class="nota">No desconnecteu ni reinicieu cap gateway durant la demostració: tota la xarxa en depèn. Si voleu ensenyar què passa quan un gateway cau, feu-ho amb captures.</p>
+      </div>
+    </section>
+
+    <!-- F5.3 -->
+    <section id="f5-3" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F5.3</span>
+        <div>
+          <h2>Demo Day</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <p>Durant el Demo Day no escriviu al dossier. Els comentaris que rebeu els passareu a l'apartat 9.2 a l'F5.4.</p>
+        </div>
+        <p>El Demo Day ocupa dues sessions seguides. Cada equip presenta durant 8 minuts i, la resta del temps, escolta els altres equips i els dona feedback. Vosaltres presenteu primer, un equip darrere l'altre, en l'ordre que indiqui el professorat.</p>
+        <div class="pindola">
+          <small>Píndola formativa</small>
+          <h3>Donar i rebre feedback</h3>
+          <p>Què fa útil un comentari, com fer bones preguntes, com escoltar les crítiques sense defensar-se i com triar quines millores fer. Hi trobareu el model de fitxa de feedback que fareu servir al Demo Day.</p>
+          <div class="botons"><a class="boto" href="pindola_feedback.html">Obrir la píndola</a></div>
+        </div>
+        <div class="part">
+          <h3>Quan presenteu</h3>
+          <ol class="passos">
+            <li>Arribeu abans que comenci la sessió: connecteu l'ordinador, comproveu que es veu la presentació i que el panell de salut mostra els dos gateways connectats.</li>
+            <li>Presenteu cada part qui l'ha preparat, mirant el públic i no la pantalla.</li>
+            <li>Feu la demostració en directe. Si alguna cosa falla, no perdeu temps: passeu al pla B i expliqueu què hauria d'haver passat.</li>
+            <li>Al final, responeu les preguntes. Si no sabeu una resposta, digueu-ho i expliqueu com ho comprovaríeu.</li>
+            <li>Un membre de l'equip apunta en un full les preguntes i els comentaris que us fan de paraula.</li>
+          </ol>
+        </div>
+        <div class="part">
+          <h3>Quan escolteu</h3>
+          <ol class="passos">
+            <li>El professorat us donarà fitxes de feedback en paper. N'heu d'omplir una per a cada equip que presenta.</li>
+            <li>Ompliu-la mentre l'equip presenta o just en acabar, abans que comenci el següent.</li>
+            <li>Escriviu comentaris concrets: què s'entén bé, què no queda clar i una proposta de millora.</li>
+            <li>Al torn de preguntes, feu-ne alguna. Una bona pregunta també ajuda l'equip que presenta.</li>
+            <li>Lliureu les fitxes al professorat quan us ho demani.</li>
+          </ol>
+        </div>
+        <p class="nota">Durant tot el Demo Day, tingueu el panell de salut obert en un ordinador. Si un gateway deixa de rebre trames, aviseu el professorat.</p>
+        <p class="nota">Les fitxes de feedback són documents de l'avaluació: escriviu-les amb lletra clara, poseu-hi el nom del vostre equip i no les llenceu.</p>
+      </div>
+    </section>
+
+    <!-- F5.4 -->
+    <section id="f5-4" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F5.4</span>
+        <div>
+          <h2>Recollim el feedback i fem millores</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap9-1"><b>Ap. 9.1</b> La presentació</a><span>Qui ha presentat cada part.</span></li>
+            <li><a href="dossier_infraestructura.html#ap9-2"><b>Ap. 9.2</b> Què ens han dit</a><span>Cada comentari o pregunta, qui l'ha fet i què en fareu. Al final, les millores que heu fet a partir del feedback.</span></li>
+          </ul>
+        </div>
+        <p>El professorat us dona les fitxes de feedback que han omplert els altres equips sobre la vostra presentació. Amb aquestes fitxes i les preguntes que vau apuntar, decidireu què canvieu del projecte.</p>
+        <ol class="passos">
+          <li>Llegiu totes les fitxes i les preguntes que vau apuntar al Demo Day.</li>
+          <li>Ajunteu els comentaris que diuen el mateix: si diversos equips diuen una cosa, és important.</li>
+          <li>Passeu-los a la taula de l'apartat 9.2: el comentari o la pregunta i qui l'ha fet (un equip o el professorat).</li>
+          <li>Per a cada comentari, decidiu què en fareu: ho fem ara, ho deixem per més endavant o no ho fem. Si no el seguiu, expliqueu per què.</li>
+          <li>Trieu una o dues millores que pugueu acabar en aquesta sessió. Per exemple: aclarir el panell de salut, completar un pas de la fitxa tècnica o una part del dossier que no quedava clara.</li>
+          <li>Feu les millores i comproveu que els dos gateways continuen connectats i que el panell de salut s'actualitza.</li>
+          <li>Escriviu a l'apartat 9.2 quines millores heu fet, amb una evidència: una captura d'abans i una de després, per exemple.</li>
+          <li>Completeu a l'apartat 9.1 qui ha presentat cada part.</li>
+          <li>Torneu les fitxes en paper al professorat.</li>
+        </ol>
+        <p class="nota">Una millora no pot deixar la xarxa sense funcionar. No canvieu la configuració dels gateways sense parlar-ne abans amb el professorat i, si toqueu el panell de salut, deseu abans una còpia de la versió que funciona.</p>
+        <p class="repas">Si ho necessiteu, repasseu la part de la píndola sobre com triar quines millores fer:</p>
+        <div class="botons"><a class="boto sec" href="pindola_feedback.html">Donar i rebre feedback</a></div>
+      </div>
+    </section>
+
+    <section id="tancament">
+      <h2>Abans de passar a la Fase 6</h2>
+      <div class="cos">
+        <h3 style="margin-top:0">Apartats del dossier que heu de tenir fets</h3>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Ap.</th><th>Contingut</th><th>Activitat</th></tr></thead>
+            <tbody>
+              <tr><td class="num">9.1</td><td><a href="dossier_infraestructura.html#ap9-1"><strong class="ap">La presentació</strong></a> · enllaç a la presentació i qui ha presentat cada part</td><td class="fase">F5.1 i F5.4</td></tr>
+              <tr><td class="num">9.2</td><td><a href="dossier_infraestructura.html#ap9-2"><strong class="ap">Què ens han dit</strong></a> · comentaris i preguntes, què en farem i millores fetes</td><td class="fase">F5.4</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Llista de comprovació</h3>
+        <ul class="check">
+          <li>La presentació s'obre amb l'enllaç de l'apartat 9.1 sense demanar permís.</li>
+          <li>Tots els membres de l'equip han presentat alguna part.</li>
+          <li>Ens hem coordinat amb l'altre equip d'infraestructura i no hem repetit el mateix contingut.</li>
+          <li>Hem fet la demostració en directe o, si ha fallat, el pla B.</li>
+          <li>No surt cap clau ni cap contrasenya a la presentació ni al dossier.</li>
+          <li>Hem omplert una fitxa de feedback per a cada equip que ha presentat i les hem lliurat.</li>
+          <li>L'apartat 9.2 té els comentaris rebuts i què en farem de cadascun.</li>
+          <li>Hem fet almenys una millora a partir del feedback i està documentada.</li>
+          <li>Els dos gateways continuen connectats i el panell de salut s'actualitza.</li>
+          <li>Hem tornat les fitxes en paper al professorat.</li>
+        </ul>
+
+        <h3>El que encara no heu de tenir</h3>
+        <ul class="no">
+          <li>La reflexió individual (apartat 9.3).</li>
+          <li>La reflexió de l'equip (apartat 9.4).</li>
+          <li>La revisió final del dossier i el lliurament al portafoli.</li>
+        </ul>
+        <p>Tot això ho fareu a la Fase 6.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="navfases" aria-label="Fases">
+    <a href="infraestructura_fase4.html"><small>← Fase anterior</small><b>Fase 4 · Implementació</b></a>
+    <a class="seg" href="infraestructura_fase6.html"><small>Fase següent →</small><b>Fase 6 · Reflexió i avaluació</b></a>
+  </nav>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+</body>
+
+</html>

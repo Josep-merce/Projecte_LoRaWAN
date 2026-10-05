@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Píndola · Les alertes · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+
+  /* activitats */
+  .temps{display:grid;grid-template-columns:1fr auto;max-width:640px;border:1px solid var(--linia);border-radius:12px;background:var(--blanc);overflow:hidden}
+  .temps div{padding:.65rem 1rem;border-bottom:1px solid var(--linia)}
+  .temps div:nth-child(even){text-align:right;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .temps .tot{background:var(--negre);color:var(--blanc);font-weight:800;border-bottom:0}
+  .temps .pind{color:var(--vermell-fosc);background:var(--vermell-suau)}
+  .activitat{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:clamp(1.3rem,3vw,2rem);scroll-margin-top:1rem}
+  .activitat + .activitat{margin-top:1rem}
+  .act-cap{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
+  .act-num{font-weight:800;font-size:.8rem;background:var(--negre);color:var(--blanc);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dur{font-weight:700;font-size:.8rem;background:var(--fons);color:var(--gris-text);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dos{font-weight:700;font-size:.8rem;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.3rem .6rem;border-radius:6px;text-decoration:none;white-space:nowrap}
+  .act-dos:hover{background:var(--vermell);color:var(--blanc)}
+  .activitat h3{font-weight:850;font-stretch:86%;font-size:clamp(1.35rem,2.4vw,1.7rem);line-height:1.1;margin:0 0 .6rem}
+  .activitat h4{font-size:1rem;font-weight:750;margin:1.3rem 0 .45rem;color:var(--vermell)}
+  .activitat p{max-width:68ch;margin-top:.5rem}
+  .activitat.pindola{border:2px solid var(--vermell);background:linear-gradient(var(--blanc),var(--blanc))}
+  .activitat.pindola .act-num{background:var(--vermell)}
+  .passos-l{list-style:none;counter-reset:ps;margin-top:.4rem;max-width:70ch}
+  .passos-l li{counter-increment:ps;position:relative;padding:.5rem 0 .5rem 2.6rem;border-top:1px solid var(--linia)}
+  .passos-l li:first-child{border-top:0}
+  .passos-l li::before{content:counter(ps);position:absolute;left:0;top:.45rem;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--negre);color:var(--blanc);font-weight:800;font-size:.85rem;display:grid;place-items:center}
+  .pistes{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.45rem 2rem;max-width:70ch;margin-top:.3rem}
+  .pistes li{padding-left:1.3rem;position:relative}
+  .pistes li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+  .clau{margin-top:1.1rem;background:var(--negre);color:var(--blanc);border-radius:10px;padding:1rem 1.2rem;font-weight:750;font-size:1.1rem;max-width:62ch}
+  .clau small{display:block;font-weight:600;color:#E06A69;font-size:.78rem;letter-spacing:.02em;margin-bottom:.2rem}
+  .evid{margin-top:1rem;border-left:4px solid var(--vermell);padding:.2rem 0 .2rem 1rem;max-width:66ch}
+  .evid b{display:block;font-size:.85rem;color:var(--vermell)}
+  .exemple{color:var(--gris-text);font-style:italic}
+  .check-l{list-style:none;max-width:60ch}
+  .check-l label{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-top:1px solid var(--linia);cursor:pointer}
+  .check-l li:first-child label{border-top:0}
+  .check-l input{width:1.15rem;height:1.15rem;margin-top:.2rem;accent-color:var(--vermell);flex:none}
+  .no-l{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem}
+  .no-l li{background:var(--blanc);border:1px dashed #BDB6B4;border-radius:8px;padding:.4rem .8rem;color:var(--gris-text);text-decoration:line-through;text-decoration-color:var(--vermell)}
+  .seguent{display:flex;justify-content:space-between;gap:1rem;margin-top:clamp(2rem,5vw,3rem);flex-wrap:wrap}
+  .seguent a{flex:1;min-width:220px;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.2rem;text-decoration:none;color:var(--negre)}
+  .seguent a:hover{border-color:var(--vermell)}
+  .seguent small{display:block;color:var(--gris-text);font-weight:600;font-size:.8rem}
+  .seguent b{font-size:1.05rem}
+  .seguent a.nx{text-align:right}
+  @media (max-width:880px){.pistes{grid-template-columns:1fr}}
+
+  .passos{list-style:none;counter-reset:p;max-width:68ch}
+  .passos li{counter-increment:p;position:relative;padding:0 0 .75rem 2.4rem}
+  .passos li::before{content:counter(p);position:absolute;left:0;top:.05rem;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--negre);color:var(--blanc);
+    font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* índex de píndoles */
+  .pind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
+  .pind-card{display:flex;flex-direction:column;gap:.35rem;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;color:var(--negre);transition:border-color .2s,transform .2s}
+  .pind-card:hover{border-color:var(--vermell);transform:translateY(-2px)}
+  .pind-card .meta{display:flex;gap:.4rem;flex-wrap:wrap}
+  .pind-card .f{font-size:.72rem;font-weight:800;background:var(--negre);color:var(--blanc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card .est{font-size:.72rem;font-weight:700;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card b{font-size:1.02rem;line-height:1.25}
+  .pind-card span.d{font-size:.88rem;color:var(--gris-text)}
+  .pind-card.disabled{opacity:.55;pointer-events:none;background:#FAFAF9}
+  .pind-card.disabled .f{background:#A39C9D}
+  .pind-card.disabled .est{background:var(--fons);color:var(--gris-text)}
+
+  /* capçalera de píndola */
+  .pind-hero{background:var(--vermell);color:var(--blanc);border-radius:14px;padding:clamp(1.4rem,3vw,2.2rem);margin-top:clamp(2.5rem,6vw,4rem);scroll-margin-top:1rem}
+  .pind-hero small{font-weight:800;font-size:.8rem;background:rgba(0,0,0,.18);padding:.28rem .6rem;border-radius:6px}
+  .pind-hero h2{font-weight:900;font-stretch:82%;font-size:clamp(2rem,5vw,3.2rem);line-height:1;margin-top:.8rem;letter-spacing:-.015em}
+  .pind-hero p{margin-top:.8rem;max-width:60ch;color:#FBE9E9}
+
+  /* recorregut de la dada */
+  .viatge{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .etapes{list-style:none;display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;position:relative}
+  .etapes li{text-align:center;padding:.8rem .3rem;border-radius:10px;border:2px solid var(--linia);background:var(--fons);font-weight:700;font-size:.85rem;line-height:1.2;transition:all .25s;cursor:pointer}
+  .etapes li svg{display:block;width:34px;height:34px;margin:0 auto .45rem;stroke:var(--gris-text);transition:stroke .25s}
+  .etapes li.feta{border-color:var(--negre);background:var(--blanc)}
+  .etapes li.feta svg{stroke:var(--negre)}
+  .etapes li.actual{border-color:var(--vermell);background:var(--vermell);color:var(--blanc)}
+  .etapes li.actual svg{stroke:var(--blanc)}
+  .explica{margin-top:1rem;min-height:7.5rem;background:var(--fons);border-radius:10px;padding:1rem 1.2rem}
+  .explica b{display:block;color:var(--vermell);font-size:.8rem;letter-spacing:.02em}
+  .explica h4{margin:.15rem 0 .35rem;font-size:1.15rem}
+  .explica .dada{display:inline-block;margin-top:.5rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;background:var(--negre);color:#fff;padding:.3rem .6rem;border-radius:6px}
+  .ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:.9rem;gap:.6rem}
+  .ctrl button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .ctrl button.pri{background:var(--vermell)}
+  .ctrl button:disabled{opacity:.35;cursor:default}
+  .ctrl span{font-size:.85rem;color:var(--gris-text);font-weight:600}
+
+  /* peces */
+  .peces{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .peca{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem;border-top:4px solid var(--negre)}
+  .peca:last-child{border-top-color:var(--vermell)}
+  .peca h3{margin:0 0 .4rem !important;font-size:1.2rem}
+  .peca p{color:var(--gris-text);margin-top:.35rem;font-size:.95rem}
+  .peca ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text);font-size:.93rem}
+
+  /* test */
+  .test{counter-reset:t;list-style:none;display:flex;flex-direction:column;gap:1rem}
+  .test > li{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;counter-increment:t}
+  .test > li > p{font-weight:700;margin:0 0 .6rem}
+  .test > li > p::before{content:counter(t) ". ";color:var(--vermell)}
+  .opcions{display:flex;flex-direction:column;gap:.4rem}
+  .opcions button{font:inherit;text-align:left;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.55rem .8rem;cursor:pointer;color:var(--negre)}
+  .opcions button:hover{border-color:var(--linia)}
+  .opcions button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .opcions button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .resposta{margin-top:.6rem;font-size:.92rem;color:var(--gris-text);display:none}
+  .resposta.vista{display:block}
+  @media (max-width:880px){
+    .pind-grid,.peces{grid-template-columns:1fr}
+    .etapes{grid-template-columns:repeat(3,1fr)}
+  }
+
+  /* botons de filtre / selecció */
+  .parts{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none}
+  .parts button{font:inherit;font-size:.85rem;font-weight:700;border:2px solid var(--linia);background:var(--blanc);color:var(--negre);border-radius:8px;padding:.4rem .7rem;cursor:pointer}
+  .parts button:hover{border-color:var(--negre)}
+  .parts button.actual{background:var(--vermell);border-color:var(--vermell);color:var(--blanc)}
+
+  /* catàleg de sensors */
+  .cat{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:1rem}
+  .sens{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;border-top:4px solid var(--negre)}
+  .sens[hidden]{display:none}
+  .sens h3{margin:0 !important;font-size:1.15rem;line-height:1.2}
+  .sens .mesura{color:var(--gris-text);font-size:.92rem;margin-top:.15rem}
+  .sens .etq{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+  .sens .etq span{font-size:.72rem;font-weight:800;padding:.2rem .5rem;border-radius:5px;background:var(--fons);color:var(--gris-text)}
+  .sens .etq span.cn{background:var(--negre);color:var(--blanc)}
+  .sens .etq span.alt{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .sens dl{display:grid;grid-template-columns:auto 1fr;gap:.25rem .8rem;margin-top:.7rem;font-size:.9rem}
+  .sens dt{font-weight:700}
+  .sens dd{color:var(--gris-text)}
+  .sens p.obs{font-size:.9rem;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--linia)}
+
+  /* connexió */
+  .cable{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .cable svg{width:100%;height:auto;display:block}
+
+  /* codi */
+  pre.prog{background:var(--negre);color:#F2EFEF;border-radius:12px;padding:1.1rem 1.3rem;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;line-height:1.6}
+  pre.prog .cm{color:#A39C9D;font-style:italic}
+  pre.prog .kw{color:#E06A69;font-weight:700}
+  pre.prog .fn{color:#FFFFFF;font-weight:700}
+  pre.prog .st{color:#F4C9A8}
+
+  /* fitxa tècnica */
+  .fitxa{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;overflow:hidden}
+  .fitxa-cap{background:var(--negre);color:var(--blanc);padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
+  .fitxa-cap b{font-size:1.2rem;font-stretch:88%}
+  .fitxa-cap small{color:#CFC9C9;font-size:.8rem}
+  .fitxa table{min-width:480px}
+  .fitxa tbody tr{cursor:pointer}
+  .fitxa tbody tr:hover td{background:#FBF9F8}
+  .fitxa tbody tr.actual td{background:var(--vermell-suau)}
+  .fitxa tbody tr.actual td:first-child{box-shadow:inset 4px 0 0 var(--vermell)}
+  .fitxa td:first-child{font-weight:700;white-space:nowrap}
+  .fitxa td.val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88rem}
+  .fitxa .explica{margin:0;border-radius:0;border-top:1px solid var(--linia)}
+
+  /* precisió */
+  .regle{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem}
+  .regle svg{width:100%;height:auto;display:block}
+
+  /* desplegable */
+  details.noms{background:var(--blanc);border:1px solid var(--linia);border-left:4px solid var(--vermell);border-radius:12px;max-width:72ch}
+  details.noms summary{cursor:pointer;font-weight:750;padding:.9rem 1.2rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+  details.noms summary::-webkit-details-marker{display:none}
+  details.noms summary::after{content:"+";font-weight:800;font-size:1.3rem;color:var(--vermell);line-height:1}
+  details.noms[open] summary::after{content:"−"}
+  details.noms summary:focus-visible{outline:3px solid var(--vermell);outline-offset:2px;border-radius:10px}
+  details.noms .dins{padding:0 1.2rem 1.1rem}
+  details.noms .dins h4{font-size:1rem;font-weight:750;color:var(--vermell);margin-top:1rem}
+  details.noms .dins p{margin-top:.35rem;max-width:66ch}
+  @media (max-width:880px){.cat{grid-template-columns:1fr}}
+  .cos{min-width:0}
+  .video{position:relative;aspect-ratio:16/9;width:100%;max-width:820px;border-radius:12px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .tauler{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;max-width:820px}
+  .llista{background:#EBE8E6;border-radius:12px;padding:.8rem;min-height:9rem}
+  .llista h3{margin:0 0 .6rem !important;font-size:.95rem !important;font-weight:800}
+  .llista h3 small{font-weight:600;color:var(--gris-text)}
+  .targeta{background:var(--blanc);border-radius:9px;padding:.65rem .75rem;box-shadow:0 1px 0 rgba(0,0,0,.12);font-size:.92rem}
+  .targeta + .targeta{margin-top:.5rem}
+  .targeta .tt{font-weight:700;display:block}
+  .targeta .meta{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
+  .targeta .meta span{font-size:.75rem;font-weight:700;border-radius:5px;padding:.1rem .4rem;background:var(--fons);color:var(--gris-text)}
+  .targeta .meta span.et{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .targeta .acc{display:flex;gap:.3rem;margin-top:.5rem}
+  .targeta .acc button{font:inherit;font-size:.78rem;font-weight:700;background:var(--negre);color:var(--blanc);border:0;border-radius:6px;padding:.25rem .5rem;cursor:pointer}
+  .targeta .acc button:hover{background:var(--vermell)}
+  .targeta .acc button:focus-visible{outline:3px solid var(--vermell);outline-offset:2px}
+  .estat-tauler{margin-top:.8rem;font-weight:600;color:var(--gris-text);max-width:68ch}
+  @media (max-width:700px){.tauler{grid-template-columns:1fr}}
+
+  .cos{min-width:0}
+  .calc{display:grid;grid-template-columns:repeat(2,minmax(0,220px));gap:1rem;align-items:end;max-width:560px}
+  .calc label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.92rem}
+  .calc input{font:inherit;padding:.6rem .8rem;border:1px solid var(--linia);border-radius:8px;background:var(--blanc);width:100%}
+  .veredicte{margin-top:1rem;border-radius:12px;padding:1rem 1.2rem;font-weight:700;max-width:560px;border:2px solid var(--linia);background:var(--blanc)}
+  .veredicte small{display:block;font-weight:400;color:var(--gris-text);margin-top:.25rem}
+  .veredicte.bo{border-color:#1E7A3C;background:#E3F1E7}
+  .veredicte.just{border-color:#B7791F;background:#FBF0DC}
+  .veredicte.feble{border-color:var(--vermell);background:var(--vermell-suau)}
+  .lectures{list-style:none;display:flex;flex-direction:column;gap:.6rem;max-width:640px}
+  .lectures li{background:var(--blanc);border:1px solid var(--linia);border-radius:10px;padding:.8rem 1rem;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between}
+  .lectures .val{font-weight:700}
+  .lectures .bt{display:flex;gap:.4rem}
+  .lectures button{font:inherit;font-size:.88rem;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.35rem .7rem;cursor:pointer}
+  .lectures button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .lectures button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .lectures .exp{flex-basis:100%;font-size:.9rem;color:var(--gris-text);display:none}
+  .lectures .exp.vista{display:block}
+  @media (max-width:520px){ .calc{grid-template-columns:1fr} }
+
+  /* fase 4: píndoles */
+  .etapes.e4{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:880px){.etapes.e4{grid-template-columns:repeat(2,1fr)}}
+  .caixa.si{border-top:4px solid #1E7A3C}
+  .caixa.mai{border-top:4px solid var(--vermell)}
+  .caixa ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text)}
+  .caixa li + li{margin-top:.25rem}
+  .lectures .val{font-weight:600}
+  .clau-hex{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;word-break:break-all}
+
+  /* descodificador */
+  .deco{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.2rem 1.3rem}
+  .deco > * + *{margin-top:.9rem}
+  .deco label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.92rem}
+  .deco input{font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;padding:.6rem .8rem;border:1px solid var(--linia);border-radius:8px;background:var(--fons);width:100%}
+  .bytes{display:flex;flex-wrap:wrap;gap:.3rem}
+  .bytes span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;font-weight:700;padding:.3rem .45rem;border-radius:6px;background:var(--fons);border:2px solid transparent}
+  .bytes span.c{border-color:var(--negre)}
+  .bytes span.t{background:var(--negre);color:var(--blanc)}
+  .bytes span.v{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .bytes span.e{background:#FBF0DC;color:#7A4D0B}
+  .llegenda{display:flex;flex-wrap:wrap;gap:.8rem;font-size:.85rem;color:var(--gris-text)}
+  .llegenda i{display:inline-block;width:.9rem;height:.9rem;border-radius:3px;vertical-align:-2px;margin-right:.3rem}
+
+  /* panell de prova */
+  .prova-panell{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:1.2rem;align-items:start}
+  .controls{display:flex;flex-direction:column;gap:.8rem}
+  .controls label{display:flex;flex-direction:column;gap:.3rem;font-weight:700;font-size:.9rem}
+  .controls select,.controls input{font:inherit;padding:.5rem .7rem;border:1px solid var(--linia);border-radius:8px;background:var(--blanc);width:100%}
+  .giny{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;min-height:15rem}
+  .giny h4{font-size:1rem;margin:0 0 .6rem}
+  .giny h4.buit{color:var(--gris-text);font-style:italic;font-weight:600}
+  .giny .gran{font-weight:900;font-stretch:80%;font-size:3.6rem;line-height:1;margin-top:1.4rem}
+  .giny .gran small{font-size:1.4rem;font-weight:700;color:var(--gris-text);margin-left:.3rem}
+  .giny svg{width:100%;height:auto;display:block}
+  .avisos{list-style:none;margin-top:.8rem;display:flex;flex-direction:column;gap:.4rem}
+  .avisos li{font-size:.9rem;border-radius:8px;padding:.5rem .8rem}
+  .avisos li.ok{background:#E3F1E7;color:#14532B}
+  .avisos li.ko{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  @media (max-width:700px){.prova-panell{grid-template-columns:1fr}}
+
+  /* diagnosi */
+  .diag{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem;max-width:720px}
+  .diag .cami{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.9rem}
+  .diag .cami span{font-size:.78rem;font-weight:700;background:var(--fons);color:var(--gris-text);padding:.2rem .5rem;border-radius:5px}
+  .diag .preg{font-weight:800;font-size:1.2rem;line-height:1.3}
+  .diag .ajuda{color:var(--gris-text);margin-top:.4rem}
+  .diag .resol{border-left:5px solid var(--vermell);padding-left:1rem}
+  .diag .resol b{display:block;color:var(--vermell);font-size:.85rem}
+  .diag .bt{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+  .diag button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1.1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .diag button.pri{background:var(--vermell)}
+  .diag button.sec{background:var(--fons);color:var(--negre)}
+  .diag button:focus-visible,.ctrl button:focus-visible,.opcions button:focus-visible,.lectures button:focus-visible{outline:3px solid var(--vermell);outline-offset:2px}
+
+  /* calculadora EUI */
+  .calc.una{grid-template-columns:minmax(0,320px)}
+  .eui{margin-top:1rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;font-weight:700;max-width:560px;border-radius:12px;padding:1rem 1.2rem;border:2px solid var(--linia);background:var(--blanc);word-break:break-all}
+  .eui small{display:block;font-family:var(--font);font-weight:400;font-size:.9rem;color:var(--gris-text);margin-top:.3rem}
+  .eui em{font-style:normal;color:var(--vermell)}
+
+  /* simulador d'alertes */
+  .sim{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.2rem 1.3rem}
+  .sim > * + *{margin-top:1rem}
+  .sim-ctrl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+  .sim-ctrl label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.9rem}
+  .sim-ctrl output{font-weight:600;color:var(--vermell)}
+  .sim-ctrl input{accent-color:var(--vermell);width:100%}
+  .sim-graf svg{width:100%;height:auto;display:block}
+  .sim .veredicte{max-width:none}
+  @media (max-width:700px){.sim-ctrl{grid-template-columns:1fr}}
+
+  /* llista de sortida */
+  .progres{font-weight:700;color:var(--gris-text);margin-top:.6rem}
+  .progres.fet{color:#1E7A3C}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <a class="tornar" href="index.html" onclick="if(history.length>1){history.back();return false;}">← Tornar a la fase</a>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <span class="codi">PÍNDOLA FORMATIVA · F4.11</span>
+    <h1>Les alertes</h1>
+    <p>Després d'aquesta píndola sabreu de quines parts està feta una alerta, com es tria el llindar perquè avisi quan cal i no a tota hora, com s'escriu un avís útil i com es prova una alerta sense esperar que passi de veritat.</p>
+    <nav class="salts" aria-label="Continguts d'aquesta pàgina">
+      <a href="#que">Què és una alerta</a>
+      <a href="#parts">Les parts</a>
+      <a href="#llindar">Llindar, durada i recuperació</a>
+      <a href="#prova">Proveu-ho</a>
+      <a href="#missatge">Un bon avís</a>
+      <a href="#provar">Com es prova</a>
+      <a href="#test">Comproveu-ho</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="que">
+      <h2>Què és una alerta</h2>
+      <div class="cos">
+        <p>Una alerta és una regla que vigila les dades per vosaltres. Cada vegada que arriba una lectura, l'eina comprova la regla. Si es compleix, envia un avís a qui l'ha de rebre.</p>
+        <ol class="flux">
+          <li><strong>Arriba una lectura</strong><span>El valor nou entra a l'eina, igual que al panell.</span></li>
+          <li><strong>Es comprova la regla</strong><span>Per exemple: el valor és més gran que el llindar?</span></li>
+          <li><strong>Es compleix prou estona</strong><span>No n'hi ha prou amb una sola lectura estranya.</span></li>
+          <li><strong>S'envia l'avís</strong><span>A la persona i pel canal que s'han triat.</span></li>
+        </ol>
+        <p class="destacat">Una alerta bona avisa quan cal fer alguna cosa. Una alerta que avisa massa sovint deixa de llegir-se.</p>
+      </div>
+    </section>
+
+    <section id="parts">
+      <h2>Les parts d'una alerta</h2>
+      <div class="cos">
+        <p>Totes les eines d'alertes demanen, amb un nom o un altre, aquestes parts:</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Part</th><th>Què és</th><th>Exemple</th></tr></thead>
+            <tbody>
+              <tr><td><b>Dada</b></td><td>Quin camp de quin dispositiu es vigila.</td><td>La humitat del dispositiu d'una zona.</td></tr>
+              <tr><td><b>Condició</b></td><td>La comparació que s'ha de complir.</td><td>Més gran que, més petit que, o sense dades.</td></tr>
+              <tr><td><b>Llindar</b></td><td>El valor que separa el normal del que no ho és.</td><td>70 %.</td></tr>
+              <tr><td><b>Durada</b></td><td>Quantes lectures seguides, o quanta estona, s'ha de complir la condició.</td><td>Tres lectures seguides.</td></tr>
+              <tr><td><b>Destinatari i canal</b></td><td>Qui rep l'avís i per on.</td><td>Un correu, un missatge o una notificació de l'eina.</td></tr>
+              <tr><td><b>Missatge</b></td><td>El text de l'avís.</td><td>Què passa, on, amb quin valor i què cal fer.</td></tr>
+              <tr><td><b>Recuperació</b></td><td>Quan es considera que el problema s'ha resolt.</td><td>Quan baixa del 65 %.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="evid"><b>Una alerta especial</b>La condició «sense dades durant un temps» no mira cap valor: avisa quan un node deixa d'enviar. És la manera de saber que alguna cosa s'ha desendollat o ha perdut el senyal.</div>
+      </div>
+    </section>
+
+    <section id="llindar">
+      <h2>Llindar, durada i recuperació</h2>
+      <div class="cos">
+        <p>Les lectures reals no són netes: pugen i baixen una mica d'una lectura a l'altra. Si l'alerta només mira el llindar, cada pujada curta és un avís. Hi ha dues eines per evitar-ho.</p>
+        <div class="dues">
+          <div class="caixa">
+            <h3>Durada mínima</h3>
+            <p>La condició s'ha de complir unes quantes lectures seguides abans d'avisar. Una pujada d'una sola lectura no fa saltar l'alerta.</p>
+          </div>
+          <div class="caixa">
+            <h3>Marge de recuperació</h3>
+            <p>Un cop ha saltat, l'alerta no es dona per resolta fins que el valor baixa una mica per sota del llindar. Així, si el valor oscil·la just al voltant del llindar, no avisa una vegada i una altra. Aquest marge s'anomena <em>histèresi</em>.</p>
+          </div>
+        </div>
+        <p>On poseu el llindar depèn de per a què serveix l'alerta. Busqueu-lo en una font fiable (una norma, una recomanació oficial o la fitxa del sensor) i comproveu-lo amb les dades reals de la vostra zona.</p>
+      </div>
+    </section>
+
+    <section id="prova">
+      <h2>Proveu-ho</h2>
+      <div class="cos">
+        <p>Aquestes són les lectures de CO₂ d'una aula durant un matí, una cada cinc minuts. Ajusteu l'alerta i mireu quants avisos enviaria.</p>
+        <div class="sim">
+          <div class="sim-ctrl">
+            <label>Llindar <output id="olli"></output><input type="range" id="slli" min="700" max="1400" step="25" value="900"></label>
+            <label>Durada mínima <output id="odur"></output><input type="range" id="sdur" min="1" max="4" step="1" value="1"></label>
+            <label>Marge de recuperació <output id="omar"></output><input type="range" id="smar" min="0" max="200" step="25" value="0"></label>
+          </div>
+          <div class="sim-graf" id="sgraf"></div>
+          <div class="llegenda"><span><i style="background:#BC2C2B"></i>Lectures</span><span><i style="background:#252122"></i>Llindar</span><span><i style="background:#F7E4E3;border:1px solid #BC2C2B"></i>Alerta activa</span><span><i style="background:#252122;border-radius:50%"></i>Avís enviat</span></div>
+          <div class="veredicte" id="sver" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="missatge">
+      <h2>Un bon avís</h2>
+      <div class="cos">
+        <p>Qui rep l'avís no està mirant el panell. El missatge ha de dir prou perquè sàpiga què passa i què ha de fer sense obrir res més.</p>
+        <div class="dues">
+          <div class="caixa mai">
+            <h3>Poc útil</h3>
+            <p><code>ALERTA!!!</code></p>
+            <p><code>Valor fora de rang: 1240</code></p>
+          </div>
+          <div class="caixa si">
+            <h3>Útil</h3>
+            <p><code>CO₂ alt a l'aula 2.3: 1.240 ppm des de fa 15 minuts. Obriu les finestres.</code></p>
+          </div>
+        </div>
+        <ul class="punts">
+          <li><strong>Què passa</strong>: la magnitud i si és alta o baixa.</li>
+          <li><strong>On</strong>: la zona o l'espai concret.</li>
+          <li><strong>Amb quin valor</strong>: el número i la unitat.</li>
+          <li><strong>Què cal fer</strong>: una acció senzilla, si n'hi ha.</li>
+        </ul>
+        <div class="evid"><b>Recordeu</b>Si l'avís va a una adreça o a un telèfon personal, no el poseu al dossier ni a les captures. N'hi ha prou de dir «arriba per correu al professorat de guàrdia», per exemple.</div>
+      </div>
+    </section>
+
+    <section id="provar">
+      <h2>Com es prova una alerta</h2>
+      <div class="cos">
+        <p>No cal esperar que passi de veritat. Una alerta es prova fent que es compleixi la condició.</p>
+        <ol class="passos">
+          <li>Si es pot, provoqueu la condició de veritat: bufeu al sensor de CO₂, tapeu el de llum, escalfeu el de temperatura amb la mà…</li>
+          <li>Si no es pot, apunteu el llindar real i canvieu-lo temporalment per un valor que ja es compleixi.</li>
+          <li>Comproveu que arriba l'avís, quanta estona triga i què diu.</li>
+          <li>Feu tornar la situació a la normalitat i comproveu que l'alerta es resol.</li>
+          <li>Torneu a posar el llindar real i comproveu-lo.</li>
+          <li>Deixeu-ho funcionar una estona amb valors normals: no ha d'arribar cap avís.</li>
+        </ol>
+        <div class="evid"><b>Compte</b>L'error més habitual és deixar el llindar de prova. L'alerta salta a tota hora i la gent n'aprèn a ignorar els avisos.</div>
+      </div>
+    </section>
+
+    <section id="test">
+      <h2>Comproveu-ho</h2>
+      <div class="cos">
+        <p>Responeu en equip.</p>
+        <ol class="test" id="qtest">
+          <li data-ok="1"><p>Un sensor fa pujades d'una sola lectura quan algú hi passa a prop. Què evita que l'alerta salti per això?</p><div class="opcions"><button type="button">Abaixar el llindar</button><button type="button">Exigir que la condició es compleixi unes quantes lectures seguides</button><button type="button">Enviar l'avís a més persones</button></div><div class="resposta">La durada mínima filtra les pujades curtes: una sola lectura no n'hi ha prou.</div></li>
+          <li data-ok="0"><p>El valor oscil·la just al voltant del llindar i arriben molts avisos seguits. Què us ajuda?</p><div class="opcions"><button type="button">Un marge de recuperació</button><button type="button">Un panell més gran</button><button type="button">Treure la unitat del missatge</button></div><div class="resposta">Amb el marge, l'alerta no es resol fins que el valor baixa clarament, i no torna a avisar a cada oscil·lació.</div></li>
+          <li data-ok="2"><p>Quin missatge és més útil?</p><div class="opcions"><button type="button">«Alerta»</button><button type="button">«Valor fora de rang: 31»</button><button type="button">«Temperatura alta al taller: 31 °C. Reviseu la ventilació.»</button></div><div class="resposta">Diu què passa, on, amb quin valor i què cal fer.</div></li>
+          <li data-ok="1"><p>Per provar l'alerta heu canviat el llindar. Què heu de fer quan acabeu?</p><div class="opcions"><button type="button">Res, ja funciona</button><button type="button">Tornar a posar el llindar real i comprovar-ho</button><button type="button">Esborrar l'alerta</button></div><div class="resposta">Si es queda el llindar de prova, l'alerta avisarà a tota hora.</div></li>
+          <li data-ok="1"><p>Un node es desendolla. Quina alerta ho detectaria?</p><div class="opcions"><button type="button">Una de «valor més gran que el llindar»</button><button type="button">Una de «sense dades durant un temps»</button><button type="button">Cap alerta ho pot detectar</button></div><div class="resposta">Si el node no envia, no hi ha cap valor per comparar. L'alerta de falta de dades és la que avisa.</div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="fi">
+      <h2>I ara què?</h2>
+      <div class="cos">
+        <p>Ja sabeu com funciona una alerta i com es prova. Aquesta píndola <strong>no us diu quina alerta heu de posar a la vostra zona ni amb quin llindar</strong>: ho vau proposar a la Fase 2 i ara ho concretareu amb les dades reals.</p>
+        <p class="destacat">Qui ha de rebre l'avís, i què ha de fer quan el rebi?</p>
+        <div class="botons"><a class="boto" href="index.html" onclick="if(history.length>1){history.back();return false;}">Tornar a la fase</a></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+
+<script>
+(function(){
+  /* lectures d'un matí: cada 5 minuts de 8:00 a 11:00 */
+  const V=[];
+  for(let i=0;i<37;i++){
+    let b;
+    if(i<12) b=520+i*55;                 // classe: puja
+    else if(i<15) b=1125-(i-11)*150;     // ventilació
+    else if(i<30) b=680+(i-15)*36;       // torna a pujar
+    else b=1220-(i-29)*110;              // pati
+    const soroll=Math.round(45*Math.sin(i*2.3)+25*Math.sin(i*5.1));
+    V.push(Math.max(430,b+soroll));
+  }
+  V[6]+=210; V[21]+=190;                  // algú passa a prop del sensor
+  const sl=document.getElementById('slli'), sd=document.getElementById('sdur'), sm=document.getElementById('smar'),
+        ol=document.getElementById('olli'), od=document.getElementById('odur'), om=document.getElementById('omar'),
+        gr=document.getElementById('sgraf'), ve=document.getElementById('sver');
+  const hora=i=>{const m=i*5;return (8+Math.floor(m/60))+':'+String(m%60).padStart(2,'0');};
+  function simula(L,D,M){
+    let seg=0, act=false; const estat=[], avisos=[];
+    V.forEach((v,i)=>{
+      if(!act){
+        seg = v>L ? seg+1 : 0;
+        if(seg>=D){act=true; avisos.push(i);}
+      } else if(v<L-M){act=false; seg=0;}
+      estat.push(act);
+    });
+    return {estat,avisos};
+  }
+  function dibuixa(){
+    const L=+sl.value, D=+sd.value, M=+sm.value;
+    ol.textContent=L+' ppm'; od.textContent=D===1?'1 lectura':D+' lectures seguides'; om.textContent=M?M+' ppm':'cap';
+    const {estat,avisos}=simula(L,D,M);
+    const W=640,H=240,Lf=46,R=10,T=12,B=28,mn=400,mx=1500;
+    const X=i=>Lf+(W-Lf-R)*i/(V.length-1), Y=v=>T+(H-T-B)*(1-(v-mn)/(mx-mn));
+    let s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Gràfic de lectures de CO2 amb el llindar i les alertes">';
+    estat.forEach((a,i)=>{ if(a){ const x0=i?(X(i-1)+X(i))/2:X(0), x1=i<V.length-1?(X(i)+X(i+1))/2:X(i); s+='<rect x="'+x0.toFixed(1)+'" y="'+T+'" width="'+(x1-x0+0.6).toFixed(1)+'" height="'+(H-T-B)+'" fill="#F7E4E3"/>'; }});
+    [500,800,1100,1400].forEach(v=>{s+='<line x1="'+Lf+'" x2="'+(W-R)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#E2DFDD"/><text x="'+(Lf-6)+'" y="'+(Y(v)+4)+'" text-anchor="end" font-size="11" fill="#6B6566">'+v+'</text>';});
+    [0,12,24,36].forEach(i=>{s+='<text x="'+X(i)+'" y="'+(H-8)+'" text-anchor="'+(i===0?'start':i===36?'end':'middle')+'" font-size="11" fill="#6B6566">'+hora(i)+'</text>';});
+    s+='<line x1="'+Lf+'" x2="'+(W-R)+'" y1="'+Y(L)+'" y2="'+Y(L)+'" stroke="#252122" stroke-width="2"/>';
+    if(M) s+='<line x1="'+Lf+'" x2="'+(W-R)+'" y1="'+Y(L-M)+'" y2="'+Y(L-M)+'" stroke="#252122" stroke-width="1.5" stroke-dasharray="5 4"/>';
+    s+='<polyline fill="none" stroke="#BC2C2B" stroke-width="2.5" stroke-linejoin="round" points="'+V.map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1)).join(' ')+'"/>';
+    avisos.forEach(i=>{s+='<circle cx="'+X(i)+'" cy="'+Y(V[i])+'" r="6" fill="#252122" stroke="#fff" stroke-width="2"/>';});
+    s+='</svg>';
+    gr.innerHTML=s;
+    const n=avisos.length, ep=[]; let ini=-1;
+    estat.forEach((a,i)=>{ if(a&&ini<0) ini=i; if((!a||i===estat.length-1)&&ini>=0){ ep.push((a?i+1:i)-ini); ini=-1; } });
+    const curtes=ep.filter(x=>x<=1).length+avisos.filter(i=>(i===6||i===21)&&V[i+1]<L).length, actiu=estat.filter(Boolean).length/estat.length;
+    let k,t,d;
+    if(n===0){k='feble';t='Cap avís';d='Amb aquest llindar, l\'alerta no avisaria en tot el matí, tot i que el CO₂ passa clarament de 1.000 ppm.';}
+    else if(actiu>0.6){k='just';t=n+(n===1?' avís':' avisos');d='L\'alerta està activa gairebé tot el matí: el llindar és massa baix i l\'avís ja no diu res de nou.';}
+    else if(curtes){k='just';t=n+(n===1?' avís':' avisos');d='Almenys un avís és per una pujada d\'una sola lectura, quan algú passa a prop del sensor. Proveu d\'augmentar la durada mínima.';}
+    else if(n>2){k='just';t=n+' avisos';d='Massa avisos per a un sol matí. Mireu si el valor oscil·la al voltant del llindar: un marge de recuperació hi pot ajudar.';}
+    else {k='bo';t=n+(n===1?' avís':' avisos');d='L\'alerta avisa als moments en què el CO₂ puja de veritat i no salta per les pujades curtes. '+(avisos.map(hora).join(' i '))+'.';}
+    ve.className='veredicte '+k; ve.innerHTML=t+'<small>'+d+'</small>';
+  }
+  [sl,sd,sm].forEach(e=>e.addEventListener('input',dibuixa));
+  dibuixa();
+
+  /* test */
+  document.querySelectorAll('#qtest > li').forEach(q=>{
+    const ok=+q.dataset.ok, bs=[...q.querySelectorAll('.opcions button')], r=q.querySelector('.resposta');
+    r.dataset.t=r.textContent;
+    bs.forEach((b,k)=>b.addEventListener('click',()=>{
+      bs.forEach(x=>x.classList.remove('be','mal'));
+      b.classList.add(k===ok?'be':'mal');
+      r.textContent=(k===ok?'Correcte! ':'No és aquesta. ')+r.dataset.t;
+      r.classList.add('vista');
+    }));
+  });
+})();
+</script>
+</body>
+
+</html>

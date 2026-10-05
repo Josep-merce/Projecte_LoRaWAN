@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Píndola · Incrustar el dossier al portafoli · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+
+  /* activitats */
+  .temps{display:grid;grid-template-columns:1fr auto;max-width:640px;border:1px solid var(--linia);border-radius:12px;background:var(--blanc);overflow:hidden}
+  .temps div{padding:.65rem 1rem;border-bottom:1px solid var(--linia)}
+  .temps div:nth-child(even){text-align:right;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .temps .tot{background:var(--negre);color:var(--blanc);font-weight:800;border-bottom:0}
+  .temps .pind{color:var(--vermell-fosc);background:var(--vermell-suau)}
+  .activitat{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:clamp(1.3rem,3vw,2rem);scroll-margin-top:1rem}
+  .activitat + .activitat{margin-top:1rem}
+  .act-cap{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
+  .act-num{font-weight:800;font-size:.8rem;background:var(--negre);color:var(--blanc);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dur{font-weight:700;font-size:.8rem;background:var(--fons);color:var(--gris-text);padding:.3rem .6rem;border-radius:6px;white-space:nowrap}
+  .act-dos{font-weight:700;font-size:.8rem;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.3rem .6rem;border-radius:6px;text-decoration:none;white-space:nowrap}
+  .act-dos:hover{background:var(--vermell);color:var(--blanc)}
+  .activitat h3{font-weight:850;font-stretch:86%;font-size:clamp(1.35rem,2.4vw,1.7rem);line-height:1.1;margin:0 0 .6rem}
+  .activitat h4{font-size:1rem;font-weight:750;margin:1.3rem 0 .45rem;color:var(--vermell)}
+  .activitat p{max-width:68ch;margin-top:.5rem}
+  .activitat.pindola{border:2px solid var(--vermell);background:linear-gradient(var(--blanc),var(--blanc))}
+  .activitat.pindola .act-num{background:var(--vermell)}
+  .passos-l{list-style:none;counter-reset:ps;margin-top:.4rem;max-width:70ch}
+  .passos-l li{counter-increment:ps;position:relative;padding:.5rem 0 .5rem 2.6rem;border-top:1px solid var(--linia)}
+  .passos-l li:first-child{border-top:0}
+  .passos-l li::before{content:counter(ps);position:absolute;left:0;top:.45rem;width:1.8rem;height:1.8rem;border-radius:50%;background:var(--negre);color:var(--blanc);font-weight:800;font-size:.85rem;display:grid;place-items:center}
+  .pistes{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.45rem 2rem;max-width:70ch;margin-top:.3rem}
+  .pistes li{padding-left:1.3rem;position:relative}
+  .pistes li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+  .clau{margin-top:1.1rem;background:var(--negre);color:var(--blanc);border-radius:10px;padding:1rem 1.2rem;font-weight:750;font-size:1.1rem;max-width:62ch}
+  .clau small{display:block;font-weight:600;color:#E06A69;font-size:.78rem;letter-spacing:.02em;margin-bottom:.2rem}
+  .evid{margin-top:1rem;border-left:4px solid var(--vermell);padding:.2rem 0 .2rem 1rem;max-width:66ch}
+  .evid b{display:block;font-size:.85rem;color:var(--vermell)}
+  .exemple{color:var(--gris-text);font-style:italic}
+  .check-l{list-style:none;max-width:60ch}
+  .check-l label{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-top:1px solid var(--linia);cursor:pointer}
+  .check-l li:first-child label{border-top:0}
+  .check-l input{width:1.15rem;height:1.15rem;margin-top:.2rem;accent-color:var(--vermell);flex:none}
+  .no-l{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem}
+  .no-l li{background:var(--blanc);border:1px dashed #BDB6B4;border-radius:8px;padding:.4rem .8rem;color:var(--gris-text);text-decoration:line-through;text-decoration-color:var(--vermell)}
+  .seguent{display:flex;justify-content:space-between;gap:1rem;margin-top:clamp(2rem,5vw,3rem);flex-wrap:wrap}
+  .seguent a{flex:1;min-width:220px;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.2rem;text-decoration:none;color:var(--negre)}
+  .seguent a:hover{border-color:var(--vermell)}
+  .seguent small{display:block;color:var(--gris-text);font-weight:600;font-size:.8rem}
+  .seguent b{font-size:1.05rem}
+  .seguent a.nx{text-align:right}
+  @media (max-width:880px){.pistes{grid-template-columns:1fr}}
+
+  .passos{list-style:none;counter-reset:p;max-width:68ch}
+  .passos li{counter-increment:p;position:relative;padding:0 0 .75rem 2.4rem}
+  .passos li::before{content:counter(p);position:absolute;left:0;top:.05rem;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--negre);color:var(--blanc);
+    font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .video{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  /* índex de píndoles */
+  .pind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}
+  .pind-card{display:flex;flex-direction:column;gap:.35rem;background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;text-decoration:none;color:var(--negre);transition:border-color .2s,transform .2s}
+  .pind-card:hover{border-color:var(--vermell);transform:translateY(-2px)}
+  .pind-card .meta{display:flex;gap:.4rem;flex-wrap:wrap}
+  .pind-card .f{font-size:.72rem;font-weight:800;background:var(--negre);color:var(--blanc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card .est{font-size:.72rem;font-weight:700;background:var(--vermell-suau);color:var(--vermell-fosc);padding:.2rem .5rem;border-radius:5px}
+  .pind-card b{font-size:1.02rem;line-height:1.25}
+  .pind-card span.d{font-size:.88rem;color:var(--gris-text)}
+  .pind-card.disabled{opacity:.55;pointer-events:none;background:#FAFAF9}
+  .pind-card.disabled .f{background:#A39C9D}
+  .pind-card.disabled .est{background:var(--fons);color:var(--gris-text)}
+
+  /* capçalera de píndola */
+  .pind-hero{background:var(--vermell);color:var(--blanc);border-radius:14px;padding:clamp(1.4rem,3vw,2.2rem);margin-top:clamp(2.5rem,6vw,4rem);scroll-margin-top:1rem}
+  .pind-hero small{font-weight:800;font-size:.8rem;background:rgba(0,0,0,.18);padding:.28rem .6rem;border-radius:6px}
+  .pind-hero h2{font-weight:900;font-stretch:82%;font-size:clamp(2rem,5vw,3.2rem);line-height:1;margin-top:.8rem;letter-spacing:-.015em}
+  .pind-hero p{margin-top:.8rem;max-width:60ch;color:#FBE9E9}
+
+  /* recorregut de la dada */
+  .viatge{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .etapes{list-style:none;display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;position:relative}
+  .etapes li{text-align:center;padding:.8rem .3rem;border-radius:10px;border:2px solid var(--linia);background:var(--fons);font-weight:700;font-size:.85rem;line-height:1.2;transition:all .25s;cursor:pointer}
+  .etapes li svg{display:block;width:34px;height:34px;margin:0 auto .45rem;stroke:var(--gris-text);transition:stroke .25s}
+  .etapes li.feta{border-color:var(--negre);background:var(--blanc)}
+  .etapes li.feta svg{stroke:var(--negre)}
+  .etapes li.actual{border-color:var(--vermell);background:var(--vermell);color:var(--blanc)}
+  .etapes li.actual svg{stroke:var(--blanc)}
+  .explica{margin-top:1rem;min-height:7.5rem;background:var(--fons);border-radius:10px;padding:1rem 1.2rem}
+  .explica b{display:block;color:var(--vermell);font-size:.8rem;letter-spacing:.02em}
+  .explica h4{margin:.15rem 0 .35rem;font-size:1.15rem}
+  .explica .dada{display:inline-block;margin-top:.5rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85rem;background:var(--negre);color:#fff;padding:.3rem .6rem;border-radius:6px}
+  .ctrl{display:flex;justify-content:space-between;align-items:center;margin-top:.9rem;gap:.6rem}
+  .ctrl button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .ctrl button.pri{background:var(--vermell)}
+  .ctrl button:disabled{opacity:.35;cursor:default}
+  .ctrl span{font-size:.85rem;color:var(--gris-text);font-weight:600}
+
+  /* peces */
+  .peces{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .peca{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem;border-top:4px solid var(--negre)}
+  .peca:last-child{border-top-color:var(--vermell)}
+  .peca h3{margin:0 0 .4rem !important;font-size:1.2rem}
+  .peca p{color:var(--gris-text);margin-top:.35rem;font-size:.95rem}
+  .peca ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text);font-size:.93rem}
+
+  /* test */
+  .test{counter-reset:t;list-style:none;display:flex;flex-direction:column;gap:1rem}
+  .test > li{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;counter-increment:t}
+  .test > li > p{font-weight:700;margin:0 0 .6rem}
+  .test > li > p::before{content:counter(t) ". ";color:var(--vermell)}
+  .opcions{display:flex;flex-direction:column;gap:.4rem}
+  .opcions button{font:inherit;text-align:left;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.55rem .8rem;cursor:pointer;color:var(--negre)}
+  .opcions button:hover{border-color:var(--linia)}
+  .opcions button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .opcions button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .resposta{margin-top:.6rem;font-size:.92rem;color:var(--gris-text);display:none}
+  .resposta.vista{display:block}
+  @media (max-width:880px){
+    .pind-grid,.peces{grid-template-columns:1fr}
+    .etapes{grid-template-columns:repeat(3,1fr)}
+  }
+
+  /* botons de filtre / selecció */
+  .parts{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none}
+  .parts button{font:inherit;font-size:.85rem;font-weight:700;border:2px solid var(--linia);background:var(--blanc);color:var(--negre);border-radius:8px;padding:.4rem .7rem;cursor:pointer}
+  .parts button:hover{border-color:var(--negre)}
+  .parts button.actual{background:var(--vermell);border-color:var(--vermell);color:var(--blanc)}
+
+  /* catàleg de sensors */
+  .cat{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:1rem}
+  .sens{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.1rem 1.2rem;border-top:4px solid var(--negre)}
+  .sens[hidden]{display:none}
+  .sens h3{margin:0 !important;font-size:1.15rem;line-height:1.2}
+  .sens .mesura{color:var(--gris-text);font-size:.92rem;margin-top:.15rem}
+  .sens .etq{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}
+  .sens .etq span{font-size:.72rem;font-weight:800;padding:.2rem .5rem;border-radius:5px;background:var(--fons);color:var(--gris-text)}
+  .sens .etq span.cn{background:var(--negre);color:var(--blanc)}
+  .sens .etq span.alt{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .sens dl{display:grid;grid-template-columns:auto 1fr;gap:.25rem .8rem;margin-top:.7rem;font-size:.9rem}
+  .sens dt{font-weight:700}
+  .sens dd{color:var(--gris-text)}
+  .sens p.obs{font-size:.9rem;margin-top:.7rem;padding-top:.6rem;border-top:1px solid var(--linia)}
+
+  /* connexió */
+  .cable{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem}
+  .cable svg{width:100%;height:auto;display:block}
+
+  /* codi */
+  pre.prog{background:var(--negre);color:#F2EFEF;border-radius:12px;padding:1.1rem 1.3rem;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;line-height:1.6}
+  pre.prog .cm{color:#A39C9D;font-style:italic}
+  pre.prog .kw{color:#E06A69;font-weight:700}
+  pre.prog .fn{color:#FFFFFF;font-weight:700}
+  pre.prog .st{color:#F4C9A8}
+
+  /* fitxa tècnica */
+  .fitxa{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;overflow:hidden}
+  .fitxa-cap{background:var(--negre);color:var(--blanc);padding:1rem 1.2rem;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
+  .fitxa-cap b{font-size:1.2rem;font-stretch:88%}
+  .fitxa-cap small{color:#CFC9C9;font-size:.8rem}
+  .fitxa table{min-width:480px}
+  .fitxa tbody tr{cursor:pointer}
+  .fitxa tbody tr:hover td{background:#FBF9F8}
+  .fitxa tbody tr.actual td{background:var(--vermell-suau)}
+  .fitxa tbody tr.actual td:first-child{box-shadow:inset 4px 0 0 var(--vermell)}
+  .fitxa td:first-child{font-weight:700;white-space:nowrap}
+  .fitxa td.val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88rem}
+  .fitxa .explica{margin:0;border-radius:0;border-top:1px solid var(--linia)}
+
+  /* precisió */
+  .regle{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem}
+  .regle svg{width:100%;height:auto;display:block}
+
+  /* desplegable */
+  details.noms{background:var(--blanc);border:1px solid var(--linia);border-left:4px solid var(--vermell);border-radius:12px;max-width:72ch}
+  details.noms summary{cursor:pointer;font-weight:750;padding:.9rem 1.2rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+  details.noms summary::-webkit-details-marker{display:none}
+  details.noms summary::after{content:"+";font-weight:800;font-size:1.3rem;color:var(--vermell);line-height:1}
+  details.noms[open] summary::after{content:"−"}
+  details.noms summary:focus-visible{outline:3px solid var(--vermell);outline-offset:2px;border-radius:10px}
+  details.noms .dins{padding:0 1.2rem 1.1rem}
+  details.noms .dins h4{font-size:1rem;font-weight:750;color:var(--vermell);margin-top:1rem}
+  details.noms .dins p{margin-top:.35rem;max-width:66ch}
+  @media (max-width:880px){.cat{grid-template-columns:1fr}}
+  .cos{min-width:0}
+  .video{position:relative;aspect-ratio:16/9;width:100%;max-width:820px;border-radius:12px;overflow:hidden;background:var(--negre)}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .tauler{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;max-width:820px}
+  .llista{background:#EBE8E6;border-radius:12px;padding:.8rem;min-height:9rem}
+  .llista h3{margin:0 0 .6rem !important;font-size:.95rem !important;font-weight:800}
+  .llista h3 small{font-weight:600;color:var(--gris-text)}
+  .targeta{background:var(--blanc);border-radius:9px;padding:.65rem .75rem;box-shadow:0 1px 0 rgba(0,0,0,.12);font-size:.92rem}
+  .targeta + .targeta{margin-top:.5rem}
+  .targeta .tt{font-weight:700;display:block}
+  .targeta .meta{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
+  .targeta .meta span{font-size:.75rem;font-weight:700;border-radius:5px;padding:.1rem .4rem;background:var(--fons);color:var(--gris-text)}
+  .targeta .meta span.et{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .targeta .acc{display:flex;gap:.3rem;margin-top:.5rem}
+  .targeta .acc button{font:inherit;font-size:.78rem;font-weight:700;background:var(--negre);color:var(--blanc);border:0;border-radius:6px;padding:.25rem .5rem;cursor:pointer}
+  .targeta .acc button:hover{background:var(--vermell)}
+  .targeta .acc button:focus-visible{outline:3px solid var(--vermell);outline-offset:2px}
+  .estat-tauler{margin-top:.8rem;font-weight:600;color:var(--gris-text);max-width:68ch}
+  @media (max-width:700px){.tauler{grid-template-columns:1fr}}
+
+  .cos{min-width:0}
+  .calc{display:grid;grid-template-columns:repeat(2,minmax(0,220px));gap:1rem;align-items:end;max-width:560px}
+  .calc label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.92rem}
+  .calc input{font:inherit;padding:.6rem .8rem;border:1px solid var(--linia);border-radius:8px;background:var(--blanc);width:100%}
+  .veredicte{margin-top:1rem;border-radius:12px;padding:1rem 1.2rem;font-weight:700;max-width:560px;border:2px solid var(--linia);background:var(--blanc)}
+  .veredicte small{display:block;font-weight:400;color:var(--gris-text);margin-top:.25rem}
+  .veredicte.bo{border-color:#1E7A3C;background:#E3F1E7}
+  .veredicte.just{border-color:#B7791F;background:#FBF0DC}
+  .veredicte.feble{border-color:var(--vermell);background:var(--vermell-suau)}
+  .lectures{list-style:none;display:flex;flex-direction:column;gap:.6rem;max-width:640px}
+  .lectures li{background:var(--blanc);border:1px solid var(--linia);border-radius:10px;padding:.8rem 1rem;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between}
+  .lectures .val{font-weight:700}
+  .lectures .bt{display:flex;gap:.4rem}
+  .lectures button{font:inherit;font-size:.88rem;background:var(--fons);border:2px solid transparent;border-radius:8px;padding:.35rem .7rem;cursor:pointer}
+  .lectures button.be{background:#E3F1E7;border-color:#1E7A3C}
+  .lectures button.mal{background:var(--vermell-suau);border-color:var(--vermell)}
+  .lectures .exp{flex-basis:100%;font-size:.9rem;color:var(--gris-text);display:none}
+  .lectures .exp.vista{display:block}
+  @media (max-width:520px){ .calc{grid-template-columns:1fr} }
+
+  /* fase 4: píndoles */
+  .etapes.e4{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:880px){.etapes.e4{grid-template-columns:repeat(2,1fr)}}
+  .caixa.si{border-top:4px solid #1E7A3C}
+  .caixa.mai{border-top:4px solid var(--vermell)}
+  .caixa ul{margin:.5rem 0 0 1.1rem;color:var(--gris-text)}
+  .caixa li + li{margin-top:.25rem}
+  .lectures .val{font-weight:600}
+  .clau-hex{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;word-break:break-all}
+
+  /* descodificador */
+  .deco{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.2rem 1.3rem}
+  .deco > * + *{margin-top:.9rem}
+  .deco label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.92rem}
+  .deco input{font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;padding:.6rem .8rem;border:1px solid var(--linia);border-radius:8px;background:var(--fons);width:100%}
+  .bytes{display:flex;flex-wrap:wrap;gap:.3rem}
+  .bytes span{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9rem;font-weight:700;padding:.3rem .45rem;border-radius:6px;background:var(--fons);border:2px solid transparent}
+  .bytes span.c{border-color:var(--negre)}
+  .bytes span.t{background:var(--negre);color:var(--blanc)}
+  .bytes span.v{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  .bytes span.e{background:#FBF0DC;color:#7A4D0B}
+  .llegenda{display:flex;flex-wrap:wrap;gap:.8rem;font-size:.85rem;color:var(--gris-text)}
+  .llegenda i{display:inline-block;width:.9rem;height:.9rem;border-radius:3px;vertical-align:-2px;margin-right:.3rem}
+
+  /* panell de prova */
+  .prova-panell{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:1.2rem;align-items:start}
+  .controls{display:flex;flex-direction:column;gap:.8rem}
+  .controls label{display:flex;flex-direction:column;gap:.3rem;font-weight:700;font-size:.9rem}
+  .controls select,.controls input{font:inherit;padding:.5rem .7rem;border:1px solid var(--linia);border-radius:8px;background:var(--blanc);width:100%}
+  .giny{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.1rem;min-height:15rem}
+  .giny h4{font-size:1rem;margin:0 0 .6rem}
+  .giny h4.buit{color:var(--gris-text);font-style:italic;font-weight:600}
+  .giny .gran{font-weight:900;font-stretch:80%;font-size:3.6rem;line-height:1;margin-top:1.4rem}
+  .giny .gran small{font-size:1.4rem;font-weight:700;color:var(--gris-text);margin-left:.3rem}
+  .giny svg{width:100%;height:auto;display:block}
+  .avisos{list-style:none;margin-top:.8rem;display:flex;flex-direction:column;gap:.4rem}
+  .avisos li{font-size:.9rem;border-radius:8px;padding:.5rem .8rem}
+  .avisos li.ok{background:#E3F1E7;color:#14532B}
+  .avisos li.ko{background:var(--vermell-suau);color:var(--vermell-fosc)}
+  @media (max-width:700px){.prova-panell{grid-template-columns:1fr}}
+
+  /* diagnosi */
+  .diag{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.3rem;max-width:720px}
+  .diag .cami{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.9rem}
+  .diag .cami span{font-size:.78rem;font-weight:700;background:var(--fons);color:var(--gris-text);padding:.2rem .5rem;border-radius:5px}
+  .diag .preg{font-weight:800;font-size:1.2rem;line-height:1.3}
+  .diag .ajuda{color:var(--gris-text);margin-top:.4rem}
+  .diag .resol{border-left:5px solid var(--vermell);padding-left:1rem}
+  .diag .resol b{display:block;color:var(--vermell);font-size:.85rem}
+  .diag .bt{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+  .diag button{font:inherit;font-weight:700;border:0;border-radius:8px;padding:.6rem 1.1rem;cursor:pointer;background:var(--negre);color:#fff}
+  .diag button.pri{background:var(--vermell)}
+  .diag button.sec{background:var(--fons);color:var(--negre)}
+  .diag button:focus-visible,.ctrl button:focus-visible,.opcions button:focus-visible,.lectures button:focus-visible{outline:3px solid var(--vermell);outline-offset:2px}
+
+  /* calculadora EUI */
+  .calc.una{grid-template-columns:minmax(0,320px)}
+  .eui{margin-top:1rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;font-weight:700;max-width:560px;border-radius:12px;padding:1rem 1.2rem;border:2px solid var(--linia);background:var(--blanc);word-break:break-all}
+  .eui small{display:block;font-family:var(--font);font-weight:400;font-size:.9rem;color:var(--gris-text);margin-top:.3rem}
+  .eui em{font-style:normal;color:var(--vermell)}
+
+  /* simulador d'alertes */
+  .sim{background:var(--blanc);border:1px solid var(--linia);border-radius:14px;padding:1.2rem 1.3rem}
+  .sim > * + *{margin-top:1rem}
+  .sim-ctrl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+  .sim-ctrl label{display:flex;flex-direction:column;gap:.35rem;font-weight:700;font-size:.9rem}
+  .sim-ctrl output{font-weight:600;color:var(--vermell)}
+  .sim-ctrl input{accent-color:var(--vermell);width:100%}
+  .sim-graf svg{width:100%;height:auto;display:block}
+  .sim .veredicte{max-width:none}
+  @media (max-width:700px){.sim-ctrl{grid-template-columns:1fr}}
+
+  /* llista de sortida */
+  .progres{font-weight:700;color:var(--gris-text);margin-top:.6rem}
+  .progres.fet{color:#1E7A3C}
+
+  /* fase 5: píndoles */
+  .lectures .val{flex:1 1 22rem}
+  .lectures button{color:var(--negre)}
+  .fitxa{background:var(--blanc);border:1px solid var(--linia);border-radius:6px;box-shadow:0 2px 0 rgba(0,0,0,.06),0 10px 24px rgba(37,33,34,.08);padding:clamp(1.1rem,3vw,2rem);max-width:640px}
+  .fitxa > * + *{margin-top:1rem}
+  .fitxa .fcap{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.4rem;border-bottom:2px solid var(--negre);padding-bottom:.6rem}
+  .fitxa .fcap b{font-weight:850;font-stretch:84%;font-size:1.35rem}
+  .fitxa .fcap span{font-size:.8rem;font-weight:700;color:var(--gris-text);text-transform:uppercase;letter-spacing:.04em}
+  .fitxa .camp{font-weight:700;font-size:.92rem}
+  .fitxa .ratlla{border-bottom:1px solid var(--gris-text);height:1.7rem}
+  .fitxa .ratlla.l{flex:1;min-width:8rem}
+  .fitxa .fila{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;align-items:flex-end}
+  .fitxa .fila .camp{white-space:nowrap}
+  .fitxa .escala{width:100%;border-collapse:collapse;font-size:.9rem;min-width:0}
+  .fitxa .escala th,.fitxa .escala td{padding:.45rem .4rem;border-bottom:1px solid var(--linia);background:none}
+  .fitxa .escala td.q{width:100%;white-space:normal;font-weight:600}
+  .fitxa .escala td.b{text-align:center;white-space:nowrap}
+  .fitxa .escala td.b::before{content:"";display:inline-block;width:.9rem;height:.9rem;border:2px solid var(--negre);border-radius:3px;vertical-align:-2px}
+  .fitxa .escala th{font-size:.78rem;color:var(--gris-text);text-align:center;white-space:nowrap}
+  .fitxa .requadre{border:1px solid var(--gris-text);border-radius:6px;height:4.2rem;margin-top:.35rem}
+  .fitxa .ajut{font-weight:400;color:var(--gris-text);font-size:.85rem}
+  .matriu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;max-width:720px}
+  .matriu .caixa{border-top:4px solid var(--linia)}
+  .matriu .caixa.ara{border-top-color:#1E7A3C}
+  .matriu .caixa.pla{border-top-color:var(--negre)}
+  .matriu .caixa.no2{border-top-color:var(--vermell)}
+  .matriu small{display:block;font-weight:700;font-size:.78rem;color:var(--gris-text);text-transform:uppercase;letter-spacing:.04em}
+  .plans{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;max-width:820px}
+  .plans li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem}
+  .plans li:first-child{border-top-color:#1E7A3C}
+  .plans li:last-child{border-top-color:var(--vermell)}
+  .plans b{display:block;font-size:1.05rem}
+  .plans span{display:block;color:var(--gris-text);font-size:.9rem;margin-top:.25rem}
+  @media (max-width:700px){.matriu,.plans{grid-template-columns:1fr}}
+
+  /* fase 6: píndoles */
+  .calc.sel{grid-template-columns:repeat(2,minmax(0,1fr));max-width:640px}
+  .calc select{font:inherit;padding:.6rem .8rem;border:1px solid var(--linia);border-radius:8px;background:var(--blanc);width:100%;color:var(--negre)}
+  .sim .veredicte{max-width:640px}
+  @media (max-width:520px){ .calc.sel{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <a class="tornar" href="index.html" onclick="if(history.length>1){history.back();return false;}">← Tornar a la fase</a>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <span class="codi">PÍNDOLA FORMATIVA · F6.2</span>
+    <h1>Incrustar el dossier al portafoli</h1>
+    <p>Després d'aquesta píndola sabreu què vol dir incrustar un document, quins permisos ha de tenir perquè es vegi, com s'insereix a Google Sites i com es comprova que es veu des de fora.</p>
+    <nav class="salts" aria-label="Continguts d'aquesta pàgina">
+      <a href="#incrustar">Què és incrustar</a>
+      <a href="#permisos">Els permisos</a>
+      <a href="#simulador">Proveu-ho</a>
+      <a href="#inserir">Inserir el dossier</a>
+      <a href="#comprovar">Comprovar-ho</a>
+      <a href="#test">Comproveu-ho</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="incrustar">
+      <h2>Què és incrustar</h2>
+      <div class="cos">
+        <p>Incrustar un document vol dir mostrar-lo dins d'una pàgina web, sense fer-ne una còpia. La pàgina només conté una finestra que mostra el document original. Per això, quan canvieu el document, el portafoli mostra el canvi automàticament.</p>
+        <div class="dues">
+          <div class="caixa si">
+            <h3>Incrustar</h3>
+            <ul>
+              <li>El document es veu dins de la pàgina.</li>
+              <li>Sempre es mostra la versió actual.</li>
+              <li>Només n'hi ha un: el de l'equip.</li>
+            </ul>
+          </div>
+          <div class="caixa mai">
+            <h3>Copiar o descarregar</h3>
+            <ul>
+              <li>Cada còpia queda com estava el dia que es va fer.</li>
+              <li>Els canvis posteriors no s'hi veuen.</li>
+              <li>Acaben havent-hi versions diferents.</li>
+            </ul>
+          </div>
+        </div>
+        <ol class="flux">
+          <li><strong>Compartir</strong><span>El document ha de tenir permisos perquè el puguin veure.</span></li>
+          <li><strong>Inserir</strong><span>S'afegeix a la pàgina des del Drive.</span></li>
+          <li><strong>Publicar</strong><span>Els canvis del lloc no es veuen fins que es publiquen.</span></li>
+          <li><strong>Comprovar</strong><span>Mirar-ho com ho veuria una altra persona.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="permisos">
+      <h2>Els permisos</h2>
+      <div class="cos">
+        <p>Hi ha dues portes, i totes dues han d'estar obertes: la del lloc web i la del document. Si el lloc està publicat però el document no està compartit, qui visiti el portafoli veurà un requadre que demana permís.</p>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Accés general del document</th><th>Qui el pot veure</th></tr></thead>
+            <tbody>
+              <tr><td><b>Restringit</b></td><td>Només les persones afegides una a una al document.</td></tr>
+              <tr><td><b>La vostra organització</b></td><td>Qualsevol persona amb un compte de l'institut que tingui l'enllaç o visiti la pàgina.</td></tr>
+              <tr><td><b>Qualsevol persona amb l'enllaç</b></td><td>Qualsevol persona, encara que no tingui compte de l'institut.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Feu servir sempre el permís de <b>lector</b> per a l'accés general. Els permisos d'edició només els han de tenir els membres de l'equip.</p>
+        <div class="evid"><b>Compte</b>Quin accés ha de tenir el dossier ho decideix el professorat. Seguiu el que us indiqui i no feu públic res que no ho hagi de ser.</div>
+      </div>
+    </section>
+
+    <section id="simulador">
+      <h2>Proveu-ho</h2>
+      <div class="cos">
+        <p>Trieu l'accés general del document i qui visita el portafoli. Mireu si el dossier es veuria.</p>
+        <div class="sim">
+          <div class="calc sel">
+            <label>Accés general del document
+              <select id="sacces">
+                <option value="r">Restringit</option>
+                <option value="o" selected>La vostra organització</option>
+                <option value="p">Qualsevol persona amb l'enllaç</option>
+              </select>
+            </label>
+            <label>Qui visita el portafoli
+              <select id="squi">
+                <option value="m">Un membre de l'equip</option>
+                <option value="i" selected>Un professor de l'institut</option>
+                <option value="f">Una persona de fora de l'institut</option>
+              </select>
+            </label>
+          </div>
+          <div class="veredicte" id="sres" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="inserir">
+      <h2>Inserir el dossier</h2>
+      <div class="cos">
+        <p>A Google Sites, el document s'insereix des del panell lateral de l'editor. Els noms dels botons poden canviar una mica d'una versió a una altra, però els passos són sempre aquests:</p>
+        <ol class="passos">
+          <li>Obriu el portafoli a l'editor de Google Sites i aneu a la pàgina del projecte.</li>
+          <li>Al panell de la dreta, a la pestanya <b>Inserir</b>, feu clic a <b>Documents</b>.</li>
+          <li>Busqueu el dossier de l'equip al Drive, seleccioneu-lo i inseriu-lo.</li>
+          <li>Arrossegueu les vores del requadre perquè el document ocupi l'amplada de la pàgina i es pugui llegir.</li>
+          <li>Afegiu-hi a sobre un títol i una frase que expliqui el projecte.</li>
+          <li>Feu clic a <b>Publica</b>. Si l'eina us avisa que hi ha fitxers que no estan compartits, reviseu els permisos del document.</li>
+        </ol>
+        <div class="evid"><b>Compte</b>Inseriu el document original de l'equip, no una còpia. Si feu una còpia per inserir-la, el vostre portafoli deixarà de mostrar els canvis que faci l'equip.</div>
+      </div>
+    </section>
+
+    <section id="comprovar">
+      <h2>Comprovar-ho</h2>
+      <div class="cos">
+        <p>Quan obriu el portafoli amb el vostre compte, ho veieu tot, perquè sou els propietaris. Per saber què veurà una altra persona, l'heu de mirar sense la vostra sessió.</p>
+        <ol class="passos">
+          <li>Copieu l'enllaç del lloc publicat, no el de l'editor.</li>
+          <li>Obriu una finestra privada o d'incògnit del navegador i enganxeu-hi l'enllaç.</li>
+          <li>Si el lloc només és per a l'institut, inicieu sessió amb el compte d'un company que no sigui de l'equip.</li>
+          <li>Comproveu que el dossier es veu i que no demana permís.</li>
+          <li>Dins del dossier, obriu els enllaços (Trello, panell, vídeo…). També s'han de poder obrir.</li>
+          <li>Mireu-ho també des del mòbil.</li>
+        </ol>
+        <div class="taula">
+          <table>
+            <thead><tr><th>El que veieu</th><th>Què vol dir</th></tr></thead>
+            <tbody>
+              <tr><td>La pàgina no té els canvis.</td><td>No heu publicat després d'editar.</td></tr>
+              <tr><td>Al lloc del dossier hi ha un requadre que demana accés.</td><td>El document no està compartit amb qui visita la pàgina.</td></tr>
+              <tr><td>El lloc demana iniciar sessió.</td><td>El lloc està publicat només per a l'institut.</td></tr>
+              <tr><td>El dossier no mostra els últims canvis.</td><td>Heu inserit una còpia, no el document de l'equip.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="test">
+      <h2>Comproveu-ho</h2>
+      <div class="cos">
+        <p>Responeu en equip.</p>
+        <ol class="test" id="qtest">
+          <li data-ok="1"><p>Què passa quan l'equip canvia el dossier després d'incrustar-lo?</p><div class="opcions"><button type="button">Cal tornar-lo a inserir a cada portafoli</button><button type="button">El portafoli mostra el canvi automàticament</button><button type="button">El canvi només es veu al portafoli de qui l'ha fet</button></div><div class="resposta">La pàgina mostra el document original, així que sempre se'n veu la versió actual.</div></li>
+          <li data-ok="2"><p>El portafoli està publicat, però al lloc del dossier hi ha un requadre que demana accés. Què falla?</p><div class="opcions"><button type="button">El lloc no està publicat</button><button type="button">El navegador és antic</button><button type="button">Els permisos del document</button></div><div class="resposta">Les dues portes han d'estar obertes: la del lloc i la del document.</div></li>
+          <li data-ok="0"><p>Com comproveu què veu una persona que no és de l'equip?</p><div class="opcions"><button type="button">Obrint l'enllaç publicat des d'una finestra privada</button><button type="button">Mirant l'editor de Google Sites</button><button type="button">Obrint el document des del vostre Drive</button></div><div class="resposta">Amb la vostra sessió ho veieu tot. Sense sessió veieu el que veuria una altra persona.</div></li>
+          <li data-ok="1"><p>Quin permís ha de tenir l'accés general del dossier?</p><div class="opcions"><button type="button">Editor, perquè tothom hi pugui ajudar</button><button type="button">Lector, amb l'abast que indiqui el professorat</button><button type="button">Cap, perquè ningú no el vegi</button></div><div class="resposta">Qui visita el portafoli l'ha de poder llegir, però només l'equip l'ha de poder editar.</div></li>
+          <li data-ok="2"><p>Heu fet canvis a la pàgina del portafoli, però des de fora no es veuen. Què us falta?</p><div class="opcions"><button type="button">Tornar a inserir el document</button><button type="button">Canviar de navegador</button><button type="button">Publicar el lloc</button></div><div class="resposta">Els canvis de l'editor no es veuen fins que es publiquen.</div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="fi">
+      <h2>I ara què?</h2>
+      <div class="cos">
+        <p>Ja sabeu com s'incrusta el dossier i com es comprova que es veu. Aquesta píndola <strong>no us diu com ha de ser el vostre portafoli</strong>: segueix el format que ja hi teniu per als altres projectes.</p>
+        <p class="destacat">Si algú obre el vostre portafoli, entén en un minut què vau fer en aquest projecte?</p>
+        <div class="botons"><a class="boto" href="index.html" onclick="if(history.length>1){history.back();return false;}">Tornar a la fase</a></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+
+<script>
+(function(){
+  /* classificador */
+  const llista=document.getElementById('qclass'), prog=document.getElementById('qprog');
+  if(llista){
+    const items=[...llista.querySelectorAll('li')], total=items.length, fets=new Set();
+    items.forEach((li,n)=>{
+      const ok=li.dataset.ok, bs=[...li.querySelectorAll('.bt button')], exp=li.querySelector('.exp');
+      bs.forEach(b=>b.addEventListener('click',()=>{
+        bs.forEach(x=>x.classList.remove('be','mal'));
+        const encert=b.dataset.v===ok;
+        b.classList.add(encert?'be':'mal');
+        exp.textContent=(encert?'Correcte. ':'No ben bé. ')+exp.dataset.t;
+        exp.classList.add('vista');
+        if(encert) fets.add(n);
+        prog.textContent=fets.size+' de '+total+' encertades';
+        prog.classList.toggle('fet',fets.size===total);
+      }));
+      exp.dataset.t=exp.textContent; exp.textContent='';
+    });
+  }
+  /* test */
+  document.querySelectorAll('#qtest > li').forEach(q=>{
+    const ok=+q.dataset.ok, bs=[...q.querySelectorAll('.opcions button')], r=q.querySelector('.resposta');
+    r.dataset.t=r.textContent;
+    bs.forEach((b,k)=>b.addEventListener('click',()=>{
+      bs.forEach(x=>x.classList.remove('be','mal'));
+      b.classList.add(k===ok?'be':'mal');
+      r.textContent=(k===ok?'Correcte! ':'No és aquesta. ')+r.dataset.t;
+      r.classList.add('vista');
+    }));
+  });
+})();
+</script>
+<script>
+(function(){
+  const a=document.getElementById('sacces'), q=document.getElementById('squi'), r=document.getElementById('sres');
+  if(!a) return;
+  const veu={r:{m:1,i:0,f:0},o:{m:1,i:1,f:0},p:{m:1,i:1,f:1}};
+  const qui={m:'Un membre de l\'equip',i:'Un professor de l\'institut',f:'Una persona de fora de l\'institut'};
+  const per={
+    r:{m:'Està afegit al document, així que el veu.',i:'No està afegit al document: veurà un requadre que demana accés.',f:'No està afegida al document: veurà un requadre que demana accés.'},
+    o:{m:'Té compte de l\'institut i, a més, és editor del document.',i:'Té compte de l\'institut, així que el veu sense demanar permís.',f:'No té compte de l\'institut: veurà un requadre que demana accés, si és que pot entrar al lloc.'},
+    p:{m:'El veu, com tothom.',i:'El veu, com tothom.',f:'El veu, sempre que el lloc també estigui publicat per a tothom. Penseu si cal que una persona de fora ho pugui veure.'}
+  };
+  function mostra(){
+    const ok=veu[a.value][q.value];
+    r.className='veredicte '+(ok?'bo':'feble');
+    r.innerHTML=qui[q.value]+(ok?' veu el dossier.':' no veu el dossier.')+'<small>'+per[a.value][q.value]+'</small>';
+  }
+  a.addEventListener('change',mostra); q.addEventListener('change',mostra); mostra();
+})();
+</script>
+
+</body>
+
+</html>

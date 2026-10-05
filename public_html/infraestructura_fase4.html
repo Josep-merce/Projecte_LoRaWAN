@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fase 4 · Equips d'infraestructura · Espais que parlen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vermell:#BC2C2B;--vermell-fosc:#8A1F1E;--vermell-suau:#F7E4E3;
+    --negre:#252122;--blanc:#FFFFFF;--fons:#F5F4F3;--gris-text:#6B6566;--linia:#E2DFDD;
+    --font:"Archivo","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font);color:var(--negre);background:var(--fons);line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:clamp(1.5rem,5vw,4rem) clamp(1.25rem,5vw,3rem) 3rem}
+  .wrap{max-width:1080px;margin:0 auto}
+  a{color:var(--vermell)}
+  a:focus-visible{outline:3px solid var(--vermell);outline-offset:3px;border-radius:4px}
+
+  /* capçalera */
+  .barra-sup{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2.2rem}
+  .tornar{font-weight:700;font-size:.92rem;text-decoration:none;color:var(--negre);display:inline-flex;gap:.45rem;align-items:center}
+  .tornar:hover{color:var(--vermell)}
+  .logo{height:44px;width:auto}
+  .hero{background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem)}
+  .codi{display:inline-block;font-weight:800;font-size:.85rem;color:var(--blanc);background:var(--vermell);padding:.34rem .65rem;border-radius:7px;font-stretch:90%;white-space:nowrap}
+  .hero h1{font-weight:900;font-stretch:80%;font-size:clamp(2.4rem,6.5vw,4.2rem);letter-spacing:-.02em;line-height:.98;margin-top:1.1rem}
+  .hero p{color:#CFC9C9;font-size:clamp(1rem,1.6vw,1.15rem);max-width:60ch;margin-top:1rem}
+  .salts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+  .salts a{font-size:.85rem;font-weight:600;color:#E6E2E2;background:#3A3435;padding:.38rem .7rem;border-radius:7px;text-decoration:none}
+  .salts a:hover{background:var(--vermell);color:var(--blanc)}
+
+  /* seccions */
+  section{display:grid;grid-template-columns:260px 1fr;gap:clamp(1rem,4vw,3.5rem);padding:clamp(2.2rem,5vw,3.4rem) 0;border-bottom:1px solid var(--linia);scroll-margin-top:1rem}
+  section:last-of-type{border-bottom:0}
+  section > h2{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3vw,2.1rem);line-height:1.05;letter-spacing:-.01em}
+  .cos > * + *{margin-top:1rem}
+  .cos p{max-width:68ch}
+  .cos h3{font-weight:750;font-size:1.15rem;margin-top:1.8rem}
+  .destacat{font-size:clamp(1.35rem,2.6vw,1.9rem);font-weight:750;font-stretch:92%;line-height:1.22;letter-spacing:-.005em;max-width:32ch;border-left:5px solid var(--vermell);padding-left:1.1rem}
+  .nota{background:var(--vermell-suau);color:var(--vermell-fosc);border-radius:10px;padding:1rem 1.2rem;font-weight:600;max-width:68ch}
+
+  .boto{display:inline-flex;align-items:center;gap:.5rem;background:var(--vermell);color:var(--blanc);font-weight:700;text-decoration:none;padding:.75rem 1.1rem;border-radius:9px}
+  .boto:hover{background:var(--vermell-fosc)}
+  .boto.sec{background:var(--negre)}
+  .boto.sec:hover{background:#000}
+  .botons{display:flex;flex-wrap:wrap;gap:.7rem}
+
+  /* flux */
+  .flux{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;counter-reset:pas}
+  .flux li{background:var(--blanc);border:1px solid var(--linia);border-top:4px solid var(--negre);border-radius:10px;padding:1rem;counter-increment:pas}
+  .flux li:last-child{border-top-color:var(--vermell)}
+  .flux li::before{content:counter(pas);display:block;font-weight:800;color:var(--vermell);font-size:.95rem}
+  .flux strong{display:block;font-size:1.1rem;margin:.2rem 0 .3rem}
+  .flux span{color:var(--gris-text);font-size:.9rem;line-height:1.45;display:block}
+
+  .zones{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none}
+  .zones li{background:var(--blanc);border:1px solid var(--linia);border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.95rem}
+
+  /* fases */
+  .fases{list-style:none;counter-reset:f}
+  .fases li{display:grid;grid-template-columns:3rem 1fr auto;gap:1rem;align-items:baseline;padding:1rem 0;border-top:1px solid var(--linia);counter-increment:f}
+  .fases li:first-child{border-top:0;padding-top:0}
+  .fases li::before{content:counter(f);font-weight:900;font-stretch:80%;font-size:1.8rem;color:var(--vermell);line-height:1}
+  .fases b{display:block;font-size:1.1rem}
+  .fases span{color:var(--gris-text);font-size:.95rem}
+  .fases .pc,.pc{font-size:.76rem;font-weight:700;background:var(--negre);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+
+  /* llistes */
+  .punts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem;max-width:68ch}
+  .punts li{padding-left:1.3rem;position:relative}
+  .punts li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;background:var(--vermell)}
+
+  /* taules */
+  .taula{overflow-x:auto;border:1px solid var(--linia);border-radius:12px;background:var(--blanc)}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+  th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--linia);vertical-align:top}
+  th{font-weight:700;background:var(--fons);font-size:.88rem}
+  tr:last-child td{border-bottom:0}
+  td.num{font-weight:800;color:var(--vermell);width:3rem;font-variant-numeric:tabular-nums}
+  td.fase{white-space:nowrap;color:var(--gris-text);font-weight:600}
+  td.pes{font-weight:700;white-space:nowrap;text-align:right}
+
+  .dues{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .caixa{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .caixa h3{margin-top:0}
+  .caixa p{color:var(--gris-text);margin-top:.4rem}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--fons);padding:.1rem .35rem;border-radius:5px;color:var(--negre)}
+
+  .nivells{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;list-style:none}
+  .nivells li{border-radius:10px;padding:.8rem 1rem;font-weight:700;background:var(--blanc);border:1px solid var(--linia)}
+  .nivells li small{display:block;font-weight:500;color:var(--gris-text);font-size:.85rem}
+  .nivells li.ok{border-color:var(--negre);background:var(--negre);color:var(--blanc)}
+  .nivells li.ok small{color:#CFC9C9}
+
+  .final{text-align:left;background:var(--negre);color:var(--blanc);border-radius:16px;padding:clamp(1.8rem,4vw,3rem);margin-top:clamp(2rem,5vw,3rem)}
+  .final p{font-weight:850;font-stretch:84%;font-size:clamp(1.6rem,3.5vw,2.5rem);line-height:1.1;max-width:24ch}
+  .final p + p{color:#E06A69;margin-top:.4rem}
+
+  footer{margin-top:clamp(2.5rem,6vw,4rem);padding-top:1.5rem;border-top:1px solid var(--linia);color:var(--gris-text);font-size:.88rem}
+
+  @media (max-width:880px){
+    section{grid-template-columns:1fr}
+    .flux{grid-template-columns:1fr 1fr}
+    .punts,.dues{grid-template-columns:1fr}
+    .nivells{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:480px){.flux{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto}}
+  /* activitats */
+  .activitat > h2 .n{display:block;font-weight:900;font-stretch:80%;font-size:2.6rem;line-height:1;color:var(--vermell);margin-bottom:.35rem}
+  .etiqueta{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:700;text-decoration:none;background:var(--blanc);color:var(--negre);border:1px solid var(--linia);border-radius:7px;padding:.3rem .65rem}
+  .etiqueta b{color:var(--vermell)}
+  .etiqueta:hover{border-color:var(--vermell)}
+  .etiquetes{display:flex;flex-wrap:wrap;gap:.45rem}
+  .passos{list-style:none;counter-reset:p;max-width:68ch}
+  .passos li{counter-increment:p;position:relative;padding:0 0 .75rem 2.4rem}
+  .passos li::before{content:counter(p);position:absolute;left:0;top:.05rem;width:1.65rem;height:1.65rem;border-radius:50%;background:var(--negre);color:var(--blanc);
+    font-weight:800;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .infra{background:var(--blanc);border:1px solid var(--linia);border-left:5px solid var(--negre);border-radius:10px;padding:1rem 1.2rem;max-width:68ch}
+  .infra h3{margin-top:0 !important;font-size:1rem !important}
+  .infra p,.infra li{color:var(--gris-text)}
+  .infra ul{margin-top:.4rem;padding-left:1.1rem}
+  .rols{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;list-style:none;max-width:68ch}
+  .rols li{background:var(--blanc);border:1px solid var(--linia);border-radius:10px;padding:.8rem 1rem}
+  .rols b{display:block}
+  .rols span{color:var(--gris-text);font-size:.92rem;line-height:1.45;display:block;margin-top:.15rem}
+
+  /* comprovació */
+  .check{list-style:none;max-width:68ch}
+  .check li{padding:.5rem 0 .5rem 2rem;position:relative;border-bottom:1px solid var(--linia)}
+  .check li:last-child{border-bottom:0}
+  .check li::before{content:"";position:absolute;left:0;top:.75rem;width:1.05rem;height:1.05rem;border:2px solid var(--negre);border-radius:4px}
+  .no{list-style:none;max-width:68ch}
+  .no li{padding:.45rem 0 .45rem 2rem;position:relative;color:var(--gris-text)}
+  .no li::before{content:"";position:absolute;left:.15rem;top:1.05rem;width:.8rem;height:2px;background:var(--gris-text)}
+
+  /* navegació entre fases */
+  .navfases{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:clamp(2rem,5vw,3rem)}
+  .navfases a{display:block;text-decoration:none;color:var(--negre);background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1rem 1.2rem}
+  .navfases a:hover{border-color:var(--negre)}
+  .navfases small{display:block;color:var(--gris-text);font-weight:700;font-size:.85rem}
+  .navfases b{font-size:1.1rem}
+  .navfases .seg{text-align:right;background:var(--negre);color:var(--blanc);border-color:var(--negre)}
+  .navfases .seg small{color:#CFC9C9}
+  @media (max-width:880px){ .rols{grid-template-columns:1fr} }
+  @media (max-width:520px){ .navfases{grid-template-columns:1fr} }
+  /* barra de fases (substitueix l'índex) */
+  .barra-sup{flex-wrap:wrap}
+  .fasesnav{display:flex;flex-wrap:wrap;gap:.35rem}
+  .fasesnav a{font-weight:700;font-size:.85rem;text-decoration:none;color:var(--negre);background:var(--blanc);border:1px solid var(--linia);border-radius:7px;padding:.35rem .6rem}
+  .fasesnav a:hover{border-color:var(--negre)}
+  .fasesnav a[aria-current="page"]{background:var(--negre);color:var(--blanc);border-color:var(--negre)}
+
+  /* activitats amb codi del diari */
+  section.activitat{display:block}
+  .act-cap{display:flex;gap:1rem;align-items:flex-start;margin-bottom:1.4rem}
+  .codi-act{flex:0 0 auto;font-weight:900;font-stretch:80%;font-size:clamp(1.6rem,3.4vw,2.2rem);line-height:1;color:var(--blanc);background:var(--vermell);border-radius:10px;padding:.45rem .65rem}
+  .act-cap h2{font-weight:850;font-stretch:84%;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.08;letter-spacing:-.01em;max-width:34ch}
+  .act-cap .etiquetes{margin-top:.6rem}
+  .activitat > .cos{max-width:820px;margin-left:clamp(0rem,6vw,5.2rem)}
+  .part{border-top:1px solid var(--linia);padding-top:1.4rem;margin-top:1.8rem}
+  .part:first-child{border-top:0;padding-top:0;margin-top:0}
+  .part > * + *{margin-top:1rem}
+  .infra > * + *{margin-top:.5rem}
+  .part h3{margin-top:0 !important;font-size:1.3rem !important;font-weight:800 !important}
+  .bloc{background:var(--blanc);border:1px solid var(--linia);border-radius:12px;padding:1.2rem 1.3rem}
+  .bloc h3{margin-top:0 !important}
+  .descarrega{display:flex;flex-direction:column;gap:.4rem;align-items:flex-start}
+  .descarrega small{color:var(--gris-text);font-size:.82rem}
+  .bloc > * + *{margin-top:1rem}
+  .bloc + .bloc{margin-top:1rem}
+  .aldossier{background:var(--blanc);border:1px solid var(--linia);border-left:5px solid var(--vermell);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.6rem}
+  .aldossier h3{margin-top:0 !important;font-size:1rem !important;color:var(--vermell)}
+  .aldossier p{color:var(--negre);margin-top:.3rem}
+  .aldossier ul{list-style:none;margin-top:.4rem}
+  .aldossier li{padding:.55rem 0;border-top:1px solid var(--linia)}
+  .aldossier li:first-child{border-top:0;padding-top:.2rem}
+  .aldossier a{font-weight:700;text-decoration:none;color:var(--negre)}
+  .aldossier a b{color:var(--vermell)}
+  .aldossier a:hover{text-decoration:underline}
+  .aldossier span{display:block;color:var(--gris-text);font-size:.95rem;line-height:1.5;margin-top:.15rem}
+  .flux{grid-template-columns:repeat(4,1fr)}
+  @media (max-width:880px){ .activitat > .cos{margin-left:0} .flux{grid-template-columns:1fr 1fr} }
+  @media (max-width:480px){ .flux{grid-template-columns:1fr} .act-cap{flex-direction:column;gap:.6rem} }
+  /* recuadre de píndola */
+  .pindola{background:var(--blanc);border:2px solid var(--vermell);border-radius:12px;padding:1.1rem 1.3rem;max-width:68ch}
+  .pindola > * + *{margin-top:.6rem}
+  .pindola small{display:block;font-weight:800;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--vermell)}
+  .pindola h3{margin-top:.2rem !important;font-size:1.1rem !important}
+  .pindola p{color:var(--gris-text)}
+  .infra .taula{margin-top:.8rem}
+  .infra .passos{margin-top:.6rem}
+  .cos{min-width:0}
+  .aldossier .ap{font-weight:700;color:var(--negre)}
+  .aldossier .ap b{color:var(--vermell)}
+  td .ap{font-weight:400}
+  .aldossier .ap-infra{max-width:none;border-top:1px solid var(--linia);padding-top:.6rem;margin-top:.4rem;font-weight:400}
+  .cos{min-width:0}
+  .taula table.compacta{min-width:0}
+
+  /* fase 4: fites i blocs */
+  .fita{font-size:.76rem;font-weight:700;background:var(--vermell);color:var(--blanc);padding:.28rem .55rem;border-radius:6px;white-space:nowrap}
+  .cal{background:var(--blanc);border:2px solid var(--negre);border-radius:12px;padding:1.1rem 1.3rem;max-width:68ch}
+  .cal > * + *{margin-top:.6rem}
+  .cal h3{margin-top:0 !important;font-size:1.1rem !important}
+  .cal .check li{padding-top:.45rem;padding-bottom:.45rem}
+  .repas{color:var(--gris-text);font-size:.95rem}
+  .part[id]{scroll-margin-top:1rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="barra-sup">
+    <nav class="fasesnav" aria-label="Fases del projecte · equips d'infraestructura">
+      <a href="infraestructura_fase1.html">Fase 1</a>
+      <a href="infraestructura_fase2.html">Fase 2</a>
+      <a href="infraestructura_fase3.html">Fase 3</a>
+      <a href="infraestructura_fase4.html" aria-current="page">Fase 4</a>
+      <a href="infraestructura_fase5.html">Fase 5</a>
+      <a href="infraestructura_fase6.html">Fase 6</a>
+    </nav>
+    <img class="logo" src="data:image/png;base64,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" alt="Institut La Mercè">
+  </div>
+
+  <header class="hero">
+    <span class="codi">FASE 4 · EQUIPS D'INFRAESTRUCTURA</span>
+    <h1>Implementació</h1>
+    <p>Instal·lem i registrem els dos gateways, en fem les fitxes tècniques, muntem el panell de salut de la xarxa i donem suport a la instal·lació dels nodes a les zones.</p>
+    <nav class="salts" aria-label="Activitats d'aquesta fase">
+      <a href="#objectiu">Objectiu</a>
+      <a href="#f4-1">F4.1</a>
+      <a href="#f4-2">F4.2</a>
+      <a href="#f4-3">F4.3</a>
+      <a href="#f4-4">F4.4</a>
+      <a href="#f4-5">F4.5</a>
+      <a href="#f4-6">F4.6 i F4.7</a>
+      <a href="#f4-8">F4.8 i F4.9</a>
+      <a href="#f4-10">F4.10</a>
+      <a href="#f4-11">F4.11 i F4.12</a>
+      <a href="#f4-13">F4.13 i F4.14</a>
+      <a href="#f4-15">F4.15</a>
+      <a href="#f4-16">F4.16</a>
+      <a href="#f4-17">F4.17</a>
+      <a href="#f4-18">F4.18</a>
+      <a href="#f4-19">F4.19</a>
+      <a href="#f4-20">F4.20</a>
+      <a href="#f4-21">F4.21</a>
+      <a href="#tancament">Abans de passar a la Fase 5</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section id="objectiu">
+      <h2>Objectiu de la fase</h2>
+      <div class="cos">
+        <p class="destacat">Que la xarxa LoRaWAN de l'institut funcioni, estigui documentada i se'n pugui veure l'estat en tot moment.</p>
+        <p>Sense gateways, cap node pot enviar dades. Per això el vostre calendari és el més estricte: el gateway 1 ha d'estar funcionant abans de l'F4.5. Després instal·lareu el gateway 2, fareu el panell de salut de la xarxa i documentareu cada gateway en una fitxa tècnica que una altra persona pugui seguir. Al final, el professorat ho revisarà al tercer punt de control.</p>
+        <p class="nota">Com feu servir aquesta pàgina: al diari, les vostres activitats són les que apareixen després de «Infra:». Busqueu el codi de la sessió aquí i seguiu els passos en ordre. Cada equip lidera un dels dos gateways, però tots dos treballeu a totes les activitats: l'equip que no lidera hi dona suport.</p>
+        <p class="nota">Recolliu evidències mentre treballeu: fotografies, captures i notes de cada pas. Les necessitareu per a les fitxes tècniques i per als apartats 6, 7 i 8 del dossier.</p>
+      </div>
+    </section>
+
+    <!-- F4.1 -->
+    <section id="f4-1" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.1</span>
+        <div>
+          <h2>Instal·lar el gateway 1</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6-2"><b>Ap. 6.2</b> Instal·lació dels gateways</a><span>Columna del gateway 1: model, ubicació, alçada, alimentació, connexió a la xarxa i data d'instal·lació.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-3"><b>Ap. 6.3</b> Fotografies de la instal·lació</a><span>El gateway 1 instal·lat i les seves connexions.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-6"><b>Ap. 6.6</b> Com ho hem fet</a><span>Fila «Instal·lació del gateway 1 (F4.1)».</span></li>
+          </ul>
+        </div>
+        <p>Instal·lareu el gateway 1 a la ubicació que vau justificar amb el mapa de cobertura. Abans de pujar enlloc, el professorat ha de validar com el fixareu i com l'alimentareu.</p>
+        <ol class="passos">
+          <li>Reviseu la ubicació triada i el mapa de cobertura. Comproveu que a prop hi ha un endoll o un punt de xarxa amb PoE.</li>
+          <li>Prepareu el material: gateway, antena, alimentador o injector PoE, cable de xarxa i elements de fixació.</li>
+          <li>Connecteu l'antena abans d'engegar el gateway. No l'engegueu mai sense antena.</li>
+          <li>Engegueu-lo primer a l'aula i comproveu que arrenca i que els llums indiquen alimentació i xarxa.</li>
+          <li>Instal·leu-lo amb el professorat present: alt, amb l'antena vertical i lluny de superfícies metàl·liques.</li>
+          <li>Recolliu el cable perquè no faci nosa ni es pugui estirar sense voler.</li>
+          <li>Feu fotografies del gateway instal·lat i de les connexions, i ompliu la columna del gateway 1.</li>
+        </ol>
+        <p class="nota">Si cal pujar a una escala o treballar en alçada, ho fa el professorat o el personal de manteniment. Vosaltres prepareu el material i comproveu el resultat des de baix.</p>
+      </div>
+    </section>
+
+    <!-- F4.2 -->
+    <section id="f4-2" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.2</span>
+        <div>
+          <h2>Registrar el gateway 1 al servidor</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6-2"><b>Ap. 6.2</b> Instal·lació dels gateways</a><span>Nom al servidor del gateway 1.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-6"><b>Ap. 6.6</b> Com ho hem fet</a><span>Fila «Registre i comprovació del gateway 1 (F4.2 i F4.3)»: què heu fet i una captura sense contrasenyes.</span></li>
+          </ul>
+        </div>
+        <p>Perquè el servidor accepti el que li envia el gateway, cal donar-lo d'alta al servidor i configurar el gateway perquè sàpiga on ha d'enviar les trames.</p>
+        <div class="pindola">
+          <small>Píndola formativa</small>
+          <h3>Registrar un gateway</h3>
+          <p>Què és el Gateway EUI, com es dona d'alta un gateway al servidor, què cal configurar al gateway i com es comprova que està connectat.</p>
+          <div class="botons"><a class="boto" href="pindola_registrar_gateway.html">Obrir la píndola</a></div>
+        </div>
+        <ol class="passos">
+          <li>Seguiu la píndola en equip i feu el test del final.</li>
+          <li>Busqueu el Gateway EUI del gateway 1 a l'etiqueta de l'aparell o al seu panell de configuració.</li>
+          <li>Entreu al servidor amb l'adreça i l'usuari que us indica el professorat i doneu d'alta el gateway amb un nom que digui on és.</li>
+          <li>Entreu a la configuració del gateway i poseu-hi la regió EU868 i l'adreça i el port del servidor, tal com explica la píndola.</li>
+          <li>Guardeu les contrasenyes del gateway al lloc privat de l'equip. Si el gateway encara té la contrasenya de fàbrica, digueu-ho al professorat.</li>
+          <li>Comproveu al servidor que el gateway apareix connectat.</li>
+          <li>Feu una captura de la pàgina del gateway al servidor.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- F4.3 -->
+    <section id="f4-3" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.3</span>
+        <div>
+          <h2>Fita: el gateway 1 rep trames</h2>
+          <div class="etiquetes"><span class="fita">Fita</span></div>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6-6"><b>Ap. 6.6</b> Com ho hem fet</a><span>Completeu la fila «Registre i comprovació del gateway 1 (F4.2 i F4.3)».</span></li>
+            <li><a href="dossier_infraestructura.html#ap7-1"><b>Ap. 7.1</b> Què hem provat</a><span>La prova que heu fet davant del professorat i què ha passat.</span></li>
+            <li><a href="dossier_infraestructura.html#ap7-4"><b>Ap. 7.4</b> Problemes i solucions</a><span>Si alguna cosa no ha funcionat, el problema i com l'heu resolt.</span></li>
+          </ul>
+        </div>
+        <div class="cal">
+          <h3>Què ha de funcionar</h3>
+          <ul class="check">
+            <li>El gateway 1 apareix connectat al servidor i la indicació «vist per últim cop» s'actualitza.</li>
+            <li>A la vista de trames en directe arriben trames d'un node de prova, amb l'RSSI i l'SNR.</li>
+            <li>El senyal del node de prova és semblant al que vau mesurar al mapa de cobertura.</li>
+            <li>Si es desendolla el gateway i es torna a endollar, torna a aparèixer connectat sol.</li>
+            <li>Les contrasenyes són al lloc privat de l'equip i no apareixen en cap captura.</li>
+          </ul>
+        </div>
+        <ol class="passos">
+          <li>Prepareu la prova: el node de prova engegat i la vista de trames en directe oberta al servidor.</li>
+          <li>Ensenyeu al professorat l'estat del gateway i les trames que arriben.</li>
+          <li>Porteu el node de prova a un dels punts del mapa de cobertura i compareu-ne el senyal amb el que vau mesurar.</li>
+          <li>Desendolleu el gateway i torneu-lo a endollar per demostrar que es reconnecta sol.</li>
+          <li>Si alguna cosa falla, corregiu-la i torneu-ho a ensenyar. Apunteu la prova i el resultat al dossier.</li>
+        </ol>
+        <p class="nota">Aquesta fita és imprescindible: a l'F4.5 es comencen a registrar nodes al servidor i el gateway 1 ja ha de funcionar.</p>
+      </div>
+    </section>
+
+    <!-- F4.4 -->
+    <section id="f4-4" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.4</span>
+        <div>
+          <h2>Fitxa tècnica del gateway 1</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6-4"><b>Ap. 6.4</b> Fitxes tècniques</a><span>L'enllaç a la fitxa tècnica del gateway 1.</span></li>
+          </ul>
+        </div>
+        <p>La fitxa tècnica és un document a part que explica el gateway prou bé perquè una altra persona el pugui tornar a instal·lar, configurar o diagnosticar sense vosaltres. A l'F4.11, l'altre equip d'infraestructura la seguirà pas a pas per comprovar que funciona.</p>
+        <h3>Què ha de tenir la fitxa</h3>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Part</th><th>Què hi va</th></tr></thead>
+            <tbody>
+              <tr><td><b>Identificació</b></td><td>Model, nom al servidor, Gateway EUI i data d'instal·lació.</td></tr>
+              <tr><td><b>Ubicació</b></td><td>On és, a quina alçada, per què es va triar i una fotografia.</td></tr>
+              <tr><td><b>Alimentació i xarxa</b></td><td>Com s'alimenta, on es connecta a la xarxa i amb quin cable o injector.</td></tr>
+              <tr><td><b>Configuració</b></td><td>Regió, adreça del servidor, port i protocol. Sense contrasenyes.</td></tr>
+              <tr><td><b>Com es comprova</b></td><td>Què han d'indicar els llums, on es mira l'estat al servidor i com es veuen les trames.</td></tr>
+              <tr><td><b>Si no funciona</b></td><td>Els problemes que heu trobat i com es resolen, en l'ordre en què cal revisar-los.</td></tr>
+              <tr><td><b>Autoria</b></td><td>L'equip que l'ha fet i la data de l'última revisió.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ol class="passos">
+          <li>Creeu un document de Google a part per a la fitxa tècnica del gateway 1.</li>
+          <li>Seguiu l'estructura de la taula. Cada part, amb el seu títol.</li>
+          <li>Escriviu els passos com si els hagués de seguir algú que no ha vist mai el gateway: una acció per pas.</li>
+          <li>Afegiu-hi fotografies i captures en què no es vegi cap contrasenya ni cap clau.</li>
+          <li>Compartiu-la amb permís de lectura per a l'institut i poseu-ne l'enllaç a l'apartat 6.4.</li>
+          <li>Rellegiu-la sencera i comproveu que no hi ha cap contrasenya.</li>
+        </ol>
+        <p class="nota">Si un pas necessita una contrasenya, digueu qui la té sense escriure-la. Per exemple: «Entreu amb l'usuari d'administració; la contrasenya la té el professorat».</p>
+      </div>
+    </section>
+
+    <!-- F4.5 -->
+    <section id="f4-5" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.5</span>
+        <div>
+          <h2>Configurar el gateway 2</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6-2"><b>Ap. 6.2</b> Instal·lació dels gateways</a><span>Columna del gateway 2: model i nom al servidor.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-6"><b>Ap. 6.6</b> Com ho hem fet</a><span>Fila «Configuració del gateway 2 (F4.5)».</span></li>
+          </ul>
+        </div>
+        <p>Abans de muntar el gateway 2, el deixareu configurat i registrat a l'aula, on és fàcil corregir errors. Fareu servir la fitxa del gateway 1: és la primera prova de si està ben feta.</p>
+        <ol class="passos">
+          <li>Seguiu la fitxa tècnica del gateway 1 per configurar el gateway 2. Si algun pas no s'entén, milloreu la fitxa.</li>
+          <li>Doneu d'alta el gateway 2 al servidor amb un nom que digui on anirà.</li>
+          <li>Configureu-lo amb la mateixa regió i el mateix servidor que el gateway 1.</li>
+          <li>Engegueu-lo a l'aula i comproveu que apareix connectat i que rep trames d'un node de prova.</li>
+          <li>Prepareu el material d'instal·lació per a l'F4.6.</li>
+        </ol>
+        <p class="nota">A partir d'aquesta sessió es registren nodes al servidor. No canvieu res de la configuració del gateway 1 sense avisar abans el professorat.</p>
+      </div>
+    </section>
+
+    <!-- F4.6 i F4.7 -->
+    <section id="f4-6" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.6</span>
+        <div>
+          <h2>Instal·lar el gateway 2</h2>
+          <div class="etiquetes"><a class="etiqueta" href="#f4-7">Continua a la sessió <b>F4.7</b></a></div>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6-2"><b>Ap. 6.2</b> Instal·lació dels gateways</a><span>Completeu la columna del gateway 2: ubicació, alçada, alimentació, connexió a la xarxa i data d'instal·lació.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-3"><b>Ap. 6.3</b> Fotografies de la instal·lació</a><span>El gateway 2 instal·lat i les seves connexions.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-6"><b>Ap. 6.6</b> Com ho hem fet</a><span>Fila «Instal·lació del gateway 2 (F4.6 i F4.7)».</span></li>
+            <li><a href="dossier_infraestructura.html#ap7-1"><b>Ap. 7.1</b> Què hem provat</a><span>La comprovació final del gateway 2.</span></li>
+          </ul>
+        </div>
+        <div class="part">
+          <h3>F4.6 · La instal·lació</h3>
+          <ol class="passos">
+            <li>Reviseu la ubicació triada per al gateway 2 i comproveu que hi ha alimentació i xarxa a prop.</li>
+            <li>Connecteu l'antena abans d'engegar-lo.</li>
+            <li>Instal·leu-lo amb el professorat present: alt, amb l'antena vertical i lluny de superfícies metàl·liques.</li>
+            <li>Recolliu el cable i comproveu que no fa nosa.</li>
+            <li>Comproveu al servidor que el gateway 2 torna a aparèixer connectat a la ubicació nova.</li>
+            <li>Feu les fotografies i ompliu la columna del gateway 2.</li>
+          </ol>
+          <p class="nota">Igual que amb el gateway 1: el treball en alçada el fa el professorat o el personal de manteniment.</p>
+        </div>
+        <div class="part" id="f4-7">
+          <h3>F4.7 · La comprovació final</h3>
+          <div class="cal">
+            <h3>Què ha de funcionar</h3>
+            <ul class="check">
+              <li>Els dos gateways apareixen connectats al servidor.</li>
+              <li>El gateway 2 rep trames d'un node de prova, amb l'RSSI i l'SNR.</li>
+              <li>En algun punt on el gateway 1 arribava amb senyal just o feble, ara arriba amb millor senyal.</li>
+              <li>Si es desendolla el gateway 2 i es torna a endollar, es reconnecta sol.</li>
+            </ul>
+          </div>
+          <ol class="passos">
+            <li>Porteu el node de prova a dos o tres punts del mapa de cobertura que tenien un senyal just o feble.</li>
+            <li>Mireu a la vista de trames quin gateway rep cada missatge i amb quin senyal.</li>
+            <li>Apunteu les mesures: les fareu servir a l'apartat 7.</li>
+            <li>Si algun punt continua sense cobertura, apunteu-lo i digueu-ho al professorat.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- F4.8 i F4.9 -->
+    <section id="f4-8" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.8</span>
+        <div>
+          <h2>Panell de salut de la xarxa</h2>
+          <div class="etiquetes"><a class="etiqueta" href="#f4-9">Continua a la sessió <b>F4.9</b></a></div>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6-5"><b>Ap. 6.5</b> Panell de salut de la xarxa</a><span>L'enllaç al panell, què mostra i per què ho heu triat, i una captura.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-6"><b>Ap. 6.6</b> Com ho hem fet</a><span>Fila «Panell de salut (F4.8 i F4.9)».</span></li>
+          </ul>
+        </div>
+        <p>El panell de salut de la xarxa mostra d'un cop d'ull si la xarxa funciona. És el que consultaria qualsevol persona si un node deixa d'enviar dades.</p>
+        <div class="part">
+          <h3>F4.8 · Decidir què ha de mostrar</h3>
+          <div class="pindola">
+            <small>Píndola formativa</small>
+            <h3>Del servidor al panell</h3>
+            <p>Com arriben les dades del servidor al panell, com es converteixen els bytes en valors, què és un giny i com s'adapta un panell de plantilla.</p>
+            <div class="botons"><a class="boto" href="pindola_servidor_panell.html">Obrir la píndola</a></div>
+          </div>
+          <ol class="passos">
+            <li>Seguiu la píndola en equip i feu el test del final.</li>
+            <li>Feu una llista de les preguntes que ha de respondre el panell. Per exemple: els dos gateways estan connectats? Quan han rebut l'última trama? Quantes trames reben per hora? Amb quin senyal arriben? Quin node fa estona que no envia?</li>
+            <li>Trieu les preguntes més importants: un panell de salut no ho ha de mostrar tot.</li>
+            <li>Feu un esbós en paper: quin giny respon cada pregunta i en quin ordre.</li>
+            <li>Ensenyeu l'esbós al professorat abans de començar l'F4.9.</li>
+          </ol>
+        </div>
+        <div class="part" id="f4-9">
+          <h3>F4.9 · Fer el panell</h3>
+          <ol class="passos">
+            <li>Obriu l'eina de panells amb l'usuari que us indica el professorat i feu una còpia del panell de plantilla.</li>
+            <li>Canvieu la font de dades perquè llegeixi l'estat dels gateways i les dades de la xarxa.</li>
+            <li>Feu un giny per a cada pregunta de l'esbós, amb un títol clar i la unitat.</li>
+            <li>Marqueu amb colors quan un valor indica que alguna cosa va malament. Per exemple, un gateway que fa massa estona que no es veu.</li>
+            <li>Esborreu els ginys de la plantilla que no feu servir.</li>
+            <li>Comproveu que el panell s'obre amb l'enllaç i que les dades s'actualitzen soles.</li>
+            <li>Poseu l'enllaç i una captura a l'apartat 6.5 i expliqueu per què heu triat el que mostra.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- F4.10 -->
+    <section id="f4-10" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.10</span>
+        <div>
+          <h2>Fitxa tècnica del gateway 2</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6-4"><b>Ap. 6.4</b> Fitxes tècniques</a><span>L'enllaç a la fitxa tècnica del gateway 2.</span></li>
+          </ul>
+        </div>
+        <p>Fareu la fitxa del gateway 2 amb la mateixa estructura que la del gateway 1. Ara ja sabeu quins passos costen més d'entendre: aprofiteu-ho.</p>
+        <ol class="passos">
+          <li>Feu una còpia de la fitxa del gateway 1 i canvieu-ne totes les dades pel gateway 2.</li>
+          <li>Reviseu la part «Si no funciona» amb els problemes que heu trobat en aquest gateway.</li>
+          <li>Si a l'F4.5 vau millorar la fitxa del gateway 1, comproveu que els canvis també hi són.</li>
+          <li>Comproveu que no hi ha cap contrasenya ni cap clau.</li>
+          <li>Compartiu-la amb permís de lectura per a l'institut i poseu-ne l'enllaç a l'apartat 6.4.</li>
+        </ol>
+        <p class="nota">A l'F4.11, l'altre equip d'infraestructura seguirà les vostres dues fitxes pas a pas. Si una fitxa només l'entén qui l'ha escrit, la prova creuada ho farà evident.</p>
+      </div>
+    </section>
+
+    <!-- F4.11 i F4.12 -->
+    <section id="f4-11" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.11</span>
+        <div>
+          <h2>Prova creuada de les fitxes tècniques</h2>
+          <div class="etiquetes"><a class="etiqueta" href="#f4-12">Continua a la sessió <b>F4.12</b></a></div>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap7-3"><b>Ap. 7.3</b> Prova creuada de les fitxes tècniques</a><span>On s'ha encallat l'altre equip amb la vostra fitxa, per què, i què hi heu corregit.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-4"><b>Ap. 6.4</b> Fitxes tècniques</a><span>Comproveu que els enllaços apunten a la versió corregida.</span></li>
+          </ul>
+        </div>
+        <p>Una fitxa tècnica només és bona si la pot seguir algú que no l'ha escrita. Cada equip d'infraestructura seguirà pas a pas les fitxes de l'altre i li dirà on s'ha encallat.</p>
+        <div class="part">
+          <h3>F4.11 · Seguir la fitxa de l'altre equip</h3>
+          <ol class="passos">
+            <li>Obriu les fitxes tècniques de l'altre equip.</li>
+            <li>Seguiu-les pas a pas davant del gateway real: trobeu-lo, identifiqueu-lo, reviseu-ne l'alimentació i la connexió, mireu-ne l'estat al servidor i les trames.</li>
+            <li>Els passos que canviarien la configuració d'un gateway en funcionament no els executeu: comproveu que la fitxa diu prou per fer-los i que les dades coincideixen amb el gateway real.</li>
+            <li>Per a cada pas, apunteu si s'entén, si falta informació o si no coincideix amb el que veieu.</li>
+            <li>Comproveu que la fitxa no conté cap contrasenya ni cap clau.</li>
+          </ol>
+          <p class="nota">Si el professorat té un gateway de prova, podeu fer de veritat els passos de configuració amb aquell gateway.</p>
+        </div>
+        <div class="part" id="f4-12">
+          <h3>F4.12 · Retornar i corregir</h3>
+          <ol class="passos">
+            <li>Doneu a l'altre equip les vostres notes: on us heu encallat i per què.</li>
+            <li>Rebeu les notes sobre les vostres fitxes i comenteu-les amb l'altre equip.</li>
+            <li>Corregiu les vostres fitxes amb el que us han dit.</li>
+            <li>Ompliu l'apartat 7.3: on s'ha encallat l'altre equip, per què i què hi heu corregit.</li>
+          </ol>
+          <p class="nota">Les notes s'han de poder fer servir: «el pas 4 no diu on és el botó de reinici» ajuda; «no s'entén» no ajuda.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- F4.13 i F4.14 -->
+    <section id="f4-13" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.13</span>
+        <div>
+          <h2>Suport a la instal·lació</h2>
+          <div class="etiquetes"><a class="etiqueta" href="#f4-14">Continua a la sessió <b>F4.14</b></a></div>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap7-2"><b>Ap. 7.2</b> Senyal dels nodes a la ubicació final</a><span>Per a cada zona: quin gateway rep el node, l'RSSI, l'SNR i la valoració.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-6"><b>Ap. 6.6</b> Com ho hem fet</a><span>Fila «Suport a la instal·lació dels nodes (F4.13 i F4.14)».</span></li>
+          </ul>
+        </div>
+        <p>En aquestes dues sessions s'instal·len els nodes a les zones de l'institut. La vostra feina és vigilar la xarxa mentre passa i recollir el senyal de cada node a la seva ubicació definitiva.</p>
+        <div class="part">
+          <h3>F4.13 · Vigilar la xarxa</h3>
+          <ol class="passos">
+            <li>Obriu el panell de salut de la xarxa i la vista de trames dels dos gateways.</li>
+            <li>Repartiu-vos: una part de l'equip vigila el panell i l'altra és a prop de les zones per si cal ajuda amb la cobertura.</li>
+            <li>Quan s'instal·la un node, comproveu quin gateway en rep els missatges i amb quin senyal.</li>
+            <li>Si un node arriba amb senyal feble o es perden missatges, ajudeu a trobar una posició millor amb el mapa de cobertura.</li>
+            <li>Apunteu qualsevol incidència de la xarxa: un gateway desconnectat, una zona sense cobertura…</li>
+          </ol>
+          <p class="nota">Durant la instal·lació no canvieu res de la configuració dels gateways. Si cal fer-hi algun canvi, aviseu abans el professorat.</p>
+          <p class="repas">Per saber què es comprova quan s'instal·la un node i què es fa si el senyal és feble:</p>
+          <div class="botons"><a class="boto sec" href="pindola_instal_lar_node.html">Instal·lar el node</a></div>
+        </div>
+        <div class="part" id="f4-14">
+          <h3>F4.14 · Recollir el senyal de cada zona</h3>
+          <ol class="passos">
+            <li>Per a cada zona, mireu uns quants missatges seguits del node instal·lat.</li>
+            <li>Apunteu quin gateway el rep (o tots dos), l'RSSI i l'SNR habituals i la valoració.</li>
+            <li>Ompliu la taula de l'apartat 7.2 amb totes les zones.</li>
+            <li>Compareu-ho amb el mapa de cobertura: s'assembla al que vau preveure?</li>
+            <li>Comproveu que el panell de salut mostra tots els nodes i detecta si algun deixa d'enviar.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- F4.15 -->
+    <section id="f4-15" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.15</span>
+        <div>
+          <h2>Implementació i decisions (ap. 6)</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6-1"><b>Ap. 6.1</b> Què hem construït</a><span>Les parts principals de la xarxa, explicades perquè les entengui algú de fora.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-2"><b>Ap. 6.2</b> Instal·lació dels gateways</a><span>Les dues columnes completes.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-3"><b>Ap. 6.3</b> Fotografies de la instal·lació</a><span>Els dos gateways i les connexions.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-4"><b>Ap. 6.4</b> Fitxes tècniques</a><span>Els enllaços a les versions corregides.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-5"><b>Ap. 6.5</b> Panell de salut de la xarxa</a><span>L'enllaç, què mostra i una captura.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-6"><b>Ap. 6.6</b> Com ho hem fet</a><span>Totes les etapes, amb la seva evidència.</span></li>
+            <li><a href="dossier_infraestructura.html#ap6-7"><b>Ap. 6.7</b> Decisions tècniques</a><span>Les decisions més importants i per què les vau prendre.</span></li>
+          </ul>
+        </div>
+        <p>Ara escriureu l'apartat 6 sencer amb les notes, les fotografies i les captures que heu anat recollint.</p>
+        <ol class="passos">
+          <li>Reuniu totes les evidències de l'equip en una carpeta compartida.</li>
+          <li>Repartiu els subapartats entre els membres de l'equip.</li>
+          <li>Escriviu el 6.1 com si ho expliquéssiu a algú que no sap què és LoRaWAN: quants gateways hi ha, on són i què fan.</li>
+          <li>Completeu el 6.2, el 6.3, el 6.4 i el 6.5 amb la versió final.</li>
+          <li>Ompliu cada fila del 6.6 amb què heu fet i una evidència.</li>
+          <li>A les decisions tècniques, expliqueu per què: és la part que més diu de la vostra feina.</li>
+          <li>Rellegiu l'apartat sencer i comproveu que no hi ha cap contrasenya ni cap clau.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- F4.16 -->
+    <section id="f4-16" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.16</span>
+        <div>
+          <h2>Proves i solucions (ap. 7)</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap7-1"><b>Ap. 7.1</b> Què hem provat</a><span>Cada prova: què heu provat, què esperàveu i què ha passat.</span></li>
+            <li><a href="dossier_infraestructura.html#ap7-2"><b>Ap. 7.2</b> Senyal dels nodes a la ubicació final</a><span>La taula de l'F4.14, completa.</span></li>
+            <li><a href="dossier_infraestructura.html#ap7-3"><b>Ap. 7.3</b> Prova creuada de les fitxes tècniques</a><span>El resultat de l'F4.12.</span></li>
+            <li><a href="dossier_infraestructura.html#ap7-4"><b>Ap. 7.4</b> Problemes i solucions</a><span>Els problemes, les solucions i què n'heu après.</span></li>
+          </ul>
+        </div>
+        <p>Les fites i les proves que heu fet durant la fase són la prova que la xarxa funciona. Ara les ordeneu i les completeu.</p>
+        <ol class="passos">
+          <li>Repasseu la fita del gateway 1 (F4.3), la comprovació final del gateway 2 (F4.7) i la prova creuada (F4.11 i F4.12).</li>
+          <li>Per a cada prova, escriviu què esperàveu i què ha passat de veritat, encara que no fos el que esperàveu.</li>
+          <li>Comproveu que la taula de senyal té totes les zones.</li>
+          <li>Repasseu les notes de problemes i completeu la taula: quan va aparèixer, què vau fer i quin va ser el resultat.</li>
+          <li>Acabeu amb el que n'heu après: què faríeu diferent si tornéssiu a començar.</li>
+        </ol>
+        <p class="nota">Un problema ben explicat val tant com una cosa que funciona. No amagueu els errors: expliqueu com els vau resoldre.</p>
+      </div>
+    </section>
+
+    <!-- F4.17 -->
+    <section id="f4-17" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.17</span>
+        <div>
+          <h2>Resultats obtinguts (ap. 8)</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap8-1"><b>Ap. 8.1</b> Què hem aconseguit</a><span>El resultat final en poques línies.</span></li>
+            <li><a href="dossier_infraestructura.html#ap8-2"><b>Ap. 8.2</b> Què funciona i què no</a><span>Amb sinceritat: el que funciona i el que no heu pogut aconseguir.</span></li>
+            <li><a href="dossier_infraestructura.html#ap8-3"><b>Ap. 8.3</b> Comparació amb la proposta</a><span>Cada criteri de l'apartat 3.8, si es compleix i amb quina evidència.</span></li>
+          </ul>
+        </div>
+        <p>Ara compareu la xarxa que teniu amb la que vau proposar a la Fase 2.</p>
+        <ol class="passos">
+          <li>Obriu l'apartat 3.8 del dossier i copieu-ne els criteris a la taula del 8.3.</li>
+          <li>Per a cada criteri, digueu si es compleix del tot, en part o no, i poseu-hi una evidència concreta: una captura, una mesura o una prova de l'apartat 7.</li>
+          <li>Escriviu el 8.2: què funciona i què no. Si hi ha zones amb cobertura justa, digueu-ho.</li>
+          <li>Escriviu el 8.1 al final, quan ja tingueu clar el resultat.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- F4.18 -->
+    <section id="f4-18" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.18</span>
+        <div>
+          <h2>Gravació del vídeo demostratiu</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap8-4"><b>Ap. 8.4</b> Producte final</a><span>L'enllaç al vídeo, què s'hi mostra i altres evidències, com el mapa de cobertura final o les fitxes.</span></li>
+          </ul>
+        </div>
+        <p>El vídeo demostra que la xarxa funciona de veritat. Ha de ser curt i ensenyar coses que passen, no explicar-les.</p>
+        <h3>Què s'hi ha de veure</h3>
+        <ul class="punts">
+          <li>Els dos gateways instal·lats.</li>
+          <li>Els gateways connectats al servidor.</li>
+          <li>Trames que arriben en directe, amb l'RSSI i l'SNR.</li>
+          <li>El panell de salut de la xarxa, amb una explicació breu.</li>
+          <li>Una fitxa tècnica i per a què serveix.</li>
+          <li>Què heu après o què milloraríeu, en una frase.</li>
+        </ul>
+        <ol class="passos">
+          <li>Escriviu un guió breu: què es veu a cada moment i qui parla.</li>
+          <li>Prepareu-ho tot abans de gravar: el servidor i el panell oberts i el recorregut pels gateways decidit.</li>
+          <li>Graveu en horitzontal i amb bona llum. Les pantalles, millor gravades directament de l'ordinador que amb el mòbil.</li>
+          <li>Comproveu que no surt cap contrasenya, cap clau ni cap persona que no hi hagi donat permís.</li>
+          <li>Pugeu el vídeo al Drive amb permís de lectura per a l'institut.</li>
+          <li>Poseu l'enllaç a l'apartat 8.4 i comproveu que s'obre des d'un altre compte.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- F4.19 -->
+    <section id="f4-19" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.19</span>
+        <div>
+          <h2>Recuperació o ampliacions</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap7-4"><b>Ap. 7.4</b> Problemes i solucions</a><span>Si recupereu alguna cosa, què heu fet i amb quin resultat.</span></li>
+            <li><a href="dossier_infraestructura.html#ap8-2"><b>Ap. 8.2</b> Què funciona i què no</a><span>Actualitzeu-lo si ara funciona alguna cosa que abans no.</span></li>
+          </ul>
+        </div>
+        <p>Aquesta sessió depèn de com ho tingueu. Primer, el que falta. Després, el que es pot millorar.</p>
+        <div class="dues">
+          <div class="caixa">
+            <h3>Si us falta alguna cosa</h3>
+            <p>Mireu la llista de comprovació del final d'aquesta pàgina i feu el que no estigui fet, començant pels gateways. Si us heu encallat, demaneu ajuda al professorat.</p>
+          </div>
+          <div class="caixa">
+            <h3>Si ho teniu tot</h3>
+            <p>Trieu una ampliació i comenteu-la amb el professorat abans de començar. Per exemple: refer el mapa de cobertura amb els dos gateways, millorar el panell de salut o afegir-hi un avís quan un gateway es desconnecta.</p>
+          </div>
+        </div>
+        <p class="nota">Una ampliació no pot deixar la xarxa sense funcionar. No canvieu la configuració dels gateways sense avisar abans el professorat.</p>
+      </div>
+    </section>
+
+    <!-- F4.20 -->
+    <section id="f4-20" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.20</span>
+        <div>
+          <h2>Recuperació i tancament de la fase</h2>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap6"><b>Ap. 6, 7 i 8</b> Implementació, proves i resultats</a><span>Revisió final de tots tres apartats.</span></li>
+          </ul>
+        </div>
+        <p>Darrera sessió de feina abans del punt de control. Deixeu-ho tot acabat i revisat.</p>
+        <ol class="passos">
+          <li>Acabeu el que quedi pendent de l'F4.19.</li>
+          <li>Repasseu la llista de comprovació del final d'aquesta pàgina punt per punt.</li>
+          <li>Comproveu que els dos gateways continuen connectats i que el panell de salut s'actualitza.</li>
+          <li>Rellegiu els apartats 6, 7 i 8 del dossier i les dues fitxes tècniques: que no hi falti res i que no hi hagi cap contrasenya.</li>
+          <li>Comproveu que s'obren els enllaços a les fitxes, al panell de salut i al vídeo.</li>
+          <li>Decidiu què ensenyareu i qui ho explicarà al punt de control.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- F4.21 -->
+    <section id="f4-21" class="activitat">
+      <div class="act-cap">
+        <span class="codi-act">F4.21</span>
+        <div>
+          <h2>Tancament de la fase</h2>
+          <div class="etiquetes"><span class="pc">Punt de control 3</span></div>
+        </div>
+      </div>
+      <div class="cos">
+        <div class="aldossier">
+          <h3>Al dossier</h3>
+          <ul>
+            <li><a href="dossier_infraestructura.html#ap8"><b>Ap. 8</b> Resultats obtinguts</a><span>Feu-hi els ajustos que us demani el professorat.</span></li>
+          </ul>
+        </div>
+        <p>El professorat revisa el que ha fet cada equip a la Fase 4: els gateways, les fitxes tècniques, el panell de salut i el dossier.</p>
+        <ol class="passos">
+          <li>Ensenyeu el panell de salut de la xarxa amb dades reals.</li>
+          <li>Expliqueu on són els gateways, com s'alimenten i per què són allà.</li>
+          <li>Ensenyeu les fitxes tècniques i què hi vau corregir després de la prova creuada.</li>
+          <li>Obriu el dossier pels apartats 6, 7 i 8 i el vídeo.</li>
+          <li>Apunteu els ajustos que us demani el professorat i feu-los.</li>
+        </ol>
+        <p class="nota">El punt de control no és una nota: si el professorat demana ajustos, els feu i continueu.</p>
+      </div>
+    </section>
+
+    <section id="tancament">
+      <h2>Abans de passar a la Fase 5</h2>
+      <div class="cos">
+        <h3 style="margin-top:0">Apartats del dossier que heu de tenir fets</h3>
+        <div class="taula">
+          <table>
+            <thead><tr><th>Ap.</th><th>Contingut</th><th>Activitat</th></tr></thead>
+            <tbody>
+              <tr><td class="num">6</td><td><a href="dossier_infraestructura.html#ap6"><strong class="ap">Implementació i decisions</strong></a> · gateways, fotografies, fitxes tècniques, panell de salut, com ho hem fet i decisions</td><td class="fase">F4.1 a F4.15</td></tr>
+              <tr><td class="num">7</td><td><a href="dossier_infraestructura.html#ap7"><strong class="ap">Proves i solucions</strong></a> · proves, senyal dels nodes, prova creuada i problemes</td><td class="fase">F4.3 a F4.16</td></tr>
+              <tr><td class="num">8</td><td><a href="dossier_infraestructura.html#ap8"><strong class="ap">Resultats obtinguts</strong></a> · resultats, comparació amb la proposta, panell de salut i vídeo</td><td class="fase">F4.17 i F4.18</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Llista de comprovació</h3>
+        <ul class="check">
+          <li>Els dos gateways estan instal·lats, connectats al servidor i reben trames.</li>
+          <li>Les dues fitxes tècniques s'han corregit després de la prova creuada i no contenen cap contrasenya.</li>
+          <li>El panell de salut de la xarxa mostra dades reals i s'obre amb l'enllaç.</li>
+          <li>La taula de senyal té totes les zones, amb el gateway que rep cada node.</li>
+          <li>Les contrasenyes són al lloc privat de l'equip i no surten enlloc del dossier.</li>
+          <li>Els apartats 6, 7 i 8 estan complets, amb evidències.</li>
+          <li>El vídeo és al Drive, s'obre amb l'enllaç i no hi surt cap contrasenya.</li>
+          <li>El professorat ho ha revisat al punt de control 3 i hem fet els ajustos.</li>
+        </ul>
+
+        <h3>El que encara no heu de tenir</h3>
+        <ul class="no">
+          <li>La presentació dels resultats.</li>
+          <li>El feedback de la presentació.</li>
+          <li>La valoració final del projecte.</li>
+        </ul>
+        <p>Tot això ho fareu a les fases 5 i 6.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="navfases" aria-label="Fases">
+    <a href="infraestructura_fase3.html"><small>← Fase anterior</small><b>Fase 3 · Planificació</b></a>
+    <a class="seg" href="infraestructura_fase5.html"><small>Fase següent →</small><b>Fase 5 · Presentació de resultats</b></a>
+  </nav>
+
+  <footer>Institut La Mercè · Cicle SMX · 1713 Projecte intermodular</footer>
+</div>
+</body>
+
+</html>
